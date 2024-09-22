@@ -15,24 +15,11 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 
-import { Building2, Mail, Info, MoveRight, Check } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import { redirect } from "react-router-dom";
 
 const formShema = z.object({
-  razaoSocial: z.string().min(1, { message: "Razão social é obrigatória" }),
-  cnpj: z
-    .string()
-    .min(14, { message: "CNPJ precisa ter no mínimo 14 caracteres" })
-    .refine(
-      (cnpj) => {
-        cnpj = cnpj.replace(/[^\d]+/g, "");
-
-        if (cnpj.length !== 14 || /^(\d)\1+$/.test(cnpj)) return false;
-
-        return validarCnpj(cnpj);
-      },
-      { message: "CNPJ inválido" }
-    ),
+  nomeOficial: z.string().min(1, { message: "Nome oficial é obrigatório" }),
   email: z
     .string()
     .min(1, { message: "Email é obrigatório" })
@@ -43,28 +30,21 @@ const formShema = z.object({
       /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/,
       { message: "Telefone inválido" }
     ),
-  empresaDescricao: z
-    .string()
-    .max(50, { message: "Descrição deve ter até 50 caracteres" }),
   responsavelNomeCompleto: z
     .string()
     .min(1, { message: "Nome completo é obrigatório" }),
-  responsavelSetor: z.string().min(1, { message: "Setor é obrigatório" }),
-  responsavelCargo: z.string().min(1, { message: "Cargo é obrigatório" }),
+    responsavelFuncao: z.string().min(1, { message: "Função é obrigatória" }),
 });
 
-const RegisterFormEmpresa = () => {
+const RegisterFormIct = () => {
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
-      razaoSocial: "",
-      cnpj: "",
+      nomeOficial: "",
       email: "",
       telefone: "",
-      empresaDescricao: "",
       responsavelNomeCompleto: "",
-      responsavelSetor: "",
-      responsavelCargo: "",
+      responsavelFuncao: "",
     },
   });
 
@@ -73,8 +53,8 @@ const RegisterFormEmpresa = () => {
   const handleSubmit = (data) => {
     console.log(data);
     toast({
-      title: <Check /> + "Dados enviados com sucesso",
-      description: "There was a problem with your request.",
+      title: "Dados enviados com sucesso",
+      description: "Fique de olho no seu e-mail :)",
     });
     //redirect("/");
   };
@@ -87,38 +67,22 @@ const RegisterFormEmpresa = () => {
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center col-span-2">
-            <span class="pr-2 text-xs font-bold">Dados da empresa</span>
+            <span class="pr-2 text-xs font-bold">Dados da Instituição</span>
             <hr class="flex-grow" />
           </div>
           <FormField
             control={form.control}
-            name="razaoSocial"
+            name="nomeOficial"
             render={({ field }) => {
               return (
-                <div className="col-span-2 md:col-span-1">
+                <div className="col-span-2">
                   <FormItem>
                     <FormControl>
                       <FloatingLabelInput
                         {...field}
-                        id="razaoSocial"
-                        label="Razão social"
+                        id="nomeOficial"
+                        label="Nome oficial"
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </div>
-              );
-            }}
-          ></FormField>
-          <FormField
-            control={form.control}
-            name="cnpj"
-            render={({ field }) => {
-              return (
-                <div className="col-span-2 md:col-span-1">
-                  <FormItem>
-                    <FormControl>
-                      <FloatingLabelInput {...field} id="cnpj" label="CNPJ" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -162,26 +126,6 @@ const RegisterFormEmpresa = () => {
               );
             }}
           ></FormField>
-          <FormField
-            control={form.control}
-            name="empresaDescricao"
-            render={({ field }) => {
-              return (
-                <div className="col-span-2">
-                  <FormItem>
-                    <FormControl>
-                      <FloatingLabelInput
-                        {...field}
-                        id="empresaDescricao"
-                        label="Breve descrição sobre a empresa"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </div>
-              );
-            }}
-          ></FormField>
           <div className="flex items-center col-span-2">
             <span class="pr-2 text-xs font-bold">Dados do responsável</span>
             <hr class="flex-grow" />
@@ -208,36 +152,16 @@ const RegisterFormEmpresa = () => {
           ></FormField>
           <FormField
             control={form.control}
-            name="responsavelSetor"
+            name="responsavelFuncao"
             render={({ field }) => {
               return (
-                <div className="col-span-2 md:col-span-1">
+                <div className="col-span-2">
                   <FormItem>
                     <FormControl>
                       <FloatingLabelInput
                         {...field}
-                        id="responsavelSetor"
-                        label="Setor"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                </div>
-              );
-            }}
-          ></FormField>
-          <FormField
-            control={form.control}
-            name="responsavelCargo"
-            render={({ field }) => {
-              return (
-                <div className="col-span-2 md:col-span-1">
-                  <FormItem>
-                    <FormControl>
-                      <FloatingLabelInput
-                        {...field}
-                        id="responsavelCargo"
-                        label="Cargo"
+                        id="responsavelFuncao"
+                        label="Função"
                       />
                     </FormControl>
                     <FormMessage />
@@ -258,4 +182,4 @@ const RegisterFormEmpresa = () => {
   );
 };
 
-export default RegisterFormEmpresa;
+export default RegisterFormIct;

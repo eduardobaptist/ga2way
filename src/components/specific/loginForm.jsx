@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,7 +15,9 @@ import { Button } from "../ui/button";
 
 import { Mail } from "lucide-react";
 import { Lock } from "lucide-react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; 
+
+import { AuthContext } from "@/contexts/authContext";
 
 const formShema = z.object({
   email: z
@@ -33,9 +36,13 @@ const LoginForm = () => {
     },
   });
 
+  const { login } = useContext(AuthContext); 
+  const navigate = useNavigate(); 
+
   const handleSubmit = (data) => {
     console.log(data);
-    //redirect("/");
+    login(data);
+    navigate("/demandas"); 
   };
 
   return (
@@ -63,7 +70,7 @@ const LoginForm = () => {
               </FormItem>
             );
           }}
-        ></FormField>
+        />
         <FormField
           control={form.control}
           name="senha"
@@ -81,7 +88,7 @@ const LoginForm = () => {
                 </FormControl>
                 <a
                   href="/"
-                  className="text-xs text-muted-foreground text-medium "
+                  className="text-xs text-muted-foreground text-medium"
                 >
                   Esqueceu a senha?
                 </a>
@@ -89,7 +96,7 @@ const LoginForm = () => {
               </FormItem>
             );
           }}
-        ></FormField>
+        />
         <Button
           type="submit"
           className="bg-[var(--azul-agregar)] hover:bg-[var(--azul-agregar-hover)]"
