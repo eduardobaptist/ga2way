@@ -6,8 +6,10 @@ import Home from "./pages/home";
 
 import "./index.css";
 import PrivateRoute from "./components/privateRoute";
+import Sidebar from "./components/sidebar";
 import Demandas from "./pages/demandas";
 import { AuthProvider } from "./contexts/authContext";
+
 
 const router = createBrowserRouter([
   {
@@ -15,12 +17,18 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/demandas",
-    element: (
-      // <PrivateRoute>
-      <Demandas />
-      // </PrivateRoute>
-    ),
+    path: "/private",
+    element: <Sidebar />,
+    children: [
+      {
+        path: "demandas",
+        element: <Demandas />,
+      },
+      // {
+      //   path: "usuarios",
+      //   element: <Usuarios />,
+      // },
+    ],
   },
 ]);
 

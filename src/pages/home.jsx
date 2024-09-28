@@ -90,8 +90,9 @@ const Home = () => {
             <Dialog
               open={isRegisterDialogOpen}
               onOpenChange={setRegisterDialog}
+              
             >
-              <DialogContent className="sm:max-w-md md:max-w-xl">
+              <DialogContent className=" overflow-y-auto max-h-screen sm:max-w-md md:max-w-xl">
                 <DialogHeader>
                   <DialogTitle>Primeiros passos</DialogTitle>
                   <DialogDescription>

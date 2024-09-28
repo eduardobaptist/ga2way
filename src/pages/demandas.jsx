@@ -1,148 +1,145 @@
-import { NavLink } from "react-router-dom";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-  ClipboardList,
-  LogOut,
-} from "lucide-react";
-import gatewayLogo from "../assets/img/gateway_logo_branco.png";
+import bruningLogo from "../assets/img/bruning-logo-redondo.png";
+import MainWrapper from "@/components/mainWrapper";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { DollarSign, Clock } from "lucide-react";
 
-export default function Demandas() {
+const Demandas = () => {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
-          <div className="flex h-14 items-center border-b lg:h-[60px] bg-[var(--azul-agregar)] justify-center">
-            <NavLink to="/" className="flex items-center gap-2 font-semibold">
-              <img src={gatewayLogo} alt="" />
-            </NavLink>
-          </div>
-          <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <NavLink
-                to="/demandas"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
-              >
-                <Home className="h-4 w-4" />
-                Demandas
-              </NavLink>
-              <NavLink
-                to="/usuarios"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
-              >
-                <Users className="h-4 w-4" />
-                Usuários
-              </NavLink>
-              <NavLink
-                to="gerenciamento"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
-              >
-                <ClipboardList className="h-4 w-4" />
-                Gerenciamento
-              </NavLink>
-            </nav>
-          </div>
-          <div className="mt-auto p-4">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                  isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                }`
-              }
-            >
-              <LogOut className="h-4 w-4" />
-              Sair
-            </NavLink>
-          </div>
-        </div>
+    <MainWrapper title="Demandas">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 p-5">
+        <Card className="w-full h-max col-span-1">
+          <CardHeader className="gap-2">
+            <div className="flex items-center">
+              <img src={bruningLogo} alt="" className="h-12 w-auto" />
+              <div className="flex flex-col gap-1 ml-2">
+                <CardTitle>Modelagem UML</CardTitle>
+                <p className="text-sm font-semibold">Bruning Tecnometal</p>
+              </div>
+            </div>
+            <div className="w-max flex gap-2">
+              <Badge variant="secondary">Projeto</Badge>
+              <Badge variant="secondary">Aberto</Badge>
+            </div>
+            <CardDescription>
+              Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+              dolorem non voluptatem officia rem sunt quod.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="border-t p-2 flex items-center">
+            <div className="flex justify-between items-center w-full">
+              <div className="flex">
+                <Clock size={20} className="mr-2" />
+                <span className="text-sm tracking-tight">
+                  Criado há dois dias
+                </span>
+              </div>
+              <DollarSign size={20} className="text-red-600" />
+            </div>
+          </CardFooter>
+        </Card>
+        <Card className="w-full h-max col-span-1">
+          <CardHeader className="gap-2">
+            <div className="flex items-center">
+              <img src={bruningLogo} alt="" className="h-12 w-auto" />
+              <div className="flex flex-col gap-1 ml-2">
+                <CardTitle>Teste de Segurança</CardTitle>
+                <p className="text-sm font-semibold">Bruning Tecnometal</p>
+              </div>
+            </div>
+            <div className="w-max flex gap-2">
+              <Badge variant="secondary">Desafio</Badge>
+              <Badge variant="secondary">Aberto</Badge>
+            </div>
+            <CardDescription>
+              Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+              dolorem non voluptatem officia rem sunt quod.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="border-t p-2 flex items-center">
+            <div className="flex justify-between items-center w-full">
+              <div className="flex">
+                <Clock size={20} className="mr-2" />
+                <span className="text-sm tracking-tight">
+                  Criado há uma semana
+                </span>
+              </div>
+              <DollarSign size={20} className="text-green-600" />
+            </div>
+          </CardFooter>
+        </Card>
+        <Card className="w-full h-max col-span-1">
+          <CardHeader className="gap-2">
+            <div className="flex items-center">
+              <img src={bruningLogo} alt="" className="h-12 w-auto" />
+              <div className="flex flex-col gap-1 ml-2">
+                <CardTitle>Teste de Segurança</CardTitle>
+                <p className="text-sm font-semibold">Bruning Tecnometal</p>
+              </div>
+            </div>
+            <div className="w-max flex gap-2">
+              <Badge variant="secondary">Desafio</Badge>
+              <Badge variant="secondary">Aberto</Badge>
+            </div>
+            <CardDescription>
+              Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+              dolorem non voluptatem officia rem sunt quod.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="border-t p-2 flex items-center">
+            <div className="flex justify-between items-center w-full">
+              <div className="flex">
+                <Clock size={20} className="mr-2" />
+                <span className="text-sm tracking-tight">
+                  Criado há uma semana
+                </span>
+              </div>
+              <DollarSign size={20} className="text-green-600" />
+            </div>
+          </CardFooter>
+        </Card>
+        <Card className="w-full h-max col-span-1">
+          <CardHeader className="gap-2">
+            <div className="flex items-center">
+              <img src={bruningLogo} alt="" className="h-12 w-auto" />
+              <div className="flex flex-col gap-1 ml-2">
+                <CardTitle>Teste de Segurança</CardTitle>
+                <p className="text-sm font-semibold">Bruning Tecnometal</p>
+              </div>
+            </div>
+            <div className="w-max flex gap-2">
+              <Badge variant="secondary">Desafio</Badge>
+              <Badge variant="secondary">Aberto</Badge>
+            </div>
+            <CardDescription>
+              Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+              dolorem non voluptatem officia rem sunt quod.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="border-t p-2 flex items-center">
+            <div className="flex justify-between items-center w-full">
+              <div className="flex">
+                <Clock size={20} className="mr-2" />
+                <span className="text-sm tracking-tight">
+                  Criado há uma semana
+                </span>
+              </div>
+              <DollarSign size={20} className="text-green-600" />
+            </div>
+          </CardFooter>
+        </Card>
       </div>
-      <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] lg:px-6">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="shrink-0 md:hidden"
-              >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium">
-                <NavLink
-                  to="#"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <Package2 className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
-                </NavLink>
-                <NavLink
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Home className="h-5 w-5" />
-                  Dashboard
-                </NavLink>
-                <NavLink
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
-                  <ShoppingCart className="h-5 w-5" />
-                  Orders
-                </NavLink>
-                <NavLink
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Products
-                </NavLink>
-                <NavLink
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Users className="h-5 w-5" />
-                  Customers
-                </NavLink>
-                <NavLink
-                  to="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <LineChart className="h-5 w-5" />
-                  Analytics
-                </NavLink>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </header>
-      </div>
-    </div>
+    </MainWrapper>
   );
-}
+};
+
+export default Demandas;
