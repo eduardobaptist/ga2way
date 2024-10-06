@@ -7,9 +7,9 @@ import Home from "./pages/home";
 import "./index.css";
 import PrivateRoute from "./components/privateRoute";
 import Sidebar from "./components/sidebar";
-import Demandas from "./pages/demandas";
+import Projetos from "./pages/demandas/projetos";
 import { AuthProvider } from "./contexts/authContext";
-
+import ProjetosNew from "./pages/demandas/projetosNew";
 
 const router = createBrowserRouter([
   {
@@ -21,8 +21,12 @@ const router = createBrowserRouter([
     element: <Sidebar />,
     children: [
       {
-        path: "demandas",
-        element: <Demandas />,
+        path: "projetos",
+        element: <Projetos />,
+      },
+      {
+        path: "projetos/novo",
+        element: <ProjetosNew />,
       },
       // {
       //   path: "usuarios",

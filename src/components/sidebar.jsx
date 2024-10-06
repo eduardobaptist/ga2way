@@ -1,22 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-  ClipboardList,
-  LogOut,
-} from "lucide-react";
+import { Home, Menu, Users, ClipboardList, LogOut } from "lucide-react";
 import gatewayLogo from "../assets/img/gateway_logo_branco.png";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 
@@ -33,7 +19,7 @@ const Sidebar = () => {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <NavLink
-                to="/private/demandas"
+                to="/private/projetos"
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
                     isActive ? "bg-muted text-primary" : "text-muted-foreground"
@@ -41,7 +27,7 @@ const Sidebar = () => {
                 }
               >
                 <Home className="h-4 w-4" />
-                Demandas
+                Projetos
               </NavLink>
               <NavLink
                 to="/private/usuarios"
@@ -64,7 +50,9 @@ const Sidebar = () => {
               >
                 <ClipboardList className="h-4 w-4" />
                 Gerenciamento
-                <Badge className="text-xs" variant="outline">Em breve</Badge>
+                <Badge className="text-xs" variant="outline">
+                  Em breve
+                </Badge>
               </NavLink>
             </nav>
           </div>
@@ -160,6 +148,6 @@ const Sidebar = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Sidebar;
