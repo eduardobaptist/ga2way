@@ -7,9 +7,9 @@ import Home from "./pages/home";
 import "./index.css";
 import PrivateRoute from "./components/privateRoute";
 import Sidebar from "./components/sidebar";
-import Projetos from "./pages/demandas/projetos";
+import Projetos from "./pages/projetos/projetos";
 import { AuthProvider } from "./contexts/authContext";
-import ProjetosNew from "./pages/demandas/projetosNew";
+import ProjetosNew from "./pages/projetos/projetosNew";
 
 const router = createBrowserRouter([
   {

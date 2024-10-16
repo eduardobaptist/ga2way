@@ -1,10 +1,11 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { Home, Menu, Users, ClipboardList, LogOut } from "lucide-react";
+import { Home, Menu, Users, LogOut, Route, Rocket } from "lucide-react";
 import gatewayLogo from "../assets/img/gateway_logo_branco.png";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import CollapsibleNavLink from "./collapsibleNavLink";
 
 const Sidebar = () => {
   return (
@@ -40,20 +41,31 @@ const Sidebar = () => {
                 <Users className="h-4 w-4" />
                 Usuários
               </NavLink>
-              <NavLink
-                to="/private/gerenciamento"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
+              <CollapsibleNavLink
+                label="Rotas"
+                to="/private/rotas"
+                icon={<Route className="w-4 h-4" />}
               >
-                <ClipboardList className="h-4 w-4" />
-                Gerenciamento
-                <Badge className="text-xs" variant="outline">
-                  Em breve
-                </Badge>
-              </NavLink>
+                <CollapsibleNavLink
+                  label="Programas"
+                  to="/private/programas"
+                  icon={<Rocket className="w-4 h-4" />}
+                >
+                  <NavLink
+                    to="/private/projetos"
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                        isActive
+                          ? "bg-muted text-primary"
+                          : "text-muted-foreground"
+                      }`
+                    }
+                  >
+                    <Home className="h-4 w-4" />
+                    Projetos
+                  </NavLink>
+                </CollapsibleNavLink>
+              </CollapsibleNavLink>
             </nav>
           </div>
           <div className="mt-auto p-4">
@@ -82,7 +94,7 @@ const Sidebar = () => {
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium mt-6">
                 <NavLink
-                  to="/private/demandas"
+                  to="/private/projetos"
                   className={({ isActive }) =>
                     `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
                       isActive
@@ -92,7 +104,7 @@ const Sidebar = () => {
                   }
                 >
                   <Home className="h-4 w-4" />
-                  Demandas
+                  Projetos
                 </NavLink>
                 <NavLink
                   to="/private/usuarios"
@@ -106,19 +118,6 @@ const Sidebar = () => {
                 >
                   <Users className="h-4 w-4" />
                   Usuários
-                </NavLink>
-                <NavLink
-                  to="/private/gerenciamento"
-                  className={({ isActive }) =>
-                    `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
-                      isActive
-                        ? "bg-muted text-primary"
-                        : "text-muted-foreground"
-                    }`
-                  }
-                >
-                  <ClipboardList className="h-4 w-4" />
-                  Gerenciamento
                 </NavLink>
               </nav>
               <div className="mt-auto">

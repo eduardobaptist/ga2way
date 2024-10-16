@@ -1,11 +1,10 @@
 import bruningLogo from "../../assets/img/bruning-logo-redondo.png";
 import MainWrapper from "@/components/mainWrapper";
 import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -106,13 +105,13 @@ const Projetos = () => {
             </TabsList>
           </Tabs>
           <Link to="novo">
-          <Button
-            className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
-            variant="outline"
-          >
-            <PlusCircle className="mr-2" size="20" />
-            Novo
-          </Button>
+            <Button
+              className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
+              variant="outline"
+            >
+              <PlusCircle className="mr-2" size="20" />
+              Novo
+            </Button>
           </Link>
         </div>
       </div>
@@ -246,24 +245,40 @@ const Projetos = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[100px]">Invoice</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Descrição</TableHead>
+                  <TableHead className="w-[200px]">Status</TableHead>
+                  <TableHead className="text-right">
+                    Impulso Acadêmico
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
+                  <TableCell>Teste de Segurança</TableCell>
+                  <TableCell>
+                    Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+                    dolorem non voluptatem officia rem sunt quod.
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="bg-green-300">
+                      Aberto
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">Sim</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
+                  <TableCell>Modelagem UML</TableCell>
+                  <TableCell>
+                    Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
+                    dolorem non voluptatem officia rem sunt quod.
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="bg-red-300">
+                      Finalizado
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">Não</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
