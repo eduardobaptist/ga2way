@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Home from "./pages/home";
-
 import "./index.css";
 import PrivateRoute from "./components/privateRoute";
 import Sidebar from "./components/sidebar";
@@ -17,21 +16,29 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/private",
+    path: "/",
     element: <Sidebar />,
     children: [
       {
-        path: "projetos",
+        path: "rotas",
+        element: <></>,
+      },
+      {
+        path: "rotas/programas",
+        element: <></>,
+      },
+      {
+        path: "rotas/programas/projetos",
         element: <Projetos />,
       },
       {
-        path: "projetos/novo",
+        path: "rotas/programas/projetos/novo",
         element: <ProjetosNew />,
       },
-      // {
-      //   path: "usuarios",
-      //   element: <Usuarios />,
-      // },
+      {
+        path: "usuarios",
+        element: <Projetos />,
+      },
     ],
   },
 ]);

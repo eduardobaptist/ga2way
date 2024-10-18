@@ -8,6 +8,49 @@ import { Badge } from "@/components/ui/badge";
 import CollapsibleNavLink from "./collapsibleNavLink";
 
 const Sidebar = () => {
+  const renderNavLinks = (isMobile = false) => (
+    <nav className={`grid items-start ${isMobile ? 'gap-2 text-lg font-medium mt-6' : 'px-2 text-sm font-medium lg:px-4'}`}>
+      <CollapsibleNavLink
+        label="Rotas"
+        to="/rotas"
+        childrenRoutes="/rotas/*"
+        icon={<Route className="w-4 h-4" />}
+        isMobile={isMobile}
+      >
+        <CollapsibleNavLink
+          label="Programas"
+          to="/rotas/programas"
+          childrenRoutes="/rotas/programas/*"
+          icon={<Rocket className="w-4 h-4" />}
+          isMobile={isMobile}
+        >
+          <NavLink
+            to="/rotas/programas/projetos"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+                isActive ? "bg-muted text-primary" : "text-muted-foreground"
+              } ${isMobile ? 'mx-[-0.65rem]' : ''}`
+            }
+          >
+            <Home className="h-4 w-4" />
+            Projetos
+          </NavLink>
+        </CollapsibleNavLink>
+      </CollapsibleNavLink>
+      <NavLink
+        to="/usuarios"
+        className={({ isActive }) =>
+          `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
+            isActive ? "bg-muted text-primary" : "text-muted-foreground"
+          } ${isMobile ? 'mx-[-0.65rem]' : ''}`
+        }
+      >
+        <Users className="h-4 w-4" />
+        Usuários
+      </NavLink>
+    </nav>
+  );
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -18,55 +61,7 @@ const Sidebar = () => {
             </NavLink>
           </div>
           <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <NavLink
-                to="/private/projetos"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
-              >
-                <Home className="h-4 w-4" />
-                Projetos
-              </NavLink>
-              <NavLink
-                to="/private/usuarios"
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                    isActive ? "bg-muted text-primary" : "text-muted-foreground"
-                  }`
-                }
-              >
-                <Users className="h-4 w-4" />
-                Usuários
-              </NavLink>
-              <CollapsibleNavLink
-                label="Rotas"
-                to="/private/rotas"
-                icon={<Route className="w-4 h-4" />}
-              >
-                <CollapsibleNavLink
-                  label="Programas"
-                  to="/private/programas"
-                  icon={<Rocket className="w-4 h-4" />}
-                >
-                  <NavLink
-                    to="/private/projetos"
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
-                        isActive
-                          ? "bg-muted text-primary"
-                          : "text-muted-foreground"
-                      }`
-                    }
-                  >
-                    <Home className="h-4 w-4" />
-                    Projetos
-                  </NavLink>
-                </CollapsibleNavLink>
-              </CollapsibleNavLink>
-            </nav>
+            {renderNavLinks()}
           </div>
           <div className="mt-auto p-4">
             <NavLink
@@ -84,7 +79,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div className="flex flex-col overflow-hidden">
-        <header className="flex h-14 items-center  gap-4 border-b px-4 lg:h-[60px] bg-[var(--azul-agregar)] lg:px-6 md:hidden">
+        <header className="flex h-14 items-center gap-4 border-b px-4 lg:h-[60px] bg-[var(--azul-agregar)] lg:px-6 md:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon" className="shrink-0">
@@ -92,34 +87,7 @@ const Sidebar = () => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium mt-6">
-                <NavLink
-                  to="/private/projetos"
-                  className={({ isActive }) =>
-                    `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
-                      isActive
-                        ? "bg-muted text-primary"
-                        : "text-muted-foreground"
-                    }`
-                  }
-                >
-                  <Home className="h-4 w-4" />
-                  Projetos
-                </NavLink>
-                <NavLink
-                  to="/private/usuarios"
-                  className={({ isActive }) =>
-                    `mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground ${
-                      isActive
-                        ? "bg-muted text-primary"
-                        : "text-muted-foreground"
-                    }`
-                  }
-                >
-                  <Users className="h-4 w-4" />
-                  Usuários
-                </NavLink>
-              </nav>
+              {renderNavLinks(true)}
               <div className="mt-auto">
                 <NavLink
                   to="/"

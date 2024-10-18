@@ -104,7 +104,7 @@ const Projetos = () => {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          <Link to="novo">
+          <Link to="/rotas/programas/projetos/novo">
             <Button
               className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
               variant="outline"

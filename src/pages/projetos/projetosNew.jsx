@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import MainWrapper from "@/components/mainWrapper";
 import ProjectCanvas from "@/components/specific/projectCanvas";
+import ProjectForm from "@/components/specific/projectForm";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -40,14 +41,14 @@ const ProjetosNew = () => {
                   Tem certeza que deseja fechar?
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Os dados inseridos ou atualizados serão perdidos.
+                  Os dados inseridos serão perdidos.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction>
-                  <Link to="/private/projetos">Continuar</Link>
-                </AlertDialogAction>
+                <Link to="/rotas/programas/projetos">
+                  <AlertDialogAction>Continuar</AlertDialogAction>
+                </Link>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
@@ -74,7 +75,9 @@ const ProjetosNew = () => {
           Salvar
         </Button>
       </div>
-      {layout === "infosGerais" ? "a" : <ProjectCanvas />}
+      <div className="mt-5">
+        {layout === "infosGerais" ? <ProjectForm /> : <ProjectCanvas />}
+      </div>
     </MainWrapper>
   );
 };

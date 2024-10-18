@@ -65,7 +65,7 @@ const ProjectCanvas = () => {
 
   return (
     <div
-      className="grid-stack bg-muted/40 border-2 rounded-lg mt-5 gap-2"
+      className="grid-stack bg-muted/40 border-2 rounded-lg gap-2"
       ref={gridRef}
     ></div>
   );
