@@ -5,7 +5,6 @@ import LogoCarousel from "@/components/logoCarousel";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Toaster } from "@/components/ui/toaster";
 import {
   Dialog,
   DialogClose,
@@ -42,9 +41,12 @@ const Home = () => {
     setRegisterDialog(true);
   };
 
+  const closeRegisterDialog = () => {
+    setRegisterDialog(false);
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Toaster />
       <header className="flex items-center justify-center bg-[var(--azul-agregar)] shadow-lg">
         <nav className="mx-auto px-4 sm:px-6 md:px-8 max-w-[1200px] w-full flex flex-wrap items-center justify-between py-1">
           <Link to="/">
@@ -90,7 +92,6 @@ const Home = () => {
             <Dialog
               open={isRegisterDialogOpen}
               onOpenChange={setRegisterDialog}
-              
             >
               <DialogContent className=" overflow-y-auto max-h-screen sm:max-w-md md:max-w-xl">
                 <DialogHeader>
@@ -106,11 +107,11 @@ const Home = () => {
                   </TabsList>
                   <TabsContent value="empresa">
                     {/* Form do registro de empresa */}
-                    <RegisterFormEmpresa />
+                    <RegisterFormEmpresa closeDialog={closeRegisterDialog} />
                   </TabsContent>
                   <TabsContent value="ict">
                     {/* Form do registro de ICT */}
-                    <RegisterFormIct />
+                    <RegisterFormIct closeDialog={closeRegisterDialog}/>
                   </TabsContent>
                 </Tabs>
                 <div className="flex items-center justify-center">

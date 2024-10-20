@@ -53,7 +53,7 @@ const formShema = z.object({
   responsavelCargo: z.string().min(1, { message: "Cargo é obrigatório" }),
 });
 
-const RegisterFormEmpresa = () => {
+const RegisterFormEmpresa = ({ closeDialog }) => {
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -73,10 +73,11 @@ const RegisterFormEmpresa = () => {
   const handleSubmit = (data) => {
     console.log(data);
     toast({
-      title: <Check /> + "Dados enviados com sucesso",
-      description: "There was a problem with your request.",
+      variant: "success",
+      title: "Dados enviados com sucesso!",
+      description: "Após aprovação, você receberá acesso por e-mail.",
     });
-    //redirect("/");
+    closeDialog();
   };
 
   return (

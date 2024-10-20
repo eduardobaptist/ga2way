@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +14,7 @@ import { Button } from "../ui/button";
 
 import { Mail } from "lucide-react";
 import { Lock } from "lucide-react";
-import { useNavigate } from "react-router-dom"; 
-
-import { AuthContext } from "@/contexts/authContext";
+import { useNavigate } from "react-router-dom";
 
 const formShema = z.object({
   email: z
@@ -36,13 +33,11 @@ const LoginForm = () => {
     },
   });
 
-  const { login } = useContext(AuthContext); 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleSubmit = (data) => {
     console.log(data);
-    login(data);
-    navigate("/demandas"); 
+    navigate("/rotas/programas/projetos");
   };
 
   return (

@@ -33,10 +33,10 @@ const formShema = z.object({
   responsavelNomeCompleto: z
     .string()
     .min(1, { message: "Nome completo é obrigatório" }),
-    responsavelFuncao: z.string().min(1, { message: "Função é obrigatória" }),
+  responsavelFuncao: z.string().min(1, { message: "Função é obrigatória" }),
 });
 
-const RegisterFormIct = () => {
+const RegisterFormIct = ({ closeDialog }) => {
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -53,10 +53,11 @@ const RegisterFormIct = () => {
   const handleSubmit = (data) => {
     console.log(data);
     toast({
-      title: "Dados enviados com sucesso",
-      description: "Fique de olho no seu e-mail :)",
+      variant: "success",
+      title: "Dados enviados com sucesso!",
+      description: "Após aprovação, você receberá acesso por e-mail.",
     });
-    //redirect("/");
+    closeDialog();
   };
 
   return (

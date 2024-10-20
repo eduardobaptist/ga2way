@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { NavLink, useLocation, useMatch } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CollapsibleNavLink = ({ label, to, icon, children, childrenRoutes }) => {
   const location = useLocation();
   const match = useMatch(childrenRoutes);
   const [isExpanded, setIsExpanded] = useState(match);
   const isActive = location.pathname === to;
+  const isMobile = useIsMobile();
 
   return (
     <div>
       <div
         className={`flex items-center justify-between rounded-lg transition-all ${
           isActive ? "bg-muted text-primary" : "text-muted-foreground"
-        }`}
+        } ${isMobile ? "mx-[-0.65rem]" : ""} `}
       >
         <NavLink
-          className="flex items-center gap-3 py-2 flex-grow hover:text-primary"
+          className="flex items-center gap-3 px-3 py-2 flex-grow hover:text-primary"
           to={to}
         >
           {icon} {label}

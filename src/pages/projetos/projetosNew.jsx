@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import MainWrapper from "@/components/mainWrapper";
 import ProjectCanvas from "@/components/specific/projectCanvas";
@@ -20,6 +20,8 @@ import { ArrowLeftCircle, CheckCircleIcon } from "lucide-react";
 
 const ProjetosNew = () => {
   const [layout, setLayout] = useState("infosGerais");
+  const projectFormRef = useRef(null);
+  const projectCanvasRef = useRef(null);
 
   return (
     <MainWrapper title="Novo projeto">
@@ -47,7 +49,7 @@ const ProjetosNew = () => {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancelar</AlertDialogCancel>
                 <Link to="/rotas/programas/projetos">
-                  <AlertDialogAction>Continuar</AlertDialogAction>
+                  <AlertDialogAction className="w-full md:w-fit">Continuar</AlertDialogAction>
                 </Link>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -58,10 +60,7 @@ const ProjetosNew = () => {
             className="w-max h-max"
             onValueChange={setLayout}
           >
-            <TabsList
-              className="grid w-full grid-cols-2"
-              onValueChange={setLayout}
-            >
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="infosGerais">Informações gerais</TabsTrigger>
               <TabsTrigger value="projectCanvas">Project canvas</TabsTrigger>
             </TabsList>
@@ -76,7 +75,12 @@ const ProjetosNew = () => {
         </Button>
       </div>
       <div className="mt-5">
-        {layout === "infosGerais" ? <ProjectForm /> : <ProjectCanvas />}
+        <div style={{ display: layout === "infosGerais" ? "block" : "none" }}>
+          <ProjectForm ref={projectFormRef} />
+        </div>
+        <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
+          <ProjectCanvas ref={projectCanvasRef} />
+        </div>
       </div>
     </MainWrapper>
   );
