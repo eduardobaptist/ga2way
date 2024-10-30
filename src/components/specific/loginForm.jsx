@@ -11,10 +11,12 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
-import { Mail } from "lucide-react";
-import { Lock } from "lucide-react";
+import { useState } from "react";
+import { Mail, Lock, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import api from "@/config/axios.config";
+import { toast } from "@/hooks/use-toast";
+import { useAuth } from "@/components/authContext";
 
 const formShema = z.object({
   email: z
@@ -25,6 +27,8 @@ const formShema = z.object({
 });
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -34,10 +38,31 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
+  const { authData, login } = useAuth();
 
-  const handleSubmit = (data) => {
-    console.log(data);
-    navigate("/rotas/programas/projetos");
+  const handleSubmit = async (data) => {
+    setIsLoading(true);
+
+    try {
+      const response = await api.post("/login", data);
+
+      const authData = {
+        usuario: response.data.usuario,
+        token: response.data.token,
+      };
+
+      login(authData);
+
+      navigate("/rotas/programas/projetos");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao fazer login",
+        description: error.response?.data?.message || error.message,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -95,8 +120,16 @@ const LoginForm = () => {
         <Button
           type="submit"
           className="bg-[var(--azul-agregar)] hover:bg-[var(--azul-agregar-hover)]"
+          disabled={isLoading}
         >
-          Confirmar
+          {isLoading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Carregando...
+            </>
+          ) : (
+            "Confirmar"
+          )}
         </Button>
       </form>
     </Form>

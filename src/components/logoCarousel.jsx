@@ -23,7 +23,7 @@ const Carousel = () => {
 
   return (
     <div className="overflow-hidden whitespace-nowrap">
-      <style jsx>{`
+      <style>{`
         @keyframes slide {
           from {
             transform: translateX(0);

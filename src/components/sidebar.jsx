@@ -1,15 +1,23 @@
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuth } from "./authContext";
 import { Home, Menu, Users, LogOut, Route, Rocket } from "lucide-react";
 import gatewayLogo from "../assets/img/gateway_logo_branco.png";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Badge } from "@/components/ui/badge";
 import CollapsibleNavLink from "./collapsibleNavLink";
 
 const Sidebar = () => {
+  const { logout } = useAuth();
+
   const renderNavLinks = (isMobile = false) => (
-    <nav className={`grid items-start ${isMobile ? 'gap-2 text-lg font-medium mt-6' : 'px-2 text-sm font-medium lg:px-4'}`}>
+    <nav
+      className={`grid items-start ${
+        isMobile
+          ? "gap-2 text-lg font-medium mt-6"
+          : "px-2 text-sm font-medium lg:px-4"
+      }`}
+    >
       <CollapsibleNavLink
         label="Rotas"
         to="/rotas"
@@ -29,7 +37,7 @@ const Sidebar = () => {
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
                 isActive ? "bg-muted text-primary" : "text-muted-foreground"
-              } ${isMobile ? 'mx-[-0.65rem]' : ''}`
+              } ${isMobile ? "mx-[-0.65rem]" : ""}`
             }
           >
             <Home className="h-4 w-4" />
@@ -42,7 +50,7 @@ const Sidebar = () => {
         className={({ isActive }) =>
           `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
             isActive ? "bg-muted text-primary" : "text-muted-foreground"
-          } ${isMobile ? 'mx-[-0.65rem]' : ''}`
+          } ${isMobile ? "mx-[-0.65rem]" : ""}`
         }
       >
         <Users className="h-4 w-4" />
@@ -60,11 +68,10 @@ const Sidebar = () => {
               <img src={gatewayLogo} alt="" />
             </NavLink>
           </div>
-          <div className="flex-1">
-            {renderNavLinks()}
-          </div>
+          <div className="flex-1">{renderNavLinks()}</div>
           <div className="mt-auto p-4">
             <NavLink
+              onClick={logout}
               to="/"
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${
@@ -90,6 +97,7 @@ const Sidebar = () => {
               {renderNavLinks(true)}
               <div className="mt-auto">
                 <NavLink
+                  onClick={logout}
                   to="/"
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary ${

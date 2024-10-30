@@ -1,6 +1,6 @@
 import bruningLogo from "../../assets/img/bruning-logo-redondo.png";
 import MainWrapper from "@/components/mainWrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,8 +37,28 @@ import {
   Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
+import api from "@/config/axios.config";
 
 const Projetos = () => {
+  const fetchProjetos = async () => {
+    try {
+      const response = await api.get("/projetos");
+      console.log(response.data);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro ao carregar projetos",
+        description:
+          error.response?.data?.message ||
+          "Não foi possível carregar os projetos.",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchProjetos();
+  }, []);
   const [layout, setLayout] = useState("grid");
   const [filterType, setFilterType] = useState("nome");
   const filters = [
@@ -94,7 +114,6 @@ const Projetos = () => {
           >
             <TabsList
               className="grid w-full grid-cols-2"
-              onValueChange={setLayout}
             >
               <TabsTrigger value="grid">
                 <Grid size="20" />
@@ -119,7 +138,7 @@ const Projetos = () => {
       <div className="mt-5">
         {layout === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            <Card className="w-full h-max col-span-1">
+            <Card className="w-full h-max col-span-1 shadow-lg">
               <CardHeader className="gap-2">
                 <div className="flex items-center">
                   <img src={bruningLogo} alt="" className="h-12 w-auto" />
@@ -149,7 +168,7 @@ const Projetos = () => {
                 </div>
               </CardFooter>
             </Card>
-            <Card className="w-full h-max col-span-1">
+            <Card className="w-full h-max col-span-1 shadow-lg">
               <CardHeader className="gap-2">
                 <div className="flex items-center">
                   <img src={bruningLogo} alt="" className="h-12 w-auto" />
@@ -179,7 +198,7 @@ const Projetos = () => {
                 </div>
               </CardFooter>
             </Card>
-            <Card className="w-full h-max col-span-1">
+            <Card className="w-full h-max col-span-1 shadow-lg">
               <CardHeader className="gap-2">
                 <div className="flex items-center">
                   <img src={bruningLogo} alt="" className="h-12 w-auto" />
@@ -209,7 +228,7 @@ const Projetos = () => {
                 </div>
               </CardFooter>
             </Card>
-            <Card className="w-full h-max col-span-1">
+            <Card className="w-full h-max col-span-1 shadow-lg">
               <CardHeader className="gap-2">
                 <div className="flex items-center">
                   <img src={bruningLogo} alt="" className="h-12 w-auto" />
