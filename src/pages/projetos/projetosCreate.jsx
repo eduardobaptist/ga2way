@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, CheckCircleIcon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const ProjetosNew = () => {
+const ProjetosCreate = () => {
   const [layout, setLayout] = useState("infosGerais");
   const projectFormRef = useRef(null);
   const isMobile = useIsMobile();
@@ -152,4 +152,4 @@ const ProjetosNew = () => {
   );
 };
 
-export default ProjetosNew;
+export default ProjetosCreate;

@@ -1,19 +1,28 @@
-// main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { 
-  createBrowserRouter, 
-  RouterProvider, 
-  createRoutesFromElements, 
-  Route 
+import {
+  createBrowserRouter,
+  RouterProvider,
+  createRoutesFromElements,
+  Route,
 } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider, useAuth } from "@/components/authContext";
 import api, { setAuthContext } from "@/config/axios.config";
 
 import Home from "./pages/home";
+
+import Rotas from "./pages/rotas/rotas";
+import RotasCreate from "./pages/rotas/rotasCreate";
+import RotasView from "./pages/rotas/rotasView";
+import RotasEdit from "./pages/rotas/rotasEdit";
+
+import Programas from "./pages/programas/programas";
+import ProgramasCreate from "./pages/programas/programasCreate";
+
 import Projetos from "./pages/projetos/projetos";
-import ProjetosNew from "./pages/projetos/projetosNew";
+import ProjetosCreate from "./pages/projetos/projetosCreate";
+
 import PrivateRoute from "./components/privateRoute";
 import Sidebar from "./components/sidebar";
 import "./index.css";
@@ -26,11 +35,16 @@ const router = createBrowserRouter(
       <Route element={<PrivateRoute />}>
         <Route element={<Sidebar />}>
           <Route path="rotas">
+            <Route index element={<Rotas />} />
+            <Route path="novo" element={<RotasCreate />} />
+            <Route path=":id" element={<RotasView />} />
+            <Route path="editar/:id" element={<RotasEdit />} />
             <Route path="programas">
-              <Route index element={null} />
+              <Route index element={<Programas />} />
+              <Route path="novo" element={<ProgramasCreate />} />
               <Route path="projetos">
                 <Route index element={<Projetos />} />
-                <Route path="novo" element={<ProjetosNew />} />
+                <Route path="novo" element={<ProjetosCreate />} />
               </Route>
             </Route>
           </Route>
@@ -43,7 +57,7 @@ const router = createBrowserRouter(
 
 const App = () => {
   const authContext = useAuth();
-  
+
   React.useEffect(() => {
     setAuthContext(authContext);
   }, [authContext]);
