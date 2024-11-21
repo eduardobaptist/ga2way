@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,21 +11,72 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { MoreHorizontal, Trash2, Edit2, Eye } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Menu, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
+import api from "@/config/axios.config";
 
-const ProgramasActions = ({ onDelete, onEdit, onView }) => {
+const ProgramasActions = ({ programa, onRefresh }) => {
+  const navigate = useNavigate();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleView = () => {
+    navigate(`/rotas/programas/${programa.id}`);
+  };
+
+  const handleEdit = () => {
+    navigate(`/rotas/programas/editar/${programa.id}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/programas/${programa.id}`);
+      toast({
+        title: "Programa excluído com sucesso",
+        variant: "success",
+      });
+      onRefresh?.();
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Erro ao excluir programa";
+      toast({
+        title: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleteDialogOpen(false);
+      setIsDropdownOpen(false);
+    }
+  };
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <DropdownMenu>
+          <DropdownMenu
+            open={isDropdownOpen}
+            onOpenChange={(open) => {
+              setIsDropdownOpen(open);
+            }}
+          >
             <DropdownMenuTrigger className="focus:outline-none">
-              <MoreHorizontal className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+              <Menu className="h-6 w-6 text-gray-500 hover:text-gray-700" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-48">
               <DropdownMenuItem
-                onClick={onView}
+                onClick={handleView}
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <Eye className="h-4 w-4" />
@@ -33,7 +84,7 @@ const ProgramasActions = ({ onDelete, onEdit, onView }) => {
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={onEdit}
+                onClick={handleEdit}
                 className="flex items-center gap-2 cursor-pointer"
               >
                 <Edit2 className="h-4 w-4" />
@@ -41,7 +92,10 @@ const ProgramasActions = ({ onDelete, onEdit, onView }) => {
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={onDelete}
+                onClick={() => {
+                  setIsDeleteDialogOpen(true);
+                  setIsDropdownOpen(false);
+                }}
                 className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
               >
                 <Trash2 className="h-4 w-4" />
@@ -54,6 +108,30 @@ const ProgramasActions = ({ onDelete, onEdit, onView }) => {
           <p>Opções</p>
         </TooltipContent>
       </Tooltip>
+
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Esta ação não pode ser desfeita. Todos os dados relacionados a
+              este programa serão permanentemente excluídos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   );
 };

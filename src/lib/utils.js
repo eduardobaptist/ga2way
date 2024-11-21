@@ -5,6 +5,22 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
 
+export function formatDatetime(dateValue) {
+  const dateObj = new Date(dateValue);
+  
+  const date = dateObj.toLocaleString('pt-BR', {
+    dateStyle: 'short',
+    timeZone: 'America/Sao_Paulo'
+  });
+  
+  const time = dateObj.toLocaleString('pt-BR', {
+    timeStyle: 'short',
+    timeZone: 'America/Sao_Paulo'
+  });
+  
+  return `${date} às ${time}`;
+}
+
 export function validarCnpj(cnpj) {
   let length = cnpj.length - 2;
   let numbers = cnpj.substring(0, length);

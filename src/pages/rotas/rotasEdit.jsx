@@ -53,8 +53,8 @@ const RotasEdit = () => {
   useEffect(() => {
     const fetchRota = async () => {
       try {
-        const response = await api.get("/rotas");
-        const rota = response.data.find((rota) => rota.id === parseInt(id));
+        const response = await api.get(`/rotas/${id}`);
+        const rota = response.data;
 
         if (!rota) {
           toast({

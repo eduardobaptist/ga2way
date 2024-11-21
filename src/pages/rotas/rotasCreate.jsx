@@ -23,6 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+
 import api from "@/config/axios.config";
 import { useState } from "react";
 
@@ -66,7 +67,7 @@ const RotasCreate = () => {
       const errorMessage = error.response?.data?.error || "Erro ao criar rota. Tente novamente.";
       
       toast({
-        title: "Erro ao criar a tota",
+        title: "Erro ao criar a rota",
         description: errorMessage,
         variant: "destructive",
       });

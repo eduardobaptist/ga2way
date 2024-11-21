@@ -19,6 +19,8 @@ import RotasEdit from "./pages/rotas/rotasEdit";
 
 import Programas from "./pages/programas/programas";
 import ProgramasCreate from "./pages/programas/programasCreate";
+import ProgramasView from "./pages/programas/programasView";
+import ProgramasEdit from "./pages/programas/programasEdit";
 
 import Projetos from "./pages/projetos/projetos";
 import ProjetosCreate from "./pages/projetos/projetosCreate";
@@ -42,6 +44,8 @@ const router = createBrowserRouter(
             <Route path="programas">
               <Route index element={<Programas />} />
               <Route path="novo" element={<ProgramasCreate />} />
+              <Route path=":id" element={<ProgramasView />} />
+              <Route path="editar/:id" element={<ProgramasEdit />} />
               <Route path="projetos">
                 <Route index element={<Projetos />} />
                 <Route path="novo" element={<ProjetosCreate />} />

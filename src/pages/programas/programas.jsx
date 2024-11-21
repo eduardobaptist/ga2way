@@ -1,5 +1,5 @@
 import MainWrapper from "@/components/mainWrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -17,21 +17,73 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, PlusCircle, Filter } from "lucide-react";
+import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
 import ProgramasActions from "./programasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import {formatDatetime} from "@/lib/utils"
 import api from "@/config/axios.config";
 
 const Programas = () => {
   const [filterType, setFilterType] = useState("nome");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [programas, setProgramas] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const filters = [
     { value: "nome", label: "Nome" },
     { value: "empresa", label: "Empresa" },
-    { value: "rota", label: "Rota do programa" },
+    { value: "rota", label: "Rota" },
     { value: "descricao", label: "Descrição" },
-    { value: "dataCricao", label: "Data de criação" },
+    { value: "dataCricao", label: "Criação" },
   ];
+
+  const fetchProgramas = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await api.get("/programas");
+      setProgramas(response.data);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Erro ao carregar programas.";
+      setError(errorMessage);
+      toast({
+        title: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProgramas();
+  }, []);
+
+  const filteredProgramas = programas.filter((programa) => {
+    if (!searchTerm) return true;
+
+    const searchLower = searchTerm.toLowerCase();
+    switch (filterType) {
+      case "nome":
+        return programa.nome.toLowerCase().includes(searchLower);
+      case "empresa":
+        return programa.Empresa?.nome?.toLowerCase().includes(searchLower);
+      case "rota":
+        return programa.Rota?.nome?.toLowerCase().includes(searchLower);
+      case "descricao":
+        return programa.descricao.toLowerCase().includes(searchLower);
+      case "dataCricao":
+        return new Date(programa.createdAt)
+          .toLocaleDateString()
+          .toLowerCase()
+          .includes(searchLower);
+      default:
+        return true;
+    }
+  });
 
   return (
     <MainWrapper title="Programas">
@@ -65,6 +117,8 @@ const Programas = () => {
                 type="text"
                 placeholder="Buscar"
                 className="rounded-l-none pl-3"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <Search className="absolute right-3 top-1/2 -translate-y-1/2 transform h-4 w-4 text-gray-400" />
@@ -93,41 +147,62 @@ const Programas = () => {
                 <TableHead>Descrição</TableHead>
                 <TableHead>Rota</TableHead>
                 <TableHead>Empresa</TableHead>
+                <TableHead>Criação</TableHead>
+                <TableHead>Alteração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <ProgramasActions />
-                </TableCell>
-                <TableCell>Bootcamp de python</TableCell>
-                <TableCell>
-                  <div className="max-w-md relative group">
-                    <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                      Lorem ipsum dolor sit amet. Hic possimus velit sit
-                      suscipit dolorem non voluptatem officia rem sunt quod.
+              {isLoading ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-8">
+                    <div className="flex items-center justify-center">
+                      <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                      Carregando programas...
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>Automação de Processos</TableCell>
-                <TableCell>Bruning Tecnometal</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <ProgramasActions />
-                </TableCell>
-                <TableCell>Gerando o futuro</TableCell>
-                <TableCell>
-                  <div className="max-w-md relative group">
-                    <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                      Lorem ipsum dolor sit amet. Hic possimus velit sit
-                      suscipit dolorem non voluptatem officia rem sunt quod.
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>Inteligência Artificial (IA)</TableCell>
-                <TableCell>Bruning Tecnometal</TableCell>
-              </TableRow>
+                  </TableCell>
+                </TableRow>
+              ) : error ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center py-8 text-red-500"
+                  >
+                    {error}
+                  </TableCell>
+                </TableRow>
+              ) : filteredProgramas.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={7}
+                    className="text-center py-8 text-gray-500"
+                  >
+                    Nenhum programa encontrado.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredProgramas.map((programa) => (
+                  <TableRow key={programa.id}>
+                    <TableCell>
+                      <ProgramasActions
+                        programa={programa}
+                        onRefresh={fetchProgramas}
+                      />
+                    </TableCell>
+                    <TableCell>{programa.nome}</TableCell>
+                    <TableCell>
+                      <div className="max-w-md relative group">
+                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
+                          {programa.descricao}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>{programa.Rota?.nome || "-"}</TableCell>
+                    <TableCell>{programa.Empresa?.nome || "-"}</TableCell>
+                    <TableCell>{formatDatetime(programa.createdAt) || '-'}</TableCell>
+                    <TableCell>{formatDatetime(programa.updatedAt) || '-'}</TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>

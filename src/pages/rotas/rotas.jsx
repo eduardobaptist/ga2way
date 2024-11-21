@@ -21,6 +21,7 @@ import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
 import RotasActions from "./rotasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { formatDatetime } from "@/lib/utils";
 import api from "@/config/axios.config";
 
 const Rotas = () => {
@@ -34,7 +35,7 @@ const Rotas = () => {
     { value: "nome", label: "Nome" },
     { value: "empresa", label: "Empresa" },
     { value: "descricao", label: "Descrição" },
-    { value: "dataCriacao", label: "Data de criação" },
+    { value: "dataCriacao", label: "Criação" },
   ];
 
   const fetchRotas = async () => {
@@ -141,12 +142,14 @@ const Rotas = () => {
                 <TableHead>Nome</TableHead>
                 <TableHead>Descrição</TableHead>
                 <TableHead>Empresa</TableHead>
+                <TableHead>Criação</TableHead>
+                <TableHead>Alteração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8">
+                  <TableCell colSpan={6} className="text-center py-8">
                     <div className="flex items-center justify-center">
                       <Loader2 className="h-6 w-6 animate-spin mr-2" />
                       Carregando rotas...
@@ -155,13 +158,13 @@ const Rotas = () => {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8 text-red-500">
+                  <TableCell colSpan={6} className="text-center py-8 text-red-500">
                     {error}
                   </TableCell>
                 </TableRow>
               ) : filteredRotas.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={6} className="text-center py-8 text-gray-500">
                     Nenhuma rota encontrada.
                   </TableCell>
                 </TableRow>
@@ -180,6 +183,8 @@ const Rotas = () => {
                       </div>
                     </TableCell>
                     <TableCell>{rota.Empresa?.nome || '-'}</TableCell>
+                    <TableCell>{formatDatetime(rota.createdAt) || '-'}</TableCell>
+                    <TableCell>{formatDatetime(rota.updatedAt) || '-'}</TableCell>
                   </TableRow>
                 ))
               )}

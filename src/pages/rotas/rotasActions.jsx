@@ -21,7 +21,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { MoreHorizontal, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
+import { Menu, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import api from "@/config/axios.config";
@@ -29,7 +29,7 @@ import api from "@/config/axios.config";
 const RotasActions = ({ rota, onRefresh }) => {
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleView = () => {
     navigate(`/rotas/${rota.id}`);
@@ -40,7 +40,6 @@ const RotasActions = ({ rota, onRefresh }) => {
   };
 
   const handleDelete = async () => {
-    setIsDeleting(true);
     try {
       await api.delete(`/rotas/${rota.id}`);
       toast({
@@ -56,8 +55,8 @@ const RotasActions = ({ rota, onRefresh }) => {
         variant: "destructive",
       });
     } finally {
-      setIsDeleting(false);
       setIsDeleteDialogOpen(false);
+      setIsDropdownOpen(false);
     }
   };
 
@@ -65,9 +64,14 @@ const RotasActions = ({ rota, onRefresh }) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
-          <DropdownMenu>
+          <DropdownMenu
+            open={isDropdownOpen}
+            onOpenChange={(open) => {
+              setIsDropdownOpen(open);
+            }}
+          >
             <DropdownMenuTrigger className="focus:outline-none">
-              <MoreHorizontal className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+              <Menu className="h-6 w-6 text-gray-500 hover:text-gray-700" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-48">
@@ -88,7 +92,10 @@ const RotasActions = ({ rota, onRefresh }) => {
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                onClick={() => setIsDeleteDialogOpen(true)}
+                onClick={() => {
+                  setIsDeleteDialogOpen(true);
+                  setIsDropdownOpen(false);
+                }}
                 className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
               >
                 <Trash2 className="h-4 w-4" />
@@ -115,22 +122,12 @@ const RotasActions = ({ rota, onRefresh }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>
-              Cancelar
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              disabled={isDeleting}
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
-              {isDeleting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  <span>Excluindo...</span>
-                </>
-              ) : (
-                <span>Excluir</span>
-              )}
+              Excluir
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
