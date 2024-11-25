@@ -65,7 +65,7 @@ const Sidebar = () => {
         <div className="flex h-full max-h-screen flex-col gap-2 sticky top-0">
           <div className="flex h-14 items-center border-b lg:h-[60px] bg-[var(--azul-agregar)] justify-center">
             <NavLink to="/" className="flex items-center gap-2 font-semibold">
-              <img src={gatewayLogo} alt="" />
+              <img src={gatewayLogo} alt="Gateway Logo" className="h-10" />
             </NavLink>
           </div>
           <div className="flex-1">{renderNavLinks()}</div>
@@ -114,7 +114,7 @@ const Sidebar = () => {
             </SheetContent>
           </Sheet>
           <NavLink to="/" className="flex items-center gap-2 font-semibold s-a">
-            <img src={gatewayLogo} alt="" />
+            <img src={gatewayLogo} alt="Gateway Logo" className="h-10" />
           </NavLink>
         </header>
         <main className="flex flex-1 flex-col overflow-y-auto P-0 lg:p-4">

@@ -37,7 +37,7 @@ const Carousel = () => {
           animation: 50s slide infinite linear;
         }
       `}</style>
-      <div className="slide-track mt-10">
+      <div className="slide-track my-5">
         <div className="blur-sm h-full w-10 fixed"></div>
         {images.concat(images).map((img, index) => (
           <img

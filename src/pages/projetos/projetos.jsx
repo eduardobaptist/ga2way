@@ -57,9 +57,9 @@ const Projetos = () => {
     }
   };
 
-  useEffect(() => {
-    fetchProjetos();
-  }, []);
+  // useEffect(() => {
+  //   fetchProjetos();
+  // }, []);
   const [layout, setLayout] = useState("grid");
   const [filterType, setFilterType] = useState("nome");
   const filters = [
