@@ -3,7 +3,7 @@ import {
   Building2, 
   BookOpenCheck, 
   Rocket, 
-  Lightbulb 
+  PlusIcon
 } from 'lucide-react';
 
 const AcademicIncentiveCard = ({ icon: Icon, title, description }) => (
@@ -36,9 +36,9 @@ const HomeIncentivos = () => {
       description: 'Oportunidades em empresas parceiras'
     },
     {
-      icon: Lightbulb,
+      icon: PlusIcon,
       title: 'Personalizado',
-      description: 'Mentoria e suporte individualizado'
+      description: 'Impulsos específicos cadastrados por empresas'
     }
   ];
 

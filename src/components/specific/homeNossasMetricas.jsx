@@ -87,7 +87,7 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
           className="transition-all duration-300 cursor-pointer"
           onMouseEnter={() => setHoveredId(point.id)}
           onMouseLeave={() => setHoveredId(null)}
-          transform="translate(250, 250)" // Aumentado de 200 para 250 para centralizar melhor
+          transform="translate(350, 275)" // Aumentado de 200 para 250 para centralizar melhor
         >
           <path
             d={path}
@@ -104,9 +104,10 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
           {isHovered && (
             <g transform={`translate(${textX}, ${textY})`}>
               <text
-                className="text-sm font-medium fill-gray-700"
+                className="text-md font-medium"
                 textAnchor="middle"
                 transform={`rotate(${textRotation})`}
+                fill="white"
               >
                 {point.label}
               </text>
@@ -117,9 +118,9 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
     };
 
     return (
-      <svg width="550" height="550" className="mx-auto"> {/* Aumentado de 450 para 550 */}
-        <circle cx="250" cy="250" r="80" fill="white" /> {/* Ajustado centro e raio */}
-        <text x="250" y="250" textAnchor="middle" className="font-bold text-xl fill-gray-800">
+        <svg width="700" height="550" className="mx-auto">
+        <circle cx="350" cy="275" r="80" fill="white" />
+        <text x="350" y="280" textAnchor="middle" className="font-semibold text-xl fill-gray-800">
           {title}
         </text>
         {data.map((point, index) => createSlice(point, index, data.length))}
@@ -142,15 +143,6 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
       {acatechOnly && <MetricCircle data={acatechData} title="ACATECH" />}
     </>
   );
-
-//   return (
-//     <div className="container mx-auto py-12">
-//       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-//         <MetricCircle data={trlData} title="TRL" />
-//         <MetricCircle data={acatechData} title="ACATECH" />
-//       </div>
-//     </div>
-//   );
 };
 
 export default HomeNossasMetricas;
