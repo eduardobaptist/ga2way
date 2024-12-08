@@ -11,7 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { MoreHorizontal, Trash2, Edit2, Eye, Handshake } from "lucide-react";
+import { Menu, Trash2, Edit2, Eye, Handshake } from "lucide-react";
 
 const ProjetosActions = ({ onDelete, onEdit, onView, onInterest }) => {
   return (
@@ -20,7 +20,7 @@ const ProjetosActions = ({ onDelete, onEdit, onView, onInterest }) => {
         <TooltipTrigger>
           <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
-              <MoreHorizontal className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+              <Menu className="h-6 w-6 text-gray-500 hover:text-gray-700" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="w-48">

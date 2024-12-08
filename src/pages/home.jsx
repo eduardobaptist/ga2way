@@ -139,75 +139,79 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-600">
-          <div className="container mx-auto px-4">
-            <h2
-              className="text-4xl font-bold text-center text-white mb-8"
-              data-aos="fade-up"
-            >
-              Nossas métricas
-            </h2>
+        <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-600 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <h2
+            className="text-4xl font-bold text-center text-white mb-8"
+            data-aos="fade-up"
+          >
+            Nossas métricas
+          </h2>
 
+          <div
+            className="max-w-3xl mx-auto text-center mb-16"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <p className="text-white/90 text-lg mb-6">
+              Utilizamos duas métricas complementares para avaliar e
+              acompanhar o desenvolvimento dos nossos projetos: TRL
+              (Technology Readiness Level) e ACATECH, garantindo uma visão
+              completa do progresso tecnológico e industrial.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
             <div
-              className="max-w-3xl mx-auto text-center mb-16"
-              data-aos="fade-up"
-              data-aos-delay="100"
+              className="space-y-8 flex flex-col"
+              data-aos="fade-right"
+              data-aos-delay="200"
             >
-              <p className="text-white/90 text-lg mb-6">
-                Utilizamos duas métricas complementares para avaliar e
-                acompanhar o desenvolvimento dos nossos projetos: TRL
-                (Technology Readiness Level) e ACATECH, garantindo uma visão
-                completa do progresso tecnológico e industrial.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <div
-                className="space-y-8 flex flex-col"
-                data-aos="fade-right"
-                data-aos-delay="200"
-              >
-                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                  <h3 className="text-2xl font-semibold text-white mb-4">
-                    Technology Readiness Level (TRL)
-                  </h3>
-                  <p className="text-white/80">
-                    O TRL é uma métrica desenvolvida pela NASA que avalia o
-                    nível de maturidade de uma tecnologia em uma escala de 1 a
-                    9, desde os princípios básicos até a operação comprovada.
-                    Esta metodologia nos permite identificar precisamente em
-                    qual estágio de desenvolvimento cada projeto se encontra.
-                  </p>
-                </div>
-                <div className="flex justify-center">
+              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
+                <h3 className="text-2xl font-semibold text-white mb-4">
+                  Technology Readiness Level (TRL)
+                </h3>
+                <p className="text-white/80">
+                  O TRL é uma métrica desenvolvida pela NASA que avalia o
+                  nível de maturidade de uma tecnologia em uma escala de 1 a
+                  9, desde os princípios básicos até a operação comprovada.
+                  Esta metodologia nos permite identificar precisamente em
+                  qual estágio de desenvolvimento cada projeto se encontra.
+                </p>
+              </div>
+              <div className="flex justify-center overflow-x-auto max-w-full">
+                <div className="w-full">
                   <HomeNossasMetricas trlOnly />
                 </div>
               </div>
+            </div>
 
-              <div
-                className="space-y-8 flex flex-col"
-                data-aos="fade-left"
-                data-aos-delay="300"
-              >
-                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                  <h3 className="text-2xl font-semibold text-white mb-4">
-                    Índice ACATECH
-                  </h3>
-                  <p className="text-white/80">
-                    O modelo ACATECH, desenvolvido pela Academia Alemã de
-                    Ciências e Engenharia, complementa o TRL focando na
-                    maturidade industrial. Com quatro estágios principais, esta
-                    métrica nos ajuda a avaliar a preparação para manufatura e
-                    implementação em escala industrial.
-                  </p>
-                </div>
-                <div className="flex justify-center">
+            <div
+              className="space-y-8 flex flex-col"
+              data-aos="fade-left"
+              data-aos-delay="300"
+            >
+              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
+                <h3 className="text-2xl font-semibold text-white mb-4">
+                  Índice ACATECH
+                </h3>
+                <p className="text-white/80">
+                  O modelo ACATECH, desenvolvido pela Academia Alemã de
+                  Ciências e Engenharia, complementa o TRL focando na
+                  maturidade industrial. Com quatro estágios principais, esta
+                  métrica nos ajuda a avaliar a preparação para manufatura e
+                  implementação em escala industrial.
+                </p>
+              </div>
+              <div className="flex justify-center overflow-x-auto max-w-full">
+                <div className="w-full">
                   <HomeNossasMetricas acatechOnly />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
         <section className="py-20 bg-gradient-to-l from-blue-900 via-gray-900 to-black">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
