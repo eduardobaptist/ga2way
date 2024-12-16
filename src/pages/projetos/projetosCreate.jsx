@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback  } from "react";
 import { Link } from "react-router-dom";
 import MainWrapper from "@/components/mainWrapper";
 import ProjectCanvas from "@/components/specific/projectCanvas";
@@ -23,15 +23,21 @@ const ProjetosCreate = () => {
   const [layout, setLayout] = useState("infosGerais");
   const projectFormRef = useRef(null);
   const isMobile = useIsMobile();
-  const handleSave = () => {
+  const [canvasData, setCanvasData] = useState(null);
+
+  const handleSave = useCallback(() => {
     if (projectFormRef.current) {
       projectFormRef.current.requestSubmit();
     }
-  };
+  }, []);
 
-  const onSubmit = () => {
-    console.log('Form submitted successfully');
-  };
+  const onSubmit = useCallback((formData) => {
+    const projectData = {
+      ...formData,
+      estilo: canvasData
+    };
+    console.log('Combined form data:', projectData);
+  }, [canvasData]);
   
   return (
     <MainWrapper title="Novo projeto">
@@ -145,7 +151,7 @@ const ProjetosCreate = () => {
           <ProjectForm ref={projectFormRef} onSubmit={onSubmit} />
         </div>
         <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
-          <ProjectCanvas />
+          <ProjectCanvas setCanvasData={setCanvasData} />
         </div>
       </div>
     </MainWrapper>

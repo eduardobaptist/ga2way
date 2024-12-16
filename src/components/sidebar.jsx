@@ -79,7 +79,7 @@ const Sidebar = () => {
       className={cn(
         "grid min-h-screen w-full",
         collapsed
-          ? "md:grid-cols-[60px_1fr] lg:grid-cols-[80px_1fr] transition-all duration-300"
+          ? "md:grid-cols-[60px_1fr] lg:grid-cols-[70px_1fr] transition-all duration-300"
           : "md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] transition-all duration-300"
       )}
     >

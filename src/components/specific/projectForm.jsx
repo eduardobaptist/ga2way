@@ -34,9 +34,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ptBR } from "date-fns/locale"
+import { ptBR } from "date-fns/locale";
 import { ChevronsUpDown, Check, Loader2, CalendarIcon } from "lucide-react";
-import { FloatingLabelInput } from "../ui/floating-label-input";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
@@ -62,7 +61,14 @@ const projectFormSchema = z
   .refine((data) => !data.impulso || !!data.impulsoTipo, {
     message: "Tipo de impulso é obrigatório quando possui impulso acadêmico",
     path: ["impulsoTipo"],
-  });
+  })
+  .refine(
+    (data) => data.data_inicio < data.data_fim,
+    {
+      message: "A data de início deve ser anterior à data de término",
+      path: ["data_inicio"],
+    }
+  );
 
 const ProjectForm = forwardRef(({ onSubmit }, ref) => {
   const [open, setOpen] = useState(false);
@@ -87,7 +93,6 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
   });
 
   const handleFormSubmit = (data) => {
-    console.log("Form data:", data);
     if (onSubmit) {
       onSubmit(data);
     }
@@ -97,7 +102,6 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
     setIsLoading(true);
     try {
       const response = await api.get("/programas");
-      console.log(response.data);
       setProgramas(
         response.data.map((programa) => ({
           value: programa.id,
@@ -169,7 +173,7 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
                     <FormItem>
                       <FormLabel>Nome</FormLabel>
                       <FormControl>
-                        <Input type="text" {...field}  />
+                        <Input type="text" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -184,7 +188,7 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
                     <FormItem>
                       <FormLabel>Descrição</FormLabel>
                       <FormControl>
-                        <Input type="text" {...field}  />
+                        <Input type="text" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
