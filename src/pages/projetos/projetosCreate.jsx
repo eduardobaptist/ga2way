@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback  } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import MainWrapper from "@/components/mainWrapper";
 import ProjectCanvas from "@/components/specific/projectCanvas";
@@ -31,14 +31,31 @@ const ProjetosCreate = () => {
     }
   }, []);
 
-  const onSubmit = useCallback((formData) => {
-    const projectData = {
-      ...formData,
-      estilo: canvasData
-    };
-    console.log('Combined form data:', projectData);
-  }, [canvasData]);
-  
+  const onSubmit = useCallback(
+    (formData) => {
+      const projectData = {
+        ...formData,
+        justificativas: canvasData["justificativas"]?.textarea_value,
+        objsmart: canvasData["objsmart"]?.textarea_value,
+        beneficios: canvasData["beneficios"]?.textarea_value,
+        produto: canvasData["produto"]?.textarea_value,
+        requisitos: canvasData["requisitos"]?.textarea_value,
+        steakholders: canvasData["stakeholders"]?.textarea_value,
+        equipe: canvasData["equipe"]?.textarea_value,
+        premissas: canvasData["premissas"]?.textarea_value,
+        grupo_de_entrega: canvasData["grupo_de_entrega"]?.textarea_value,
+        restricoes: canvasData["restricoes"]?.textarea_value,
+        riscos: canvasData["riscos"]?.textarea_value,
+        linha_do_tempo: canvasData["linha_do_tempo"]?.textarea_value,
+        custos: canvasData["custos"]?.textarea_value,
+        
+        estilo: JSON.stringify(canvasData),
+      };
+      console.log("projetos form data:", projectData);
+    },
+    [canvasData]
+  );
+
   return (
     <MainWrapper title="Novo projeto">
       {isMobile ? (
@@ -66,7 +83,9 @@ const ProjetosCreate = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
                   <Link to="/rotas/programas/projetos">
-                    <AlertDialogAction className="w-full md:w-fit">Continuar</AlertDialogAction>
+                    <AlertDialogAction className="w-full md:w-fit">
+                      Continuar
+                    </AlertDialogAction>
                   </Link>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -88,7 +107,9 @@ const ProjetosCreate = () => {
               onValueChange={setLayout}
             >
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="infosGerais">Informações gerais</TabsTrigger>
+                <TabsTrigger value="infosGerais">
+                  Informações gerais
+                </TabsTrigger>
                 <TabsTrigger value="projectCanvas">Project canvas</TabsTrigger>
               </TabsList>
             </Tabs>
@@ -119,7 +140,9 @@ const ProjetosCreate = () => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
                   <Link to="/rotas/programas/projetos">
-                    <AlertDialogAction className="w-full md:w-fit">Continuar</AlertDialogAction>
+                    <AlertDialogAction className="w-full md:w-fit">
+                      Continuar
+                    </AlertDialogAction>
                   </Link>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -131,7 +154,9 @@ const ProjetosCreate = () => {
               onValueChange={setLayout}
             >
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="infosGerais">Informações gerais</TabsTrigger>
+                <TabsTrigger value="infosGerais">
+                  Informações gerais
+                </TabsTrigger>
                 <TabsTrigger value="projectCanvas">Project canvas</TabsTrigger>
               </TabsList>
             </Tabs>
