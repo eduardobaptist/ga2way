@@ -83,7 +83,7 @@ export const ProjetosCreate = () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <Link to="/rotas/programas/projetos">
+                  <Link to="/projetos">
                     <AlertDialogAction className="w-full md:w-fit">
                       Continuar
                     </AlertDialogAction>
@@ -140,7 +140,7 @@ export const ProjetosCreate = () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                  <Link to="/rotas/programas/projetos">
+                  <Link to="/projetos">
                     <AlertDialogAction className="w-full md:w-fit">
                       Continuar
                     </AlertDialogAction>

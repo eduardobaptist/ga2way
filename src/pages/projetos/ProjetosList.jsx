@@ -1,4 +1,4 @@
-import bruningLogo from "../../assets/img/bruning-logo-redondo.png";
+import bruningLogo from "/public/img/bruning-logo-redondo.png";
 import { MainWrapper } from "@/components/MainWrapper";
 import { ProjetosActions } from "./ProjetosActions";
 import { useState, useEffect } from "react";
@@ -122,7 +122,7 @@ export const ProjetosList = () => {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          <Link to="/rotas/programas/projetos/novo">
+          <Link to="/projetos/novo">
             <Button
               className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
               variant="outline"

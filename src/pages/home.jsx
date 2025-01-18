@@ -20,10 +20,10 @@ import { HomeIncentivos } from "@/components/HomeIncentivos";
 import { LoginForm } from "@/components/LoginForm";
 import { RegisterFormEmpresa } from "@/components/RegisterFormEmpresa";
 import { RegisterFormIct } from "@/components/RegisterFormIct";
-import gatewayLogo from "../assets/img/gateway_logo_branco.png";
+import gatewayLogo from "/public/img/gateway_logo_branco.png";
 
-import highFive from "../assets/animations/high-five.json";
-import rocket from "../assets/animations/rocket.json";
+import highFive from "/public/animations/high-five.json";
+import rocket from "/public/animations/rocket.json";
 
 export const Home = () => {
   useEffect(() => {

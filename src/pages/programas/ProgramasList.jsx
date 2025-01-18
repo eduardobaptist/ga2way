@@ -125,7 +125,7 @@ export const ProgramasList = () => {
           </div>
         </div>
         <div className="flex justify-between md:justify-end col-span-2 md:col-span-1 gap-2">
-          <Link to="/rotas/programas/novo">
+          <Link to="/programas/novo">
             <Button
               className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
               variant="outline"

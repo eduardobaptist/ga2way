@@ -53,7 +53,7 @@ export const LoginForm = () => {
 
       login(authData);
 
-      navigate("/rotas/programas/projetos");
+      navigate("/projetos");
     } catch (error) {
       toast({
         variant: "destructive",

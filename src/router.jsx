@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { Home } from "@/pages/Home";
 import { PrivateRoute } from "@/components/PrivateRoute";
-import { Sidebar } from "@/components/Sidebar";
 
 import { RotasList } from "@/pages/rotas/RotasList";
 import { RotasCreate } from "@/pages/rotas/RotasCreate";
@@ -17,6 +16,7 @@ import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
+import { Layout } from "./components/Layout";
 
 export const router = createBrowserRouter([
   {
@@ -27,35 +27,35 @@ export const router = createBrowserRouter([
     element: <PrivateRoute />,
     children: [
       {
-        element: <Sidebar />,
+        element: <Layout />,
         children: [
           {
-            path: "rotas",
+            path: "/rotas",
             children: [
               { index: true, element: <RotasList /> },
               { path: "novo", element: <RotasCreate /> },
               { path: ":id", element: <RotasView /> },
               { path: "editar/:id", element: <RotasEdit /> },
-              {
-                path: "programas",
-                children: [
-                  { index: true, element: <ProgramasList /> },
-                  { path: "novo", element: <ProgramasCreate /> },
-                  { path: ":id", element: <ProgramasView /> },
-                  { path: "editar/:id", element: <ProgramasEdit /> },
-                  {
-                    path: "projetos",
-                    children: [
-                      { index: true, element: <ProjetosList /> },
-                      { path: "novo", element: <ProjetosCreate /> },
-                    ],
-                  },
-                ],
-              },
             ],
           },
           {
-            path: "usuarios",
+            path: "/programas",
+            children: [
+              { index: true, element: <ProgramasList /> },
+              { path: "novo", element: <ProgramasCreate /> },
+              { path: ":id", element: <ProgramasView /> },
+              { path: "editar/:id", element: <ProgramasEdit /> },
+            ],
+          },
+          {
+            path: "/projetos",
+            children: [
+              { index: true, element: <ProjetosList /> },
+              { path: "novo", element: <ProjetosCreate /> },
+            ],
+          },
+          {
+            path: "/usuarios",
             element: <ProjetosList />,
           },
         ],

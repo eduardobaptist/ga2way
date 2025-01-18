@@ -32,11 +32,11 @@ export const ProgramasActions = ({ programa, onRefresh }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleView = () => {
-    navigate(`/rotas/programas/${programa.id}`);
+    navigate(`/programas/${programa.id}`);
   };
 
   const handleEdit = () => {
-    navigate(`/rotas/programas/editar/${programa.id}`);
+    navigate(`/programas/editar/${programa.id}`);
   };
 
   const handleDelete = async () => {

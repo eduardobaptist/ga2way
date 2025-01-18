@@ -1,12 +1,12 @@
-import bruning from "../assets/img/bruning-logo.png";
-import fockink from "../assets/img/fockink-logo.png";
-import tromink from "../assets/img/tromink-logo.png";
-import cotripal from "../assets/img/cotripal-logo.png";
-import kepler from "../assets/img/kepler-weber-logo.png";
-import saur from "../assets/img/saur-logo.png";
-import prefeitura from "../assets/img/prefeitura-panambi-logo.png";
-import agregar from "../assets/img/agregar-logo.png";
-import aci from "../assets/img/aci-logo.png";
+import bruning from "/public/img/bruning-logo.png";
+import fockink from "/public/img/fockink-logo.png";
+import tromink from "/public/img/tromink-logo.png";
+import cotripal from "/public/img/cotripal-logo.png";
+import kepler from "/public/img/kepler-weber-logo.png";
+import saur from "/public/img/saur-logo.png";
+import prefeitura from "/public/img/prefeitura-panambi-logo.png";
+import agregar from "/public/img/agregar-logo.png";
+import aci from "/public/img/aci-logo.png";
 
 export const LogoCarousel = () => {
   const images = [

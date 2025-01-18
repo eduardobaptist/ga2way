@@ -110,7 +110,7 @@ export const ProgramasCreate = () => {
         variant: "success",
       });
 
-      navigate("/rotas/programas");
+      navigate("/programas");
     } catch (error) {
       const errorMessage =
         error.response?.data?.error ||
@@ -169,7 +169,7 @@ export const ProgramasCreate = () => {
               <AlertDialogCancel disabled={isSubmitting}>
                 Cancelar
               </AlertDialogCancel>
-              <Link to="/rotas/programas">
+              <Link to="/programas">
                 <AlertDialogAction
                   className="w-full md:w-fit"
                   disabled={isSubmitting}

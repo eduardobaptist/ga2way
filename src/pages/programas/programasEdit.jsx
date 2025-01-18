@@ -85,7 +85,7 @@ export const ProgramasEdit = () => {
             description: "Programa não encontrada",
             variant: "destructive",
           });
-          navigate("/rotas/programas");
+          navigate("/programas");
           return;
         }
 
@@ -100,7 +100,7 @@ export const ProgramasEdit = () => {
           description: "Não foi possível carregar os dados do programa",
           variant: "destructive",
         });
-        navigate("/rotas/programas");
+        navigate("/programas");
       } finally {
         setIsLoading(false);
       }
@@ -158,7 +158,7 @@ export const ProgramasEdit = () => {
         variant: "success",
       });
 
-      navigate("/rotas/programas");
+      navigate("/programas");
     } catch (error) {
       const errorMessage =
         error.response?.data?.error ||
@@ -208,7 +208,7 @@ export const ProgramasEdit = () => {
               <AlertDialogCancel disabled={isSubmitting}>
                 Cancelar
               </AlertDialogCancel>
-              <Link to="/rotas/programas">
+              <Link to="/programas">
                 <AlertDialogAction
                   className="w-full md:w-fit"
                   disabled={isSubmitting}

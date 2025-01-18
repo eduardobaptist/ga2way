@@ -32,7 +32,7 @@ export const ProgramasView = () => {
         title: errorMessage,
         variant: "destructive",
       });
-      navigate("/rotas/programas");
+      navigate("/programas");
     } finally {
       setIsLoading(false);
     }
