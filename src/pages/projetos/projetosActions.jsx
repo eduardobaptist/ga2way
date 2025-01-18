@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import { Menu, Trash2, Edit2, Eye, Handshake } from "lucide-react";
 
-const ProjetosActions = ({ onDelete, onEdit, onView, onInterest }) => {
+export const ProjetosActions = ({ onDelete, onEdit, onView, onInterest }) => {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -65,5 +65,3 @@ const ProjetosActions = ({ onDelete, onEdit, onView, onInterest }) => {
     </TooltipProvider>
   );
 };
-
-export default ProjetosActions;

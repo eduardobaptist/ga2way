@@ -8,7 +8,7 @@ import prefeitura from "../assets/img/prefeitura-panambi-logo.png";
 import agregar from "../assets/img/agregar-logo.png";
 import aci from "../assets/img/aci-logo.png";
 
-const Carousel = () => {
+export const LogoCarousel = () => {
   const images = [
     bruning,
     fockink,
@@ -51,5 +51,3 @@ const Carousel = () => {
     </div>
   );
 };
-
-export default Carousel;

@@ -3,7 +3,7 @@ import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
 
-const ProjectCanvas = ({ setCanvasData, canvasData }) => {
+export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
   const gridRef = useRef(null);
   const [grid, setGrid] = useState(null);
 
@@ -17,19 +17,18 @@ const ProjectCanvas = ({ setCanvasData, canvasData }) => {
         );
         const textarea = gridItem?.querySelector("textarea");
         const textareaId = textarea?.id || `widget_${widget.x}_${widget.y}`;
-  
+
         acc[textareaId] = {
           ...widget,
           textarea_value: textarea?.value || "",
         };
-  
+
         return acc;
       }, {});
-  
+
       setCanvasData(enrichedData);
     }
   }, [grid, setCanvasData]);
-  
 
   /* inicializando o gridstack */
   useEffect(() => {
@@ -41,7 +40,7 @@ const ProjectCanvas = ({ setCanvasData, canvasData }) => {
         cellHeight: "60px",
         column: 10,
         animate: true,
-        margin: 5,
+        margin: 6,
       },
       gridRef.current
     );
@@ -231,9 +230,7 @@ const ProjectCanvas = ({ setCanvasData, canvasData }) => {
   return (
     <div
       ref={gridRef}
-      className="grid-stack bg-muted/40 border rounded-lg h-full w-full"
+      className="grid-stack bg-muted/40 border rounded-lg h-full w-full p-3"
     ></div>
   );
 };
-
-export default ProjectCanvas;

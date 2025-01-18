@@ -10,9 +10,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "./ui/form";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 
 import { Building2, Mail, Info, MoveRight, Check } from "lucide-react";
@@ -53,7 +53,7 @@ const formShema = z.object({
   responsavelCargo: z.string().min(1, { message: "Cargo é obrigatório" }),
 });
 
-const RegisterFormEmpresa = ({ closeDialog }) => {
+export const RegisterFormEmpresa = ({ closeDialog }) => {
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -258,5 +258,3 @@ const RegisterFormEmpresa = ({ closeDialog }) => {
     </Form>
   );
 };
-
-export default RegisterFormEmpresa;

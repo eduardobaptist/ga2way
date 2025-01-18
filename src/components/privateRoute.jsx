@@ -1,7 +1,7 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
 
-const PrivateRoute = () => {
-  const token = JSON.parse(localStorage.getItem('authData'))?.token;
+export const PrivateRoute = () => {
+  const token = JSON.parse(localStorage.getItem("authData"))?.token;
 
   if (!token) {
     return <Navigate to="/" replace />;
@@ -9,5 +9,3 @@ const PrivateRoute = () => {
 
   return <Outlet />;
 };
-
-export default PrivateRoute;

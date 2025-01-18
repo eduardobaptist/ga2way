@@ -1,6 +1,6 @@
 import bruningLogo from "../../assets/img/bruning-logo-redondo.png";
-import MainWrapper from "@/components/mainWrapper";
-import ProjetosActions from "./projetosActions";
+import { MainWrapper } from "@/components/MainWrapper";
+import { ProjetosActions } from "./ProjetosActions";
 import { useState, useEffect } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -39,9 +39,9 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
-const Projetos = () => {
+export const ProjetosList = () => {
   const fetchProjetos = async () => {
     try {
       const response = await api.get("/projetos");
@@ -238,5 +238,3 @@ const Projetos = () => {
     </MainWrapper>
   );
 };
-
-export default Projetos;

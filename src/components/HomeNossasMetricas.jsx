@@ -14,7 +14,7 @@ import {
   Store,
 } from "lucide-react";
 
-const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
+export const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
   const trlData = [
     { id: 1, label: "Princípios Básicos", icon: Lightbulb },
     { id: 2, label: "Conceito Formulado", icon: Code },
@@ -48,7 +48,7 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
       // Calculate positions com raio interno maior
       const innerRadius = radius * 0.5; // Aumentado de 0.45 para 0.5
       const scaledRadius = isHovered ? radius * hoverScale : radius;
-      
+
       // Create slice path
       const x1 = Math.cos(startAngle) * scaledRadius;
       const y1 = Math.sin(startAngle) * scaledRadius;
@@ -77,7 +77,9 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
       const textRadius = scaledRadius + 40; // Aumentado de 30 para 40
       const textX = Math.cos(midAngle) * textRadius;
       const textY = Math.sin(midAngle) * textRadius;
-      const textRotation = (midAngle * 180) / Math.PI + (midAngle > Math.PI / 2 && midAngle < 3 * Math.PI / 2 ? 180 : 0);
+      const textRotation =
+        (midAngle * 180) / Math.PI +
+        (midAngle > Math.PI / 2 && midAngle < (3 * Math.PI) / 2 ? 180 : 0);
 
       const IconComponent = point.icon;
 
@@ -91,13 +93,17 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
         >
           <path
             d={path}
-            className={`${isHovered ? "fill-blue-600" : "fill-blue-500"} transition-all duration-300`}
+            className={`${
+              isHovered ? "fill-blue-600" : "fill-blue-500"
+            } transition-all duration-300`}
             stroke="white"
             strokeWidth="2"
           />
           <g
             transform={`translate(${iconX}, ${iconY})`}
-            className={`transition-all duration-300 ${isHovered ? "scale-125" : ""}`}
+            className={`transition-all duration-300 ${
+              isHovered ? "scale-125" : ""
+            }`}
           >
             <IconComponent className="w-6 h-6 text-white" />
           </g>
@@ -118,9 +124,14 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
     };
 
     return (
-        <svg width="700" height="550" className="mx-auto">
+      <svg width="700" height="550" className="mx-auto">
         <circle cx="350" cy="275" r="80" fill="white" />
-        <text x="350" y="280" textAnchor="middle" className="font-semibold text-xl fill-gray-800">
+        <text
+          x="350"
+          y="280"
+          textAnchor="middle"
+          className="font-semibold text-xl fill-gray-800"
+        >
           {title}
         </text>
         {data.map((point, index) => createSlice(point, index, data.length))}
@@ -144,5 +155,3 @@ const HomeNossasMetricas = ({ trlOnly, acatechOnly }) => {
     </>
   );
 };
-
-export default HomeNossasMetricas;

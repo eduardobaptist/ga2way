@@ -1,14 +1,14 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { useAuth } from "./authContext";
+import { useAuth } from "./AuthContext";
 import { Home, PanelLeft, Users, LogOut, Route, Rocket } from "lucide-react";
 import gatewayLogo from "../assets/img/gateway_logo_branco.png";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import CollapsibleNavLink from "./collapsibleNavLink";
+import { CollapsibleNavLink } from "./CollapsibleNavLink";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const { logout } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
 
@@ -157,5 +157,3 @@ const Sidebar = () => {
     </div>
   );
 };
-
-export default Sidebar;

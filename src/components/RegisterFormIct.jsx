@@ -10,9 +10,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "./ui/form";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { FloatingLabelInput } from "@/components/ui/floating-label-input";
 
 import { MoveRight } from "lucide-react";
@@ -36,7 +36,7 @@ const formShema = z.object({
   responsavelFuncao: z.string().min(1, { message: "Função é obrigatória" }),
 });
 
-const RegisterFormIct = ({ closeDialog }) => {
+export const RegisterFormIct = ({ closeDialog }) => {
   const form = useForm({
     resolver: zodResolver(formShema),
     defaultValues: {
@@ -182,5 +182,3 @@ const RegisterFormIct = ({ closeDialog }) => {
     </Form>
   );
 };
-
-export default RegisterFormIct;

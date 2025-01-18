@@ -8,15 +8,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "./ui/form";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { useState } from "react";
 import { Mail, Lock, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 import { toast } from "@/hooks/use-toast";
-import { useAuth } from "@/components/authContext";
+import { useAuth } from "@/components/AuthContext";
 
 const formShema = z.object({
   email: z
@@ -26,7 +26,7 @@ const formShema = z.object({
   senha: z.string().min(1, { message: "Senha é obrigatória" }),
 });
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm({
@@ -135,5 +135,3 @@ const LoginForm = () => {
     </Form>
   );
 };
-
-export default LoginForm;

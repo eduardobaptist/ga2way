@@ -1,4 +1,4 @@
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { useState, useEffect } from "react";
 import {
   Select,
@@ -18,13 +18,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
-import RotasActions from "./rotasActions";
+import { RotasActions } from "./RotasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
-const Rotas = () => {
+export const RotasList = () => {
   const [filterType, setFilterType] = useState("nome");
   const [searchTerm, setSearchTerm] = useState("");
   const [rotas, setRotas] = useState([]);
@@ -45,7 +45,8 @@ const Rotas = () => {
       const response = await api.get("/rotas");
       setRotas(response.data);
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Erro ao carregar rotas.";
+      const errorMessage =
+        error.response?.data?.error || "Erro ao carregar rotas.";
       setError(errorMessage);
       toast({
         title: errorMessage,
@@ -62,7 +63,7 @@ const Rotas = () => {
 
   const filteredRotas = rotas.filter((rota) => {
     if (!searchTerm) return true;
-    
+
     const searchLower = searchTerm.toLowerCase();
     switch (filterType) {
       case "nome":
@@ -158,13 +159,19 @@ const Rotas = () => {
                 </TableRow>
               ) : error ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-red-500">
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-8 text-red-500"
+                  >
                     {error}
                   </TableCell>
                 </TableRow>
               ) : filteredRotas.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="text-center py-8 text-gray-500">
+                  <TableCell
+                    colSpan={6}
+                    className="text-center py-8 text-gray-500"
+                  >
                     Nenhuma rota encontrada.
                   </TableCell>
                 </TableRow>
@@ -182,9 +189,13 @@ const Rotas = () => {
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>{rota.Empresa?.nome || '-'}</TableCell>
-                    <TableCell>{formatDatetime(rota.createdAt) || '-'}</TableCell>
-                    <TableCell>{formatDatetime(rota.updatedAt) || '-'}</TableCell>
+                    <TableCell>{rota.Empresa?.nome || "-"}</TableCell>
+                    <TableCell>
+                      {formatDatetime(rota.createdAt) || "-"}
+                    </TableCell>
+                    <TableCell>
+                      {formatDatetime(rota.updatedAt) || "-"}
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -195,5 +206,3 @@ const Rotas = () => {
     </MainWrapper>
   );
 };
-
-export default Rotas;

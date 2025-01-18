@@ -1,4 +1,4 @@
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/mainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertDialog,
@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 import { useState } from "react";
 
 import * as z from "zod";
@@ -36,7 +36,7 @@ const rotaFormSchema = z.object({
   descricao: z.string().min(1, "Descrição é obrigatória"),
 });
 
-const RotasCreate = () => {
+export const RotasCreate = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,7 +54,7 @@ const RotasCreate = () => {
     try {
       const response = await api.post("/rotas", {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id
+        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
       });
 
       toast({
@@ -64,8 +64,9 @@ const RotasCreate = () => {
 
       navigate("/rotas");
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Erro ao criar rota. Tente novamente.";
-      
+      const errorMessage =
+        error.response?.data?.error || "Erro ao criar rota. Tente novamente.";
+
       toast({
         title: "Erro ao criar a rota",
         description: errorMessage,
@@ -76,7 +77,8 @@ const RotasCreate = () => {
       if (error.response?.status === 403) {
         form.setError("root", {
           type: "manual",
-          message: "Você não tem permissão para criar rotas para outras empresas."
+          message:
+            "Você não tem permissão para criar rotas para outras empresas.",
         });
       }
     } finally {
@@ -143,7 +145,7 @@ const RotasCreate = () => {
                 {form.formState.errors.root.message}
               </div>
             )}
-            
+
             <FormField
               control={form.control}
               name="nome"
@@ -176,5 +178,3 @@ const RotasCreate = () => {
     </MainWrapper>
   );
 };
-
-export default RotasCreate;

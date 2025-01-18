@@ -1,4 +1,4 @@
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { useState, useEffect } from "react";
 import {
   Select,
@@ -18,13 +18,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
-import ProgramasActions from "./programasActions";
+import { ProgramasActions } from "./ProgramasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import {formatDatetime} from "@/lib/utils"
-import api from "@/config/axios.config";
+import { formatDatetime } from "@/lib/utils";
+import api from "@/axios.config";
 
-const Programas = () => {
+export const ProgramasList = () => {
   const [filterType, setFilterType] = useState("nome");
   const [searchTerm, setSearchTerm] = useState("");
   const [programas, setProgramas] = useState([]);
@@ -198,8 +198,12 @@ const Programas = () => {
                     </TableCell>
                     <TableCell>{programa.Rota?.nome || "-"}</TableCell>
                     <TableCell>{programa.Empresa?.nome || "-"}</TableCell>
-                    <TableCell>{formatDatetime(programa.createdAt) || '-'}</TableCell>
-                    <TableCell>{formatDatetime(programa.updatedAt) || '-'}</TableCell>
+                    <TableCell>
+                      {formatDatetime(programa.createdAt) || "-"}
+                    </TableCell>
+                    <TableCell>
+                      {formatDatetime(programa.updatedAt) || "-"}
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -210,5 +214,3 @@ const Programas = () => {
     </MainWrapper>
   );
 };
-
-export default Programas;

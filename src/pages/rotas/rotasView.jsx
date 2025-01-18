@@ -1,13 +1,13 @@
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeftCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Field from "@/components/field";
+import { Field } from "@/components/Field";
 import { toast } from "@/hooks/use-toast";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
-const RotasView = () => {
+export const RotasView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [rota, setRota] = useState(null);
@@ -69,5 +69,3 @@ const RotasView = () => {
     </MainWrapper>
   );
 };
-
-export default RotasView;

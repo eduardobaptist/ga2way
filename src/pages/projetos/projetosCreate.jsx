@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import MainWrapper from "@/components/mainWrapper";
-import ProjectCanvas from "@/components/specific/projectCanvas";
-import ProjectForm from "@/components/specific/projectForm";
+import { MainWrapper } from "@/components/MainWrapper";
+import { ProjetosProjectCanvas } from "@/components/ProjetosProjectCanvas";
+import { ProjetosForm } from "@/components/ProjetosForm";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, CheckCircleIcon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const ProjetosCreate = () => {
+export const ProjetosCreate = () => {
   const [layout, setLayout] = useState("infosGerais");
   const projectFormRef = useRef(null);
   const isMobile = useIsMobile();
@@ -35,6 +35,7 @@ const ProjetosCreate = () => {
     (formData) => {
       const projectData = {
         ...formData,
+
         justificativas: canvasData["justificativas"]?.textarea_value,
         objsmart: canvasData["objsmart"]?.textarea_value,
         beneficios: canvasData["beneficios"]?.textarea_value,
@@ -48,7 +49,7 @@ const ProjetosCreate = () => {
         riscos: canvasData["riscos"]?.textarea_value,
         linha_do_tempo: canvasData["linha_do_tempo"]?.textarea_value,
         custos: canvasData["custos"]?.textarea_value,
-        
+
         estilo: JSON.stringify(canvasData),
       };
       console.log("projetos form data:", projectData);
@@ -173,14 +174,12 @@ const ProjetosCreate = () => {
       )}
       <div className="mt-5">
         <div style={{ display: layout === "infosGerais" ? "block" : "none" }}>
-          <ProjectForm ref={projectFormRef} onSubmit={onSubmit} />
+          <ProjetosForm ref={projectFormRef} onSubmit={onSubmit} />
         </div>
         <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
-          <ProjectCanvas setCanvasData={setCanvasData} />
+          <ProjetosProjectCanvas setCanvasData={setCanvasData} />
         </div>
       </div>
     </MainWrapper>
   );
 };
-
-export default ProjetosCreate;

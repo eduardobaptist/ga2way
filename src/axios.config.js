@@ -1,4 +1,3 @@
-// axios.config.js
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 
@@ -12,7 +11,7 @@ const api = axios.create({
   baseURL: "/api",
 });
 
-// Manda o JWT em todas as requests
+/* manda o JWT em todas as requests */
 api.interceptors.request.use(
   (config) => {
     const token = JSON.parse(localStorage.getItem("authData"))?.token;

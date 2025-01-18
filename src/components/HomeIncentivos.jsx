@@ -18,7 +18,7 @@ const AcademicIncentiveCard = ({ icon: Icon, title, description }) => (
   </div>
 );
 
-const HomeIncentivos = () => {
+export const HomeIncentivos = () => {
   const incentives = [
     {
       icon: Building2,
@@ -55,5 +55,3 @@ const HomeIncentivos = () => {
     </div>
   );
 };
-
-export default HomeIncentivos;

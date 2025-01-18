@@ -1,13 +1,13 @@
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/mainWrapper";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeftCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Field from "@/components/field";
+import { Field } from "@/components/Field";
 import { toast } from "@/hooks/use-toast";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
-const ProgramasView = () => {
+export const ProgramasView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [programa, setPrograma] = useState(null);
@@ -62,13 +62,11 @@ const ProgramasView = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
-            <Field label="Nome" value={`${programa.nome}`} />
-            <Field label="Descrição" value={programa.descricao} />
-            <Field label="Rota" value={`${programa.Rota.nome}`} />
+          <Field label="Nome" value={`${programa.nome}`} />
+          <Field label="Descrição" value={programa.descricao} />
+          <Field label="Rota" value={`${programa.Rota.nome}`} />
         </div>
       )}
     </MainWrapper>
   );
 };
-
-export default ProgramasView;

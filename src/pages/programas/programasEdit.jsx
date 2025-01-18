@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertDialog,
@@ -49,7 +49,7 @@ import { toast } from "@/hooks/use-toast";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
 const programaFormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -57,7 +57,7 @@ const programaFormSchema = z.object({
   rota_id: z.number().min(1, "Selecione uma rota"),
 });
 
-const ProgramasEdit = () => {
+export const ProgramasEdit = () => {
   const [rotas, setRotas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -348,5 +348,3 @@ const ProgramasEdit = () => {
     </MainWrapper>
   );
 };
-
-export default ProgramasEdit;

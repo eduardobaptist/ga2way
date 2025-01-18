@@ -24,9 +24,9 @@ import {
 import { Menu, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
-const ProgramasActions = ({ programa, onRefresh }) => {
+export const ProgramasActions = ({ programa, onRefresh }) => {
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -135,5 +135,3 @@ const ProgramasActions = ({ programa, onRefresh }) => {
     </TooltipProvider>
   );
 };
-
-export default ProgramasActions;

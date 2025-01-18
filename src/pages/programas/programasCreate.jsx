@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import MainWrapper from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertDialog,
@@ -48,7 +48,7 @@ import { toast } from "@/hooks/use-toast";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
 const programaFormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -56,7 +56,7 @@ const programaFormSchema = z.object({
   rota_id: z.number().min(1, "Selecione uma rota"),
 });
 
-const ProgramasCreate = () => {
+export const ProgramasCreate = () => {
   const [rotas, setRotas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,7 +102,7 @@ const ProgramasCreate = () => {
     try {
       const response = await api.post("/programas", {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id
+        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
       });
 
       toast({
@@ -112,8 +112,10 @@ const ProgramasCreate = () => {
 
       navigate("/rotas/programas");
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Erro ao criar programa. Tente novamente.";
-      
+      const errorMessage =
+        error.response?.data?.error ||
+        "Erro ao criar programa. Tente novamente.";
+
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -122,7 +124,8 @@ const ProgramasCreate = () => {
       if (error.response?.status === 403) {
         form.setError("root", {
           type: "manual",
-          message: "Você não tem permissão para criar programas para outras empresas."
+          message:
+            "Você não tem permissão para criar programas para outras empresas.",
         });
       }
     } finally {
@@ -163,9 +166,14 @@ const ProgramasCreate = () => {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isSubmitting}>Cancelar</AlertDialogCancel>
+              <AlertDialogCancel disabled={isSubmitting}>
+                Cancelar
+              </AlertDialogCancel>
               <Link to="/rotas/programas">
-                <AlertDialogAction className="w-full md:w-fit" disabled={isSubmitting}>
+                <AlertDialogAction
+                  className="w-full md:w-fit"
+                  disabled={isSubmitting}
+                >
                   Continuar
                 </AlertDialogAction>
               </Link>
@@ -228,7 +236,10 @@ const ProgramasCreate = () => {
                     </PopoverTrigger>
                     <PopoverContent className="w-[400px] p-0">
                       <Command>
-                        <CommandInput placeholder="Buscar rota..." disabled={isSubmitting} />
+                        <CommandInput
+                          placeholder="Buscar rota..."
+                          disabled={isSubmitting}
+                        />
                         {isLoading ? (
                           <div className="flex my-3 items-center justify-center">
                             <Loader2 className="h-6 w-6 animate-spin mr-2" />
@@ -290,5 +301,3 @@ const ProgramasCreate = () => {
     </MainWrapper>
   );
 };
-
-export default ProgramasCreate;

@@ -1,6 +1,4 @@
-import { Badge } from "./ui/badge";
-
-const MainWrapper = ({ title, children }) => {
+export const MainWrapper = ({ title, children }) => {
   return (
     <div className="px-5">
       <div className="flex items-center justify-start my-3">
@@ -10,5 +8,3 @@ const MainWrapper = ({ title, children }) => {
     </div>
   );
 };
-
-export default MainWrapper;

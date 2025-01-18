@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { NavLink, useLocation, useMatch } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const CollapsibleNavLink = ({ label, to, icon, children, childrenRoutes }) => {
+export const CollapsibleNavLink = ({ label, to, icon, children, childrenRoutes }) => {
   const location = useLocation();
   const match = useMatch(childrenRoutes);
   const [isExpanded, setIsExpanded] = useState(match);
@@ -47,5 +47,3 @@ const CollapsibleNavLink = ({ label, to, icon, children, childrenRoutes }) => {
     </div>
   );
 };
-
-export default CollapsibleNavLink;

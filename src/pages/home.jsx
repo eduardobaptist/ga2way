@@ -13,19 +13,19 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LogoCarousel from "@/components/logoCarousel";
-import HomeBadges from "@/components/specific/homeBadges";
-import HomeNossasMetricas from "@/components/specific/homeNossasMetricas";
-import HomeIncentivos from "@/components/specific/homeIncentivos";
-import LoginForm from "@/components/specific/loginForm";
-import RegisterFormEmpresa from "@/components/specific/registerFormEmpresa";
-import RegisterFormIct from "@/components/specific/registerFormIct";
+import { LogoCarousel } from "@/components/LogoCarousel";
+import { HomeBadges } from "@/components/HomeBadges";
+import { HomeNossasMetricas } from "@/components/HomeNossasMetricas";
+import { HomeIncentivos } from "@/components/HomeIncentivos";
+import { LoginForm } from "@/components/LoginForm";
+import { RegisterFormEmpresa } from "@/components/RegisterFormEmpresa";
+import { RegisterFormIct } from "@/components/RegisterFormIct";
 import gatewayLogo from "../assets/img/gateway_logo_branco.png";
 
 import highFive from "../assets/animations/high-five.json";
 import rocket from "../assets/animations/rocket.json";
 
-const Home = () => {
+export const Home = () => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -140,78 +140,78 @@ const Home = () => {
         </section>
 
         <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-600 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <h2
-            className="text-4xl font-bold text-center text-white mb-8"
-            data-aos="fade-up"
-          >
-            Nossas métricas
-          </h2>
-
-          <div
-            className="max-w-3xl mx-auto text-center mb-16"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <p className="text-white/90 text-lg mb-6">
-              Utilizamos duas métricas complementares para avaliar e
-              acompanhar o desenvolvimento dos nossos projetos: TRL
-              (Technology Readiness Level) e ACATECH, garantindo uma visão
-              completa do progresso tecnológico e industrial.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-            <div
-              className="space-y-8 flex flex-col"
-              data-aos="fade-right"
-              data-aos-delay="200"
+          <div className="container mx-auto px-4">
+            <h2
+              className="text-4xl font-bold text-center text-white mb-8"
+              data-aos="fade-up"
             >
-              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                <h3 className="text-2xl font-semibold text-white mb-4">
-                  Technology Readiness Level (TRL)
-                </h3>
-                <p className="text-white/80">
-                  O TRL é uma métrica desenvolvida pela NASA que avalia o
-                  nível de maturidade de uma tecnologia em uma escala de 1 a
-                  9, desde os princípios básicos até a operação comprovada.
-                  Esta metodologia nos permite identificar precisamente em
-                  qual estágio de desenvolvimento cada projeto se encontra.
-                </p>
+              Nossas métricas
+            </h2>
+
+            <div
+              className="max-w-3xl mx-auto text-center mb-16"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            >
+              <p className="text-white/90 text-lg mb-6">
+                Utilizamos duas métricas complementares para avaliar e
+                acompanhar o desenvolvimento dos nossos projetos: TRL
+                (Technology Readiness Level) e ACATECH, garantindo uma visão
+                completa do progresso tecnológico e industrial.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+              <div
+                className="space-y-8 flex flex-col"
+                data-aos="fade-right"
+                data-aos-delay="200"
+              >
+                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
+                  <h3 className="text-2xl font-semibold text-white mb-4">
+                    Technology Readiness Level (TRL)
+                  </h3>
+                  <p className="text-white/80">
+                    O TRL é uma métrica desenvolvida pela NASA que avalia o
+                    nível de maturidade de uma tecnologia em uma escala de 1 a
+                    9, desde os princípios básicos até a operação comprovada.
+                    Esta metodologia nos permite identificar precisamente em
+                    qual estágio de desenvolvimento cada projeto se encontra.
+                  </p>
+                </div>
+                <div className="flex justify-center overflow-x-auto max-w-full">
+                  <div className="w-full">
+                    <HomeNossasMetricas trlOnly />
+                  </div>
+                </div>
               </div>
-              <div className="flex justify-center overflow-x-auto max-w-full">
-                <div className="w-full">
-                  <HomeNossasMetricas trlOnly />
+
+              <div
+                className="space-y-8 flex flex-col"
+                data-aos="fade-left"
+                data-aos-delay="300"
+              >
+                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
+                  <h3 className="text-2xl font-semibold text-white mb-4">
+                    Índice ACATECH
+                  </h3>
+                  <p className="text-white/80">
+                    O modelo ACATECH, desenvolvido pela Academia Alemã de
+                    Ciências e Engenharia, complementa o TRL focando na
+                    maturidade industrial. Com quatro estágios principais, esta
+                    métrica nos ajuda a avaliar a preparação para manufatura e
+                    implementação em escala industrial.
+                  </p>
+                </div>
+                <div className="flex justify-center overflow-x-auto max-w-full">
+                  <div className="w-full">
+                    <HomeNossasMetricas acatechOnly />
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div
-              className="space-y-8 flex flex-col"
-              data-aos="fade-left"
-              data-aos-delay="300"
-            >
-              <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                <h3 className="text-2xl font-semibold text-white mb-4">
-                  Índice ACATECH
-                </h3>
-                <p className="text-white/80">
-                  O modelo ACATECH, desenvolvido pela Academia Alemã de
-                  Ciências e Engenharia, complementa o TRL focando na
-                  maturidade industrial. Com quatro estágios principais, esta
-                  métrica nos ajuda a avaliar a preparação para manufatura e
-                  implementação em escala industrial.
-                </p>
-              </div>
-              <div className="flex justify-center overflow-x-auto max-w-full">
-                <div className="w-full">
-                  <HomeNossasMetricas acatechOnly />
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
         <section className="py-20 bg-gradient-to-l from-blue-900 via-gray-900 to-black">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -312,5 +312,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;

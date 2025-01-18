@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "../ui/input";
+import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
@@ -35,11 +35,11 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ptBR } from "date-fns/locale";
-import { ChevronsUpDown, Check, Loader2, CalendarIcon } from "lucide-react";
+import { ChevronsUpDown, Check, Loader2, CalendarIcon, Upload } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
-import api from "@/config/axios.config";
+import api from "@/axios.config";
 
 const projectFormSchema = z
   .object({
@@ -56,25 +56,50 @@ const projectFormSchema = z
     acatech: z.string().min(1, "Nível ACATECH é obrigatório"),
     prioridade: z.string().min(1, "Prioridade é obrigatória"),
     impulso: z.boolean(),
-    impulsoTipo: z.string().optional(),
+    impulsoTipo: z.string(),
+    upload: z
+      .instanceof(File)
+      .refine(
+        (file) => {
+          const allowedTypes = [
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "application/vnd.oasis.opendocument.text",
+          ];
+
+          const isAllowed = allowedTypes.includes(file.type);
+
+          return isAllowed;
+        },
+        {
+          message:
+            "Apenas arquivos PDF, Word (doc, docx), e ODT são permitidos",
+        }
+      )
+      .nullable(),
   })
-  .refine((data) => !data.impulso || !!data.impulsoTipo, {
+  .refine((data) => {
+    // If impulso is true, impulsoTipo must be selected
+    if (data.impulso) {
+      return data.impulsoTipo !== "";
+    }
+    // If impulso is false, we don't care about impulsoTipo
+    return true;
+  }, {
     message: "Tipo de impulso é obrigatório quando possui impulso acadêmico",
     path: ["impulsoTipo"],
   })
-  .refine(
-    (data) => data.data_inicio < data.data_fim,
-    {
-      message: "A data de início deve ser anterior à data de término",
-      path: ["data_inicio"],
-    }
-  );
+  .refine((data) => data.data_inicio < data.data_fim, {
+    message: "A data de início deve ser anterior à data de término",
+    path: ["data_inicio"],
+  });
 
-const ProjectForm = forwardRef(({ onSubmit }, ref) => {
+export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
   const [open, setOpen] = useState(false);
+  const [hasImpulso, setHasImpulso] = useState(false);
   const [programas, setProgramas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasImpulso, setHasImpulso] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(projectFormSchema),
@@ -89,11 +114,13 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
       prioridade: "",
       impulso: false,
       impulsoTipo: "",
+      upload: null,
     },
   });
 
   const handleFormSubmit = (data) => {
     if (onSubmit) {
+      console.log(data);
       onSubmit(data);
     }
   };
@@ -262,12 +289,12 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
                   )}
                 />
               </div>
-              <div>
+              <div className="flex flex-col md:flex-row md:gap-8">
                 <FormField
                   control={form.control}
                   name="impulso"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="space-y-0">
                       <FormLabel>Possui impulso acadêmico?</FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -296,8 +323,9 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
                     </FormItem>
                   )}
                 />
+
                 {hasImpulso && (
-                  <div className="mt-4">
+                  <div className="mt-4 md:mt-0 flex-1">
                     {renderSelect("impulsoTipo", "Tipo de Impulso", [
                       { value: "1", label: "Estágio" },
                       { value: "2", label: "Bolsa" },
@@ -386,6 +414,35 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
                   )}
                 />
               </div>
+              <div>
+                <FormField
+                  control={form.control}
+                  name="upload"
+                  render={({ field: { onChange, value, ...field } }) => (
+                    <FormItem>
+                      <FormLabel>
+                        Upload do arquivo com mais informações
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative w-full">
+                          <Input
+                            type="file"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0] || null;
+                              onChange(file);
+                            }}
+                            {...field}
+                            className="w-full pr-10 cursor-pointer"
+                            accept=".pdf,.doc,.docx,.odt"
+                          />
+                          <Upload className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-50 pointer-events-none" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </fieldset>
 
@@ -422,5 +479,3 @@ const ProjectForm = forwardRef(({ onSubmit }, ref) => {
     </Form>
   );
 });
-
-export default ProjectForm;
