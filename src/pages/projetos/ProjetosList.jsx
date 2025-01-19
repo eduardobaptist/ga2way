@@ -1,4 +1,4 @@
-import bruningLogo from "/public/img/bruning-logo-redondo.png";
+import bruningLogo from "/img/bruning-logo-redondo.png";
 import { MainWrapper } from "@/components/MainWrapper";
 import { ProjetosActions } from "./ProjetosActions";
 import { useState, useEffect } from "react";
