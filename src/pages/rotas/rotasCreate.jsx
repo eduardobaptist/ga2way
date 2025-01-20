@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/useAuthStore";
 import { MainWrapper } from "@/components/mainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -40,6 +41,7 @@ export const RotasCreate = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
 
   const form = useForm({
     resolver: zodResolver(rotaFormSchema),
@@ -54,7 +56,7 @@ export const RotasCreate = () => {
     try {
       const response = await api.post("/rotas", {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
+        empresa_id,
       });
 
       toast({

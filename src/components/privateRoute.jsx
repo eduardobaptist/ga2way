@@ -1,7 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const PrivateRoute = () => {
-  const token = JSON.parse(localStorage.getItem("authData"))?.token;
+  const token = useAuthStore((state) => state.getToken());
 
   if (!token) {
     return <Navigate to="/" replace />;

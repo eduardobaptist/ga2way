@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/useAuthStore";
 import { MainWrapper } from "@/components/mainWrapper";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -39,6 +40,7 @@ export const RotasEdit = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
+  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -90,7 +92,7 @@ export const RotasEdit = () => {
     try {
       await api.put(`/rotas/${id}`, {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
+        empresa_id
       });
 
       toast({

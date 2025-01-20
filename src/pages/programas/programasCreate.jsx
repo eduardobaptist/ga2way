@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useState, useEffect } from "react";
 import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
@@ -61,6 +62,7 @@ export const ProgramasCreate = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
 
   const fetchRotas = async () => {
     setIsLoading(true);
@@ -102,7 +104,7 @@ export const ProgramasCreate = () => {
     try {
       const response = await api.post("/programas", {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
+        empresa_id
       });
 
       toast({

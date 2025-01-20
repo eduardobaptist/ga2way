@@ -16,7 +16,7 @@ import { Mail, Lock, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "@/axios.config";
 import { toast } from "@/hooks/use-toast";
-import { useAuth } from "@/components/AuthContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const formShema = z.object({
   email: z
@@ -38,7 +38,7 @@ export const LoginForm = () => {
   });
 
   const navigate = useNavigate();
-  const { authData, login } = useAuth();
+  const login = useAuthStore(state => state.login);
 
   const handleSubmit = async (data) => {
     setIsLoading(true);

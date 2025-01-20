@@ -12,6 +12,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 import { useState } from "react";
 
@@ -20,8 +21,15 @@ const CollapsibleMenuItem = ({ subItem }) => {
 
   return (
     <SidebarMenuSubItem key={subItem.title}>
-      <SidebarMenuSubButton
-        className={isActive ? "bg-gray-100" : "bg-transparent"}
+      <div
+        className={cn(
+          "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
+          "data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground",
+          isActive
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "bg-transparent text-sidebar-foreground",
+          "group-data-[collapsible=icon]:hidden"
+        )}
       >
         <NavLink
           to={subItem.url}
@@ -33,7 +41,7 @@ const CollapsibleMenuItem = ({ subItem }) => {
           {subItem.icon && <subItem.icon className="h-4 w-4" />}
           <span>{subItem.title}</span>
         </NavLink>
-      </SidebarMenuSubButton>
+      </div>
     </SidebarMenuSubItem>
   );
 };

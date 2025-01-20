@@ -1,6 +1,7 @@
 import { Route, Rocket, Home, Users } from "lucide-react";
 import {
   Sidebar,
+  SidebarHeader,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -12,6 +13,7 @@ import {
 import { SidebarLogout } from "./SidebarLogout";
 import { SidebarSingleMenuItem } from "./SidebarSingleMenuItem";
 import { SidebarCollapsibleMenu } from "./SidebarCollapsibleMenu";
+import { SidebarHeaderInfo } from "./SidebarHeaderInfo";
 
 const items = [
   {
@@ -31,9 +33,12 @@ const items = [
 ];
 
 export const AppSidebar = () => {
-  
   return (
     <Sidebar>
+      <SidebarHeader>
+        <SidebarHeaderInfo />
+      </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
@@ -51,7 +56,7 @@ export const AppSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="p-4">
         <SidebarLogout />
       </SidebarFooter>
     </Sidebar>

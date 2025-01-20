@@ -138,7 +138,7 @@ export const ProjetosList = () => {
         {layout === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {Array.from({ length: 5 }).map((_, index) => (
-              <Card key={index} className="w-full h-max col-span-1 shadow-lg">
+              <Card key={index} className="w-full h-max col-span-1 shadow-md">
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
                     <div className="flex">

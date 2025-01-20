@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MainWrapper } from "@/components/MainWrapper";
@@ -63,6 +64,7 @@ export const ProgramasEdit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
+  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
 
   const form = useForm({
     resolver: zodResolver(programaFormSchema),
@@ -150,7 +152,7 @@ export const ProgramasEdit = () => {
     try {
       const response = await api.put(`/programas/${id}`, {
         ...data,
-        empresa_id: JSON.parse(localStorage.getItem("authData"))?.empresa_id,
+        empresa_id
       });
 
       toast({
