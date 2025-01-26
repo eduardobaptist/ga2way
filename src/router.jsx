@@ -16,7 +16,11 @@ import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
+
+import { EmpresasList } from "@/pages/empresas/EmpresasList";
+
 import { Layout } from "./components/Layout";
+import { EmpresasCreate } from "./pages/empresas/EmpresasCreate";
 
 export const router = createBrowserRouter([
   {
@@ -57,6 +61,17 @@ export const router = createBrowserRouter([
           {
             path: "/usuarios",
             element: <ProjetosList />,
+          },
+          {
+            path: "/empresas",
+            children: [
+              { index: true, element: <EmpresasList /> },
+              { path: "novo", element: <EmpresasCreate /> },
+            ],
+          },
+          {
+            path: "/ict",
+            element: null,
           },
         ],
       },

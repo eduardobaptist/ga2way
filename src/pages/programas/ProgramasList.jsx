@@ -36,7 +36,7 @@ export const ProgramasList = () => {
     { value: "empresa", label: "Empresa" },
     { value: "rota", label: "Rota" },
     { value: "descricao", label: "Descrição" },
-    { value: "dataCricao", label: "Criação" },
+    { value: "dataCricao", label: "Data de Criação" },
   ];
 
   const fetchProgramas = async () => {
@@ -147,8 +147,8 @@ export const ProgramasList = () => {
                 <TableHead>Descrição</TableHead>
                 <TableHead>Rota</TableHead>
                 <TableHead>Empresa</TableHead>
-                <TableHead>Criação</TableHead>
-                <TableHead>Alteração</TableHead>
+                <TableHead>Data de Criação</TableHead>
+                <TableHead>Data de Alteração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

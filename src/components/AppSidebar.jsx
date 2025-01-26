@@ -1,4 +1,11 @@
-import { Route, Rocket, Home, Users } from "lucide-react";
+import {
+  Route,
+  Rocket,
+  Home,
+  Users,
+  Building2,
+  GraduationCap,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarHeader,
@@ -29,6 +36,16 @@ const items = [
     title: "Usuários",
     url: "/projetos",
     icon: Users,
+  },
+  {
+    title: "Empresas",
+    url: "/empresas",
+    icon: Building2,
+  },
+  {
+    title: "Instituições de Ensino (ICTs)",
+    url: "/ict",
+    icon: GraduationCap,
   },
 ];
 

@@ -18,35 +18,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
-import { RotasActions } from "./RotasActions";
+import { EmpresasActions } from "./EmpresasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import api from "@/axios.config";
 
-export const RotasList = () => {
+export const EmpresasList = () => {
   const [filterType, setFilterType] = useState("nome");
   const [searchTerm, setSearchTerm] = useState("");
-  const [rotas, setRotas] = useState([]);
+  const [empresas, setEmpresas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const filters = [
     { value: "nome", label: "Nome" },
-    { value: "empresa", label: "Empresa" },
-    { value: "descricao", label: "Descrição" },
+    { value: "cnpj", label: "CNPJ" },
+    { value: "area", label: "Área de atuação" },
     { value: "dataCriacao", label: "Data de Criação" },
   ];
 
-  const fetchRotas = async () => {
+  const fetchEmpresas = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.get("/rotas");
-      setRotas(response.data);
+      const response = await api.get("/empresas");
+      setEmpresas(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar rotas.";
+        error.response?.data?.error || "Erro ao carregar empresas.";
       setError(errorMessage);
       toast({
         title: errorMessage,
@@ -58,22 +58,22 @@ export const RotasList = () => {
   };
 
   useEffect(() => {
-    fetchRotas();
+    fetchEmpresas();
   }, []);
 
-  const filteredRotas = rotas.filter((rota) => {
+  const filteredEmpresas = empresas.filter((empresa) => {
     if (!searchTerm) return true;
 
     const searchLower = searchTerm.toLowerCase();
     switch (filterType) {
       case "nome":
-        return rota.nome.toLowerCase().includes(searchLower);
-      case "empresa":
-        return rota.Empresa?.nome?.toLowerCase().includes(searchLower);
-      case "descricao":
-        return rota.descricao.toLowerCase().includes(searchLower);
+        return empresa.nome.toLowerCase().includes(searchLower);
+      case "cnpj":
+        return empresa.cnpj?.nome?.toLowerCase().includes(searchLower);
+      case "area":
+        return empresa.area.toLowerCase().includes(searchLower);
       case "dataCriacao":
-        return new Date(rota.createdAt)
+        return new Date(empresa.createdAt)
           .toLocaleDateString()
           .toLowerCase()
           .includes(searchLower);
@@ -83,7 +83,7 @@ export const RotasList = () => {
   });
 
   return (
-    <MainWrapper title="Rotas">
+    <MainWrapper title="Empresas">
       <div className="grid grid-cols-2 gap-3">
         <div className="flex col-span-2 md:col-span-1">
           <Select
@@ -122,7 +122,7 @@ export const RotasList = () => {
           </div>
         </div>
         <div className="flex justify-between md:justify-end col-span-2 md:col-span-1 gap-2">
-          <Link to="/rotas/novo">
+          <Link to="/empresas/novo">
             <Button
               className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
               variant="outline"
@@ -141,10 +141,10 @@ export const RotasList = () => {
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>Descrição</TableHead>
-                <TableHead>Empresa</TableHead>
+                <TableHead>CNPJ</TableHead>
+                <TableHead>Telefone</TableHead>
+                <TableHead>Área de Atuação</TableHead>
                 <TableHead>Data de Criação</TableHead>
-                <TableHead>Data de Alteração</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -153,7 +153,7 @@ export const RotasList = () => {
                   <TableCell colSpan={6} className="text-center py-8">
                     <div className="flex items-center justify-center">
                       <Loader2 className="h-6 w-6 animate-spin mr-2" />
-                      Carregando rotas...
+                      Carregando empresas...
                     </div>
                   </TableCell>
                 </TableRow>
@@ -166,35 +166,40 @@ export const RotasList = () => {
                     {error}
                   </TableCell>
                 </TableRow>
-              ) : filteredRotas.length === 0 ? (
+              ) : filteredEmpresas.length === 0 ? (
                 <TableRow>
                   <TableCell
                     colSpan={6}
                     className="text-center py-8 text-gray-500"
                   >
-                    Nenhuma rota encontrada.
+                    Nenhuma empresa encontrada.
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredRotas.map((rota) => (
-                  <TableRow key={rota.id}>
+                filteredEmpresas.map((empresa) => (
+                  <TableRow key={empresa.id}>
                     <TableCell>
-                      <RotasActions rota={rota} onRefresh={fetchRotas} />
+                      <EmpresasActions
+                        empresa={empresa}
+                        onRefresh={fetchEmpresas}
+                      />
                     </TableCell>
-                    <TableCell>{rota.nome}</TableCell>
+                    <TableCell>{empresa.nome}</TableCell>
                     <TableCell>
-                      <div className="max-w-md relative group">
-                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {rota.descricao}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{rota.Empresa?.nome || "-"}</TableCell>
-                    <TableCell>
-                      {formatDatetime(rota.createdAt) || "-"}
+                      {empresa.cnpj.replace(
+                        /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+                        "$1.$2.$3/$4-$5"
+                      )}
                     </TableCell>
                     <TableCell>
-                      {formatDatetime(rota.updatedAt) || "-"}
+                      {empresa.telefone.replace(
+                        /(\d{2})(\d{2})(\d{4})(\d{4})/,
+                        "+$1 ($2) $3-$4"
+                      )}
+                    </TableCell>
+                    <TableCell>{empresa.area}</TableCell>
+                    <TableCell>
+                      {formatDatetime(empresa.createdAt) || "-"}
                     </TableCell>
                   </TableRow>
                 ))

@@ -5,7 +5,7 @@ import { Building2, GraduationCap, UserCog } from "lucide-react";
 export const SidebarHeaderInfo = () => {
   const userTipo = useAuthStore((state) => state.getUserTipo());
 
-  const nome = useAuthStore((state) => state.authData?.usuario?.nome);
+  const nome = useAuthStore((state) => state.authData?.usuario?.email);
   const info =
     userTipo === "admin"
       ? "Administrador"

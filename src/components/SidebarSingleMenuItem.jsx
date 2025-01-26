@@ -7,7 +7,7 @@ export const SidebarSingleMenuItem = ({ item }) => {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <SidebarMenuItem className={isActive ? "bg-gray-100" : "bg-transparent"}>
+    <SidebarMenuItem className={isActive ? "bg-gray-100 rounded-md" : "bg-transparent"}>
       <SidebarMenuButton>
         <NavLink
           to={item.url}

@@ -35,7 +35,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ptBR } from "date-fns/locale";
-import { ChevronsUpDown, Check, Loader2, CalendarIcon, Upload } from 'lucide-react';
+import {
+  ChevronsUpDown,
+  Check,
+  Loader2,
+  CalendarIcon,
+  Upload,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
@@ -79,17 +85,20 @@ const projectFormSchema = z
       )
       .nullable(),
   })
-  .refine((data) => {
-    // If impulso is true, impulsoTipo must be selected
-    if (data.impulso) {
-      return data.impulsoTipo !== "";
+  .refine(
+    (data) => {
+      // If impulso is true, impulsoTipo must be selected
+      if (data.impulso) {
+        return data.impulsoTipo !== "";
+      }
+      // If impulso is false, we don't care about impulsoTipo
+      return true;
+    },
+    {
+      message: "Tipo de impulso é obrigatório quando possui impulso acadêmico",
+      path: ["impulsoTipo"],
     }
-    // If impulso is false, we don't care about impulsoTipo
-    return true;
-  }, {
-    message: "Tipo de impulso é obrigatório quando possui impulso acadêmico",
-    path: ["impulsoTipo"],
-  })
+  )
   .refine((data) => data.data_inicio < data.data_fim, {
     message: "A data de início deve ser anterior à data de término",
     path: ["data_inicio"],
@@ -424,19 +433,16 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                         Upload do arquivo com mais informações
                       </FormLabel>
                       <FormControl>
-                        <div className="relative w-full">
-                          <Input
-                            type="file"
-                            onChange={(e) => {
-                              const file = e.target.files?.[0] || null;
-                              onChange(file);
-                            }}
-                            {...field}
-                            className="w-full pr-10 cursor-pointer"
-                            accept=".pdf,.doc,.docx,.odt"
-                          />
-                          <Upload className="absolute right-4 top-1/2 transform -translate-y-1/2 h-4 w-4 opacity-50 pointer-events-none" />
-                        </div>
+                        <Input
+                          type="file"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0] || null;
+                            onChange(file);
+                          }}
+                          {...field}
+                          className="w-full pr-10 cursor-pointer"
+                          accept=".pdf,.doc,.docx,.odt"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
