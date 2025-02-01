@@ -34,6 +34,7 @@ export const EmpresasList = () => {
   const filters = [
     { value: "nome", label: "Nome" },
     { value: "cnpj", label: "CNPJ" },
+    { value: "telefone", label: "Telefone" },
     { value: "area", label: "Área de atuação" },
     { value: "dataCriacao", label: "Data de Criação" },
   ];
@@ -69,7 +70,15 @@ export const EmpresasList = () => {
       case "nome":
         return empresa.nome.toLowerCase().includes(searchLower);
       case "cnpj":
-        return empresa.cnpj?.nome?.toLowerCase().includes(searchLower);
+        return empresa.cnpj
+          .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")
+          .toLowerCase()
+          .includes(searchLower);
+      case "telefone":
+        return empresa.telefone
+          .replace(/(\d{2})(\d{2})(\d{4})(\d{4})/, "+$1 ($2) $3-$4")
+          .toLowerCase()
+          .includes(searchLower);
       case "area":
         return empresa.area.toLowerCase().includes(searchLower);
       case "dataCriacao":
