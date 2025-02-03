@@ -3,15 +3,16 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { Building2, GraduationCap, UserCog } from "lucide-react";
 
 export const SidebarHeaderInfo = () => {
-  const userTipo = useAuthStore((state) => state.getUserTipo());
+  const { authData, getUserTipo, getUserEmpresa, getUserIct } = useAuthStore();
 
-  const nome = useAuthStore((state) => state.authData?.usuario?.email);
+  const userTipo = getUserTipo();
+  const email = authData?.email;
   const info =
     userTipo === "admin"
       ? "Administrador"
       : userTipo === "empresa"
-      ? useAuthStore((state) => state.getUserEmpresa())
-      : useAuthStore((state) => state.getUserIct());
+      ? getUserEmpresa()
+      : getUserIct();
   const logo =
     userTipo === "admin"
       ? UserCog
@@ -25,7 +26,7 @@ export const SidebarHeaderInfo = () => {
         {React.createElement(logo, { className: "h-5 w-5 font-semibold" })}
       </div>
       <div className="min-w-0 flex-1 text-left text-sm">
-        <div className="truncate font-semibold">{nome}</div>
+        <div className="truncate font-semibold">{email}</div>
         <div className="truncate text-xs text-gray-500">{info}</div>
       </div>
     </div>

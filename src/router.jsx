@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import { Home } from "@/pages/Home";
 import { PrivateRoute } from "@/components/PrivateRoute";
+import { Layout } from "./components/Layout";
 
 import { RotasList } from "@/pages/rotas/RotasList";
 import { RotasCreate } from "@/pages/rotas/RotasCreate";
@@ -18,9 +19,10 @@ import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
 
 import { EmpresasList } from "@/pages/empresas/EmpresasList";
-
-import { Layout } from "./components/Layout";
 import { EmpresasCreate } from "./pages/empresas/EmpresasCreate";
+import { EmpresasView } from "./pages/empresas/EmpresasView";
+import { EmpresasEdit } from "./pages/empresas/EmpresasEdit";
+import { UsuariosList } from "./pages/usuarios/UsuariosList";
 
 export const router = createBrowserRouter([
   {
@@ -60,13 +62,15 @@ export const router = createBrowserRouter([
           },
           {
             path: "/usuarios",
-            element: <ProjetosList />,
+            element: <UsuariosList />,
           },
           {
             path: "/empresas",
             children: [
               { index: true, element: <EmpresasList /> },
               { path: "novo", element: <EmpresasCreate /> },
+              { path: ":id", element: <EmpresasView /> },
+              { path: "editar/:id", element: <EmpresasEdit /> },
             ],
           },
           {

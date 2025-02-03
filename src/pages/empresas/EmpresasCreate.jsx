@@ -34,7 +34,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const rotaFormSchema = z.object({
+const empresaFormSchema = z.object({
   nome: z
     .string()
     .min(1, "Nome é obrigatório")
@@ -95,7 +95,7 @@ export const EmpresasCreate = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(rotaFormSchema),
+    resolver: zodResolver(empresaFormSchema),
     defaultValues: {
       nome: "",
       razao_social: "",
@@ -239,7 +239,7 @@ export const EmpresasCreate = () => {
               name="razao_social"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Razão Social</FormLabel>
+                  <FormLabel>Razão social</FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -303,7 +303,7 @@ export const EmpresasCreate = () => {
               name="area"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Área de Atuação</FormLabel>
+                  <FormLabel>Área de atuação</FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>

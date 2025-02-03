@@ -1,26 +1,39 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import api from "@/axios.config";
 
-export const useAuthStore = create(
-  persist(
-    (set, get) => ({
-      authData: null,
+export const useAuthStore = create((set, get) => ({
+  token: localStorage.getItem("token") || null,
+  authData: null,
 
-      login: (data) => set({ authData: data }),
+  login: (data) => {
+    localStorage.setItem("token", data.token);
+    set({ token: data.token, authData: data.usuario });
+  },
 
-      logout: () => {
-        set({ authData: null });
-        window.location.href = "/";
-      },
+  fetchUser: async () => {
+    const token = get().token;
+    if (!token) return false;
 
-      getUser: () => get().authData?.usuario,
-      getToken: () => get().authData?.token,
-      getUserTipo: () => get().authData?.usuario?.tipo,
-      getUserEmpresa: () => get().authData?.usuario?.empresa_id,
-      getUserIct: () => get().authData?.usuario?.ict_id,
-    }),
-    {
-      name: "auth-storage",
+    try {
+      const response = await api.post("/auth");
+      set({ authData: response.data.usuario });
+      return true;
+    } catch (error) {
+      set({ authData: null, token: null });
+      localStorage.removeItem("token");
+      return false;
     }
-  )
-);
+  },
+
+  logout: () => {
+    localStorage.removeItem("token");
+    set({ token: null, authData: null });
+    window.location.href = "/";
+  },
+
+  getUser: () => get().authData,
+  getUserEmpresa: () => get().authData?.empresa_id,
+  getUserIct: () => get().authData?.ict_id,
+  getUserTipo: () => get().authData?.tipo,
+  getToken: () => get().token,
+}));

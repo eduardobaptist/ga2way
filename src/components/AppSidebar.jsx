@@ -34,7 +34,7 @@ const items = [
   },
   {
     title: "Usuários",
-    url: "/projetos",
+    url: "/usuarios",
     icon: Users,
   },
   {

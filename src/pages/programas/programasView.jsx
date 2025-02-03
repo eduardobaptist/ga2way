@@ -45,7 +45,7 @@ export const ProgramasView = () => {
   return (
     <MainWrapper title={programa?.nome}>
       <div className="flex items-center justify-between">
-        <Link to="/rotas/programas">
+        <Link to="/programas">
           <Button
             className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
             variant="outline"
