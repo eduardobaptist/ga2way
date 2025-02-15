@@ -38,7 +38,7 @@ export const SidebarLogout = () => {
             <AlertDialogHeader>
               <AlertDialogTitle>Tem certeza que deseja sair?</AlertDialogTitle>
               <AlertDialogDescription>
-                Você será redirecionado para a homepage e terá de fazer login
+                Você será levado para a página principal e terá de fazer login
                 novamente.
               </AlertDialogDescription>
             </AlertDialogHeader>

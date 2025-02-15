@@ -68,7 +68,7 @@ export const RegisterFormIct = ({ closeDialog }) => {
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center col-span-2">
-            <span class="pr-2 text-xs font-bold">Dados da Instituição</span>
+            <span class="pr-2 text-xs font-bold">Dados da ICT</span>
             <hr class="flex-grow" />
           </div>
           <FormField

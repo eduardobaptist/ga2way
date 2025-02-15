@@ -18,11 +18,19 @@ import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
 
+import { UsuariosList } from "./pages/usuarios/UsuariosList";
+
 import { EmpresasList } from "@/pages/empresas/EmpresasList";
 import { EmpresasCreate } from "./pages/empresas/EmpresasCreate";
 import { EmpresasView } from "./pages/empresas/EmpresasView";
 import { EmpresasEdit } from "./pages/empresas/EmpresasEdit";
-import { UsuariosList } from "./pages/usuarios/UsuariosList";
+
+import { IctsList } from "./pages/icts/IctsList";
+import { IctsCreate } from "./pages/icts/IctsCreate";
+import { IctsView } from "./pages/icts/IctsView";
+import { IctsEdit } from "./pages/icts/IctsEdit";
+
+import { UsuariosCreate } from "./pages/usuarios/UsuariosCreate";
 
 export const router = createBrowserRouter([
   {
@@ -62,7 +70,10 @@ export const router = createBrowserRouter([
           },
           {
             path: "/usuarios",
-            element: <UsuariosList />,
+            children: [
+              { index: true, element: <UsuariosList /> },
+              { path: "novo", element: <UsuariosCreate /> },
+            ],
           },
           {
             path: "/empresas",
@@ -74,8 +85,13 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "/ict",
-            element: null,
+            path: "/icts",
+            children: [
+              { index: true, element: <IctsList /> },
+              { path: "novo", element: <IctsCreate /> },
+              { path: ":id", element: <IctsView /> },
+              { path: "editar/:id", element: <IctsEdit /> },
+            ],
           },
         ],
       },

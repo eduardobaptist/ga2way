@@ -250,7 +250,7 @@ export const ProgramasCreate = () => {
                         ) : (
                           <CommandList>
                             <CommandEmpty>
-                              Nenhuma rota encontrado.
+                              Nenhuma rota encontrada.
                             </CommandEmpty>
                             <CommandGroup>
                               {rotas.map((prog) => (

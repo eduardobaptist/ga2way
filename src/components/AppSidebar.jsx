@@ -5,6 +5,7 @@ import {
   Users,
   Building2,
   GraduationCap,
+  StickyNote
 } from "lucide-react";
 import {
   Sidebar,
@@ -25,10 +26,9 @@ import { SidebarHeaderInfo } from "./SidebarHeaderInfo";
 const items = [
   {
     title: "Projetos",
-    url: "/rotas",
     items: [
       { title: "Rotas", url: "/rotas", icon: Route },
-      { title: "Programas", url: "/programas", icon: Rocket },
+      { title: "Programas", url: "/programas", icon: StickyNote },
       { title: "Projetos", url: "/projetos", icon: Home },
     ],
   },
@@ -38,13 +38,18 @@ const items = [
     icon: Users,
   },
   {
+    title: "Impulsos acadêmicos",
+    url: "/impulsos",
+    icon: Rocket,
+  },
+  {
     title: "Empresas",
     url: "/empresas",
     icon: Building2,
   },
   {
-    title: "Instituições de Ensino (ICTs)",
-    url: "/ict",
+    title: "Institutos (ICTs)",
+    url: "/icts",
     icon: GraduationCap,
   },
 ];

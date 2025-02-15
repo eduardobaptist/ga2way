@@ -18,35 +18,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
-import { UsuariosActions } from "./UsuariosActions";
+import { IctsActions } from "./IctsActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
 import { formatDatetime } from "@/lib/utils";
+import api from "@/axios.config";
 
-export const UsuariosList = () => {
+export const IctsList = () => {
   const [filterType, setFilterType] = useState("nome");
   const [searchTerm, setSearchTerm] = useState("");
-  const [usuarios, setUsuarios] = useState([]);
+  const [icts, setIcts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const filters = [
     { value: "nome", label: "Nome" },
-    { value: "email", label: "Email" },
-    { value: "tipo", label: "Tipo" },
+    { value: "cnpj", label: "CNPJ" },
+    { value: "telefone", label: "Telefone" },
     { value: "dataCriacao", label: "Data de Criação" },
   ];
 
-  const fetchUsuarios = async () => {
+  const fetchIcts = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.get("/usuarios");
-      setUsuarios(response.data);
+      const response = await api.get("/icts");
+      setIcts(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar usuários.";
+        error.response?.data?.error || "Erro ao carregar ICTs.";
       setError(errorMessage);
       toast({
         title: errorMessage,
@@ -58,22 +58,28 @@ export const UsuariosList = () => {
   };
 
   useEffect(() => {
-    fetchUsuarios();
+    fetchIcts();
   }, []);
 
-  const filteredUsuarios = usuarios.filter((usuario) => {
+  const filteredIcts = icts.filter((ict) => {
     if (!searchTerm) return true;
 
     const searchLower = searchTerm.toLowerCase();
     switch (filterType) {
       case "nome":
-        return usuario.nome.toLowerCase().includes(searchLower);
-      case "email":
-        return usuario.email.toLowerCase().includes(searchLower);
-      case "tipo":
-        return usuario.tipo.toLowerCase().includes(searchLower);
+        return ict.nome.toLowerCase().includes(searchLower);
+      case "cnpj":
+        return ict.cnpj
+          .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")
+          .toLowerCase()
+          .includes(searchLower);
+      case "telefone":
+        return ict.telefone
+          .replace(/(\d{2})(\d{2})(\d{4})(\d{4})/, "+$1 ($2) $3-$4")
+          .toLowerCase()
+          .includes(searchLower);
       case "dataCriacao":
-        return new Date(usuario.createdAt)
+        return new Date(ict.createdAt)
           .toLocaleDateString()
           .toLowerCase()
           .includes(searchLower);
@@ -83,7 +89,7 @@ export const UsuariosList = () => {
   });
 
   return (
-    <MainWrapper title="Usuários">
+    <MainWrapper title="Institutos de Ciência e Tecnologia (ICTs)">
       <div className="grid grid-cols-2 gap-3">
         <div className="flex col-span-2 md:col-span-1">
           <Select
@@ -122,7 +128,7 @@ export const UsuariosList = () => {
           </div>
         </div>
         <div className="flex justify-between md:justify-end col-span-2 md:col-span-1 gap-2">
-          <Link to="/usuarios/novo">
+          <Link to="/icts/novo">
             <Button
               className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
               variant="outline"
@@ -141,8 +147,8 @@ export const UsuariosList = () => {
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Tipo</TableHead>
+                <TableHead>CNPJ</TableHead>
+                <TableHead>Telefone</TableHead>
                 <TableHead>Data de Criação</TableHead>
               </TableRow>
             </TableHeader>
@@ -152,7 +158,7 @@ export const UsuariosList = () => {
                   <TableCell colSpan={6} className="text-center py-8">
                     <div className="flex items-center justify-center">
                       <Loader2 className="h-6 w-6 animate-spin mr-2" />
-                      Carregando usuários...
+                      Carregando ICTs...
                     </div>
                   </TableCell>
                 </TableRow>
@@ -165,36 +171,39 @@ export const UsuariosList = () => {
                     {error}
                   </TableCell>
                 </TableRow>
-              ) : filteredUsuarios.length === 0 ? (
+              ) : filteredIcts.length === 0 ? (
                 <TableRow>
                   <TableCell
                     colSpan={6}
                     className="text-center py-8 text-gray-500"
                   >
-                    Nenhum usuário encontrado.
+                    Nenhuma ICT encontrada.
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredUsuarios.map((usuario) => (
-                  <TableRow key={usuario.id}>
+                filteredIcts.map((ict) => (
+                  <TableRow key={ict.id}>
                     <TableCell>
-                      <UsuariosActions
-                        usuario={usuario}
-                        onRefresh={fetchUsuarios}
+                      <IctsActions
+                        ict={ict}
+                        onRefresh={fetchIcts}
                       />
                     </TableCell>
-                    <TableCell>{usuario.nome}</TableCell>
-                    <TableCell>{usuario.email}</TableCell>
+                    <TableCell>{ict.nome}</TableCell>
                     <TableCell>
-                      {
-                        usuario.tipo === "ict"
-                          ? usuario.tipo.toUpperCase() // ict -> ICT
-                          : usuario.tipo[0]?.toUpperCase() +
-                            usuario.tipo.slice(1) // admin -> Admin | empresa -> Empresa
-                      }
+                      {ict.cnpj.replace(
+                        /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+                        "$1.$2.$3/$4-$5"
+                      )}
                     </TableCell>
                     <TableCell>
-                      {formatDatetime(usuario.createdAt) || "-"}
+                      {ict.telefone.replace(
+                        /(\d{2})(\d{2})(\d{4})(\d{4})/,
+                        "+$1 ($2) $3-$4"
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {formatDatetime(ict.createdAt) || "-"}
                     </TableCell>
                   </TableRow>
                 ))

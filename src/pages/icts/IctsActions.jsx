@@ -26,30 +26,30 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
 
-export const UsuariosActions = ({ usuario, onRefresh }) => {
+export const IctsActions = ({ ict, onRefresh }) => {
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleView = () => {
-    navigate(`/usuarios/${usuario.id}`);
+    navigate(`/icts/${ict.id}`);
   };
 
   const handleEdit = () => {
-    navigate(`/usuarios/editar/${usuario.id}`);
+    navigate(`/icts/editar/${ict.id}`);
   };
 
   const handleDelete = async () => {
     try {
-      await api.delete(`/usuarios/${usuario.id}`);
+      await api.delete(`/icts/${ict.id}`);
       toast({
-        title: "Usuário excluído com sucesso",
+        title: "ICT excluída com sucesso",
         variant: "success",
       });
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir usuário";
+        error.response?.data?.error || "Erro ao excluir ICT";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -118,7 +118,7 @@ export const UsuariosActions = ({ usuario, onRefresh }) => {
             <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
             <AlertDialogDescription>
               Esta ação não pode ser desfeita. Todos os dados relacionados a
-              este usuário serão permanentemente excluídos.
+              esta ICT serão permanentemente excluídos.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

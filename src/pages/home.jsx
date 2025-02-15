@@ -99,7 +99,7 @@ export const Home = () => {
                   Ideias que transformam, parcerias que evoluem.
                 </h1>
                 <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-700 dark:text-gray-300">
-                  Gate2Way conecta empresas e instituições, unindo demandas do
+                  Gate2Way conecta empresas e Institutos de Ciência e Tecnologia (ICTs), unindo demandas do
                   mercado a soluções criadas por talentos em formação.
                 </p>
               </motion.div>
@@ -288,7 +288,7 @@ export const Home = () => {
           <Tabs defaultValue="empresa" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-5">
               <TabsTrigger value="empresa">Empresa</TabsTrigger>
-              <TabsTrigger value="ict">Instituição</TabsTrigger>
+              <TabsTrigger value="ict">ICT</TabsTrigger>
             </TabsList>
             <TabsContent value="empresa">
               <RegisterFormEmpresa closeDialog={closeRegisterDialog} />
