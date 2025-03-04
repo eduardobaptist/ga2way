@@ -8,46 +8,45 @@ import { formatDatetime } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
 
-export const UsuariosView = () => {
+export const ImpulsosView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [usuario, setUsuario] = useState(null);
+  const [impulso, setimpulso] = useState(null);
   const navigate = useNavigate();
-
-  const fetchUsuario = async () => {
+  const fetchImpulso = async () => {
     setIsLoading(true);
 
     try {
-      const response = await api.get(`/usuarios/${id}`);
+      const response = await api.get(`/impulsos/${id}`);
 
       if (response?.data) {
-        setUsuario(response?.data);
+        setimpulso(response?.data);
       } else {
-        throw new Error("Usuário não encontrado");
+        throw new Error("Impulso não encontrado");
       }
     } catch (error) {
       const errorMessage =
         error.response?.data?.error ||
         error.message ||
-        "Erro ao carregar usuário";
+        "Erro ao carregar impulso.";
       toast({
         title: errorMessage,
         variant: "destructive",
       });
-      navigate("/usuarios");
+      navigate("/impoulsos");
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchUsuario();
+    fetchImpulso();
   }, []);
 
   return (
-    <MainWrapper title={usuario?.nome}>
+    <MainWrapper title={impulso?.descricao}>
       <div className="flex items-center justify-between">
-        <Link to="/usuarios">
+        <Link to="/impulsos">
           <Button
             className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
             variant="outline"
@@ -60,27 +59,27 @@ export const UsuariosView = () => {
       {isLoading ? (
         <div className="flex mt-5 items-center justify-center">
           <Loader2 className="h-6 w-6 animate-spin mr-2" />
-          Carregando usuário...
+          Carregando impulso...
         </div>
       ) : (
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
-          <Field label="E-mail" value={`${usuario.email}`} />
-          <Field label="Nome" value={usuario.nome} />
+          <Field label="Descrição" value={`${impulso.descricao}`} />
+          <Field label="Valor" value={`R$ ${impulso.valor}`} />
           <Field
-            label="Telefone"
-            value={`${usuario.telefone.replace(
-              /(\d{2})(\d{2})(\d{4})(\d{4})/,
-              "+$1 ($2) $3-$4"
-            )}`}
+            label="Data de início"
+            value={`${formatDatetime(impulso.data_inicio)}`}
           />
-          <Field label="Endereço" value={`${usuario.endereco}`} />
+          <Field
+            label="Data de término"
+            value={`${formatDatetime(impulso.data_fim)}`}
+          />
           <Field
             label="Data de criação"
-            value={`${formatDatetime(usuario.createdAt) || ""}`}
+            value={`${formatDatetime(impulso.createdAt) || ""}`}
           />
           <Field
             label="Data de alteração"
-            value={`${formatDatetime(usuario.updatedAt) || ""}`}
+            value={`${formatDatetime(impulso.updatedAt) || ""}`}
           />
         </div>
       )}

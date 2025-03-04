@@ -139,7 +139,7 @@ export const EmpresasEdit = () => {
       } catch (error) {
         toast({
           title: "Erro ao carregar empresa",
-          description: "Não foi possível carregar os dados do empresa",
+          description: "Não foi possível carregar os dados da empresa",
           variant: "destructive",
         });
         navigate("/empresas");

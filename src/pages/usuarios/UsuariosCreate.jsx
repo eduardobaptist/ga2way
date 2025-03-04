@@ -79,7 +79,7 @@ const usuarioFormSchema = z
     cargo: z
       .string()
       .min(1, "Insira um cargo")
-      .max(45, "Carg não deve exceder os 45 caracteres"),
+      .max(45, "Cargo não deve exceder os 45 caracteres"),
     endereco: z
       .string()
       .min(1, "Endereço é obrigatório")
@@ -261,7 +261,7 @@ export const UsuariosCreate = () => {
               <AlertDialogCancel disabled={isSubmitting}>
                 Cancelar
               </AlertDialogCancel>
-              <Link to="/programas">
+              <Link to="/usuarios">
                 <AlertDialogAction
                   className="w-full md:w-fit"
                   disabled={isSubmitting}
@@ -293,7 +293,7 @@ export const UsuariosCreate = () => {
               control={form.control}
               name="tipo"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="col-span-2 md:col-span-1">
                   <FormLabel>Tipo de Usuário</FormLabel>
                   <Select
                     onValueChange={(value) => {
@@ -323,7 +323,7 @@ export const UsuariosCreate = () => {
                 control={form.control}
                 name="ict_id"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>ICT</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -390,7 +390,7 @@ export const UsuariosCreate = () => {
                 control={form.control}
                 name="empresa_id"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>Empresa</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -475,7 +475,7 @@ export const UsuariosCreate = () => {
               control={form.control}
               name="senha"
               render={({ field }) => (
-                <FormItem className="relative">
+                <FormItem className="relative col-span-2 md:col-span-1">
                   <FormLabel>Senha</FormLabel>
                   <div className="relative">
                     <Input

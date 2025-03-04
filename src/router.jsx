@@ -31,6 +31,13 @@ import { IctsView } from "./pages/icts/IctsView";
 import { IctsEdit } from "./pages/icts/IctsEdit";
 
 import { UsuariosCreate } from "./pages/usuarios/UsuariosCreate";
+import { UsuariosEdit } from "./pages/usuarios/UsuariosEdit";
+import { UsuariosView } from "./pages/usuarios/UsuariosView";
+
+import { ImpulsosList } from "./pages/impulsos/ImpulsosList";
+import { ImpulsosCreate } from "./pages/impulsos/ImpulsosCreate";
+import { ImpulsosEdit } from "./pages/impulsos/ImpulsosEdit";
+import { ImpulsosView } from "./pages/impulsos/ImpulsosView";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +80,17 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <UsuariosList /> },
               { path: "novo", element: <UsuariosCreate /> },
+              { path: ":id", element: <UsuariosView /> },
+              { path: "editar/:id", element: <UsuariosEdit /> },
+            ],
+          },
+          {
+            path: "/impulsos",
+            children: [
+              { index: true, element: <ImpulsosList /> },
+              { path: "novo", element: <ImpulsosCreate /> },
+              { path: ":id", element: <ImpulsosView /> },
+              { path: "editar/:id", element: <ImpulsosEdit /> },
             ],
           },
           {

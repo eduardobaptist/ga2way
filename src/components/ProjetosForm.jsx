@@ -35,13 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ptBR } from "date-fns/locale";
-import {
-  ChevronsUpDown,
-  Check,
-  Loader2,
-  CalendarIcon,
-  Upload,
-} from "lucide-react";
+import { ChevronsUpDown, Check, Loader2, CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
@@ -62,7 +56,7 @@ const projectFormSchema = z
     acatech: z.string().min(1, "Nível ACATECH é obrigatório"),
     prioridade: z.string().min(1, "Prioridade é obrigatória"),
     impulso: z.boolean(),
-    impulsoTipo: z.string(),
+    impulso_id: z.number().nullable(),
     upload: z
       .instanceof(File)
       .refine(
@@ -79,24 +73,22 @@ const projectFormSchema = z
           return isAllowed;
         },
         {
-          message:
-            "Apenas arquivos PDF, Word (doc, docx), e ODT são permitidos",
+          message: "Apenas arquivos PDF, Word (doc, docx) e ODT são permitidos",
         }
       )
       .nullable(),
   })
   .refine(
     (data) => {
-      // If impulso is true, impulsoTipo must be selected
       if (data.impulso) {
-        return data.impulsoTipo !== "";
+        return data.impulso_id !== null;
       }
-      // If impulso is false, we don't care about impulsoTipo
+
       return true;
     },
     {
-      message: "Tipo de impulso é obrigatório quando possui impulso acadêmico",
-      path: ["impulsoTipo"],
+      message: "Selecione um impulso acadêmico",
+      path: ["impulso_id"],
     }
   )
   .refine((data) => data.data_inicio < data.data_fim, {
@@ -105,9 +97,11 @@ const projectFormSchema = z
   });
 
 export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
-  const [open, setOpen] = useState(false);
+  const [programasOpen, setProgramasOpen] = useState(false);
+  const [impulsosOpen, setImpulsosOpen] = useState(false);
   const [hasImpulso, setHasImpulso] = useState(false);
   const [programas, setProgramas] = useState([]);
+  const [impulsos, setimpulsos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const form = useForm({
@@ -122,7 +116,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       acatech: "",
       prioridade: "",
       impulso: false,
-      impulsoTipo: "",
+      impulso_id: null,
       upload: null,
     },
   });
@@ -156,10 +150,39 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
     }
   };
 
+  const fetchImpulsos = async () => {
+    setIsLoading(true);
+    try {
+      const response = await api.get("/impulsos");
+      setimpulsos(
+        response.data.map((impulso) => ({
+          value: impulso.id,
+          label: impulso.descricao,
+        }))
+      );
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Erro ao carregar impulsos.";
+      toast({
+        title: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleProgramas = () => {
-    setOpen(!open);
-    if (!open && programas.length === 0) {
+    setProgramasOpen(!programasOpen);
+    if (!programasOpen && programas.length === 0) {
       fetchProgramas();
+    }
+  };
+
+  const handleImpulsos = () => {
+    setImpulsosOpen(!impulsosOpen);
+    if (!impulsosOpen && impulsos.length === 0) {
+      fetchImpulsos();
     }
   };
 
@@ -238,12 +261,15 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Programa do projeto</FormLabel>
-                      <Popover open={open} onOpenChange={handleProgramas}>
+                      <Popover
+                        open={programasOpen}
+                        onOpenChange={handleProgramas}
+                      >
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             role="combobox"
-                            aria-expanded={open}
+                            aria-expanded={programasOpen}
                             className="w-full justify-between"
                           >
                             {field.value
@@ -273,7 +299,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                                       key={prog.value}
                                       onSelect={() => {
                                         field.onChange(prog.value);
-                                        setOpen(false);
+                                        setProgramasOpen(false);
                                       }}
                                     >
                                       <Check
@@ -308,8 +334,13 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                       <FormControl>
                         <RadioGroup
                           onValueChange={(value) => {
-                            field.onChange(value === "true");
-                            setHasImpulso(value === "true");
+                            const isImpulso = value === "true";
+                            field.onChange(isImpulso);
+                            setHasImpulso(isImpulso);
+                            
+                            if (!isImpulso) {
+                              form.setValue("impulso_id", null);
+                            }
                           }}
                           value={field.value ? "true" : "false"}
                           className="flex gap-4"
@@ -335,11 +366,74 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
 
                 {hasImpulso && (
                   <div className="mt-4 md:mt-0 flex-1">
-                    {renderSelect("impulsoTipo", "Tipo de Impulso", [
-                      { value: "1", label: "Estágio" },
-                      { value: "2", label: "Bolsa" },
-                      { value: "3", label: "Infraestrutura" },
-                    ])}
+                    <FormField
+                      control={form.control}
+                      name="impulso_id"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Impulso acadêmico</FormLabel>
+                          <Popover
+                            open={impulsosOpen}
+                            onOpenChange={handleImpulsos}
+                          >
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={impulsosOpen}
+                                className="w-full justify-between"
+                              >
+                                {field.value
+                                  ? impulsos.find(
+                                      (impulso) => impulso.value === field.value
+                                    )?.label
+                                  : "Selecione"}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-[400px] p-0">
+                              <Command>
+                                <CommandInput placeholder="Buscar impulso..." />
+                                {isLoading ? (
+                                  <div className="flex my-3 items-center justify-center">
+                                    <Loader2 className="h-6 w-6 animate-spin mr-2" />
+                                    Carregando impulsos...
+                                  </div>
+                                ) : (
+                                  <CommandList>
+                                    <CommandEmpty>
+                                      Nenhum impulso encontrado.
+                                    </CommandEmpty>
+                                    <CommandGroup>
+                                      {impulsos.map((impulso) => (
+                                        <CommandItem
+                                          key={impulso.value}
+                                          onSelect={() => {
+                                            field.onChange(impulso.value);
+                                            setImpulsosOpen(false);
+                                          }}
+                                        >
+                                          <Check
+                                            className={cn(
+                                              "mr-2 h-4 w-4",
+                                              field.value === impulso.value
+                                                ? "opacity-100"
+                                                : "opacity-0"
+                                            )}
+                                          />
+                                          {impulso.label}
+                                        </CommandItem>
+                                      ))}
+                                    </CommandGroup>
+                                  </CommandList>
+                                )}
+                              </Command>
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 )}
               </div>

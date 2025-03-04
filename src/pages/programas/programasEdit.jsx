@@ -64,7 +64,7 @@ export const ProgramasEdit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
+  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
 
   const form = useForm({
     resolver: zodResolver(programaFormSchema),

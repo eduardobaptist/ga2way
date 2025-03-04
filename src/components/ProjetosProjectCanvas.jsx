@@ -210,9 +210,6 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
           <div class="grid-stack-item-content ${bg} rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex flex-col h-full">
             <div class="w-full grid-stack-item-mover ${bg_header} text-gray-600 px-4 py-2 cursor-move flex justify-between">
               <span>${content}</span>
-              <span class="opacity-0 group-hover:opacity-100 text-black">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grip"><circle cx="12" cy="5" r="1"></circle><circle cx="19" cy="5" r="1"></circle><circle cx="5" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle><circle cx="19" cy="19" r="1"></circle><circle cx="5" cy="19" r="1"></circle></svg>
-              </span>
             </div>
             <textarea class="w-full h-full resize-none outline-none px-4 py-2 ${bg} text-gray-800 rounded-lg" id="${id}"></textarea>
           </div>`,

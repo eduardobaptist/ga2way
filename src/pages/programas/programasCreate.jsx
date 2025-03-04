@@ -62,7 +62,7 @@ export const ProgramasCreate = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
+  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
 
   const fetchRotas = async () => {
     setIsLoading(true);

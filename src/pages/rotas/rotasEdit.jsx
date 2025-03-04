@@ -40,7 +40,7 @@ export const RotasEdit = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresa());
+  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
