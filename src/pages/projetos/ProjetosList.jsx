@@ -46,6 +46,7 @@ export const ProjetosList = () => {
     try {
       const response = await api.get("/projetos");
       console.log(response.data);
+      setProjetos(response.data)
     } catch (error) {
       toast({
         variant: "destructive",
@@ -57,11 +58,14 @@ export const ProjetosList = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchProjetos();
-  // }, []);
+  useEffect(() => {
+    fetchProjetos();
+  }, []);
+
   const [layout, setLayout] = useState("grid");
   const [filterType, setFilterType] = useState("nome");
+  const [projetos, setProjetos] = useState([])
+
   const filters = [
     { value: "nome", label: "Nome" },
     { value: "empresa", label: "Empresa" },
@@ -137,8 +141,8 @@ export const ProjetosList = () => {
       <div className="mt-5">
         {layout === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Card key={index} className="w-full h-max col-span-1 shadow-md">
+            {projetos.map((projeto) => (
+              <Card key={projeto.id} className="w-full h-max col-span-1 shadow-md">
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
                     <div className="flex">

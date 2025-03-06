@@ -58,7 +58,7 @@ const projectFormSchema = z
     impulso: z.boolean(),
     impulso_id: z.number().nullable(),
     upload: z
-      .instanceof(File)
+      .instanceof(FileList)
       .refine(
         (file) => {
           const allowedTypes = [
@@ -80,7 +80,7 @@ const projectFormSchema = z
   })
   .refine(
     (data) => {
-      if (data.impulso) {
+      if (data.impulso === true) {
         return data.impulso_id !== null;
       }
 
@@ -123,8 +123,25 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
 
   const handleFormSubmit = (data) => {
     if (onSubmit) {
-      console.log(data);
-      onSubmit(data);
+      console.log(`ProjetosForm data: ${data}`);
+
+      const formData = new FormData();
+
+      formData.append("nome", data.nome);
+      formData.append("descricao", data.descricao);
+      formData.append("data_inicio", data.data_inicio);
+      formData.append("data_fim", data.data_fim);
+      formData.append("programa_id", data.programa_id);
+      formData.append("trl", data.trl);
+      formData.append("acatech", data.acatech);
+      formData.append("prioridade", data.prioridade);
+      formData.append("impulso_id", data.impulso_id);
+      
+      if (data.upload && data.upload.length > 0) {
+        formData.append("upload", data.upload[0]);
+      }
+
+      onSubmit(formData);
     }
   };
 
@@ -337,7 +354,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                             const isImpulso = value === "true";
                             field.onChange(isImpulso);
                             setHasImpulso(isImpulso);
-                            
+
                             if (!isImpulso) {
                               form.setValue("impulso_id", null);
                             }

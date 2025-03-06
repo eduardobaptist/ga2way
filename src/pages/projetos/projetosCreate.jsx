@@ -18,12 +18,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, CheckCircleIcon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import api from "@/axios.config";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 export const ProjetosCreate = () => {
   const [layout, setLayout] = useState("infosGerais");
   const projectFormRef = useRef(null);
   const isMobile = useIsMobile();
   const [canvasData, setCanvasData] = useState(null);
+
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSave = useCallback(() => {
     if (projectFormRef.current) {
@@ -32,27 +38,48 @@ export const ProjetosCreate = () => {
   }, []);
 
   const onSubmit = useCallback(
-    (formData) => {
-      const projectData = {
-        ...formData,
+    async (formData) => {
+      formData.append(
+        "justificativas",
+        canvasData["justificativas"]?.textarea_value
+      );
+      formData.append("objsmart", canvasData["objsmart"]?.textarea_value);
+      formData.append("beneficios", canvasData["beneficios"]?.textarea_value);
+      formData.append("produto", canvasData["produto"]?.textarea_value);
+      formData.append("requisitos", canvasData["requisitos"]?.textarea_value);
+      formData.append(
+        "stakeholders",
+        canvasData["stakeholders"]?.textarea_value
+      );
+      formData.append("equipe", canvasData["equipe"]?.textarea_value);
+      formData.append("premissas", canvasData["premissas"]?.textarea_value);
+      formData.append(
+        "grupo_de_entrega",
+        canvasData["grupo_de_entrega"]?.textarea_value
+      );
+      formData.append("restricoes", canvasData["restricoes"]?.textarea_value);
+      formData.append("riscos", canvasData["riscos"]?.textarea_value);
+      formData.append(
+        "linha_do_tempo",
+        canvasData["linha_do_tempo"]?.textarea_value
+      );
+      formData.append("custos", canvasData["custos"]?.textarea_value);
+      formData.append("estilo", JSON.stringify(canvasData));
 
-        justificativas: canvasData["justificativas"]?.textarea_value,
-        objsmart: canvasData["objsmart"]?.textarea_value,
-        beneficios: canvasData["beneficios"]?.textarea_value,
-        produto: canvasData["produto"]?.textarea_value,
-        requisitos: canvasData["requisitos"]?.textarea_value,
-        steakholders: canvasData["stakeholders"]?.textarea_value,
-        equipe: canvasData["equipe"]?.textarea_value,
-        premissas: canvasData["premissas"]?.textarea_value,
-        grupo_de_entrega: canvasData["grupo_de_entrega"]?.textarea_value,
-        restricoes: canvasData["restricoes"]?.textarea_value,
-        riscos: canvasData["riscos"]?.textarea_value,
-        linha_do_tempo: canvasData["linha_do_tempo"]?.textarea_value,
-        custos: canvasData["custos"]?.textarea_value,
+      console.log(`ProjetosCreate data: ${formData}`);
 
-        estilo: JSON.stringify(canvasData),
-      };
-      console.log("projetos form data:", projectData);
+      const response = await api.post("/projetos", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast({
+        title: "Projeto criado com sucesso.",
+        variant: "success",
+      });
+
+      navigate("/projetos");
     },
     [canvasData]
   );
