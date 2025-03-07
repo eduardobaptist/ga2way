@@ -36,17 +36,19 @@ import {
   Search,
   PlusCircle,
   Filter,
+  Image,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
+import { cn, formatDatetime } from "@/lib/utils";
 
 export const ProjetosList = () => {
   const fetchProjetos = async () => {
     try {
       const response = await api.get("/projetos");
       console.log(response.data);
-      setProjetos(response.data)
+      setProjetos(response.data);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -64,7 +66,7 @@ export const ProjetosList = () => {
 
   const [layout, setLayout] = useState("grid");
   const [filterType, setFilterType] = useState("nome");
-  const [projetos, setProjetos] = useState([])
+  const [projetos, setProjetos] = useState([]);
 
   const filters = [
     { value: "nome", label: "Nome" },
@@ -142,16 +144,22 @@ export const ProjetosList = () => {
         {layout === "grid" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {projetos.map((projeto) => (
-              <Card key={projeto.id} className="w-full h-max col-span-1 shadow-md">
+              <Card
+                key={projeto.id}
+                className="w-full
+                 col-span-1 shadow-md flex flex-col"
+              >
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
-                    <div className="flex">
-                      <img src={bruningLogo} alt="" className="h-12 w-auto" />
-                      <div className="flex flex-col gap-1 ml-2">
-                        <CardTitle>Modelagem UML</CardTitle>
-                        <p className="text-sm font-semibold">
-                          Bruning Tecnometal
-                        </p>
+                    <div className="flex overflow-hidden max-w-[calc(100%-40px)]">
+                      <span className="p-4 bg-slate-200 rounded-[99999px] flex-shrink-0">
+                        <Image className="padding" />
+                      </span>
+                      <div className="flex flex-col gap-1 ml-2 overflow-hidden">
+                        <CardTitle className="truncate">
+                          {projeto.nome}
+                        </CardTitle>
+                        <p className="text-sm font-semibold">Empresa</p>
                       </div>
                     </div>
                     <ProjetosActions />
@@ -160,20 +168,25 @@ export const ProjetosList = () => {
                     <Badge variant="secondary">Projeto</Badge>
                     <Badge variant="secondary">Aberto</Badge>
                   </div>
-                  <CardDescription>
-                    Lorem ipsum dolor sit amet. Hic possimus velit sit suscipit
-                    dolorem non voluptatem officia rem sunt quod.
+                  <CardDescription className="h-full">
+                    {projeto.descricao}
                   </CardDescription>
                 </CardHeader>
-                <CardFooter className="border-t p-2 flex items-center">
+                <CardFooter className="border-t p-2 flex items-center mt-auto">
                   <div className="flex justify-between items-center w-full">
                     <div className="flex">
                       <Clock size={20} className="mr-2" />
                       <span className="text-sm tracking-tight">
-                        Criado há dois dias
+                        Criado em {formatDatetime(projeto.createdAt)}
                       </span>
                     </div>
-                    <DollarSign size={20} className="text-red-600" />
+                    <DollarSign
+                      size={20}
+                      className={cn(
+                        projeto.impulso_id && "text-green-600",
+                        !projeto.impulso_id && "text-red-600"
+                      )}
+                    />
                   </div>
                 </CardFooter>
               </Card>

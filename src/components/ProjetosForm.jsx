@@ -60,17 +60,11 @@ const projectFormSchema = z
     upload: z
       .instanceof(FileList)
       .refine(
-        (file) => {
-          const allowedTypes = [
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/vnd.oasis.opendocument.text",
-          ];
-
-          const isAllowed = allowedTypes.includes(file.type);
-
-          return isAllowed;
+        (files) => {
+          const allowedExtensions = ["pdf", "doc", "docx", "odt"];
+          return allowedExtensions.includes(
+            files[0].name.split(".").pop().toLowerCase()
+          );
         },
         {
           message: "Apenas arquivos PDF, Word (doc, docx) e ODT são permitidos",
@@ -136,7 +130,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       formData.append("acatech", data.acatech);
       formData.append("prioridade", data.prioridade);
       formData.append("impulso_id", data.impulso_id);
-      
+
       if (data.upload && data.upload.length > 0) {
         formData.append("upload", data.upload[0]);
       }
@@ -538,7 +532,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                 <FormField
                   control={form.control}
                   name="upload"
-                  render={({ field: { onChange, value, ...field } }) => (
+                  render={({ field: { value, onChange, ...fieldProps } }) => (
                     <FormItem>
                       <FormLabel>
                         Upload do arquivo com mais informações
@@ -546,11 +540,8 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                       <FormControl>
                         <Input
                           type="file"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0] || null;
-                            onChange(file);
-                          }}
-                          {...field}
+                          onChange={(e) => onChange(e.target.files)}
+                          {...fieldProps}
                           className="w-full pr-10 cursor-pointer"
                           accept=".pdf,.doc,.docx,.odt"
                         />
