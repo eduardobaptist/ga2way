@@ -42,12 +42,12 @@ import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
 import { cn, formatDatetime } from "@/lib/utils";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const ProjetosList = () => {
   const fetchProjetos = async () => {
     try {
       const response = await api.get("/projetos");
-      console.log(response.data);
       setProjetos(response.data);
     } catch (error) {
       toast({
@@ -67,6 +67,9 @@ export const ProjetosList = () => {
   const [layout, setLayout] = useState("grid");
   const [filterType, setFilterType] = useState("nome");
   const [projetos, setProjetos] = useState([]);
+
+  const { getUserTipo } = useAuthStore();
+  const userTipo = getUserTipo();
 
   const filters = [
     { value: "nome", label: "Nome" },
@@ -128,15 +131,17 @@ export const ProjetosList = () => {
               </TabsTrigger>
             </TabsList>
           </Tabs>
-          <Link to="/projetos/novo">
-            <Button
-              className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
-              variant="outline"
-            >
-              <PlusCircle className="mr-2" size="20" />
-              Novo
-            </Button>
-          </Link>
+          {["admin", "empresa"].includes(userTipo) ? (
+            <Link to="/projetos/novo">
+              <Button
+                className="bg-[var(--azul-agregar)] text-white hover:text-white hover:bg-[var(--azul-agregar-hover)]"
+                variant="outline"
+              >
+                <PlusCircle className="mr-2" size="20" />
+                Novo
+              </Button>
+            </Link>
+          ) : null}
         </div>
       </div>
 
@@ -162,11 +167,17 @@ export const ProjetosList = () => {
                         <p className="text-sm font-semibold">Empresa</p>
                       </div>
                     </div>
-                    <ProjetosActions />
+                    <ProjetosActions
+                      projeto={projeto}
+                      onRefresh={fetchProjetos}
+                    />
                   </div>
                   <div className="w-max flex gap-2">
-                    <Badge variant="secondary">Projeto</Badge>
-                    <Badge variant="secondary">Aberto</Badge>
+                    <Badge >
+                      {projeto.status === "NÃO PÚBLICADO"
+                        ? "Rascunho"
+                        : "Publicado"}
+                    </Badge>
                   </div>
                   <CardDescription className="h-full">
                     {projeto.descricao}

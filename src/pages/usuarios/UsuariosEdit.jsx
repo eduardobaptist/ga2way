@@ -126,7 +126,7 @@ export const UsuariosEdit = () => {
       });
 
       toast({
-        title: "Usuário criado com sucesso.",
+        title: "Usuário atualizdo com sucesso.",
         variant: "success",
       });
 

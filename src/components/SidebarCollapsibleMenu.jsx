@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
+import { useAuthStore } from "@/stores/useAuthStore";
+
 import { useState } from "react";
 
 const CollapsibleMenuItem = ({ subItem }) => {
@@ -47,6 +49,8 @@ const CollapsibleMenuItem = ({ subItem }) => {
 };
 
 export const SidebarCollapsibleMenu = ({ item }) => {
+  const userType = useAuthStore((state) => state.getUserTipo());
+
   return (
     <Collapsible asChild defaultOpen className="group/collapsible">
       <SidebarMenuItem>
@@ -59,9 +63,12 @@ export const SidebarCollapsibleMenu = ({ item }) => {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <SidebarMenuSub>
-            {item.items?.map((subItem) => (
-              <CollapsibleMenuItem key={subItem.title} subItem={subItem} />
-            ))}
+            {item.items?.map(
+              (subItem) =>
+                subItem.userRoles.includes(userType) && (
+                  <CollapsibleMenuItem key={subItem.title} subItem={subItem} />
+                )
+            )}
           </SidebarMenuSub>
         </CollapsibleContent>
       </SidebarMenuItem>

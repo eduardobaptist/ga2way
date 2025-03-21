@@ -5,7 +5,7 @@ import {
   Users,
   Building2,
   GraduationCap,
-  StickyNote
+  StickyNote,
 } from "lucide-react";
 import {
   Sidebar,
@@ -22,39 +22,61 @@ import { SidebarLogout } from "./SidebarLogout";
 import { SidebarSingleMenuItem } from "./SidebarSingleMenuItem";
 import { SidebarCollapsibleMenu } from "./SidebarCollapsibleMenu";
 import { SidebarHeaderInfo } from "./SidebarHeaderInfo";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const items = [
   {
     title: "Projetos",
     items: [
-      { title: "Rotas", url: "/rotas", icon: Route },
-      { title: "Programas", url: "/programas", icon: StickyNote },
-      { title: "Projetos", url: "/projetos", icon: Home },
+      {
+        title: "Rotas",
+        url: "/rotas",
+        icon: Route,
+        userRoles: ["admin", "empresa"],
+      },
+      {
+        title: "Programas",
+        url: "/programas",
+        icon: StickyNote,
+        userRoles: ["admin", "ict", "empresa"],
+      },
+      {
+        title: "Projetos",
+        url: "/projetos",
+        icon: Home,
+        userRoles: ["admin", "ict", "empresa"],
+      },
     ],
   },
   {
     title: "Usuários",
     url: "/usuarios",
+    userRoles: ["admin"],
     icon: Users,
   },
   {
     title: "Impulsos acadêmicos",
     url: "/impulsos",
+    userRoles: ["admin", "empresa"],
     icon: Rocket,
   },
   {
     title: "Empresas",
     url: "/empresas",
     icon: Building2,
+    userRoles: ["admin"],
   },
   {
     title: "Institutos (ICTs)",
     url: "/icts",
     icon: GraduationCap,
+    userRoles: ["admin"],
   },
 ];
 
 export const AppSidebar = () => {
+  const userType = useAuthStore((state) => state.getUserTipo());
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -70,7 +92,9 @@ export const AppSidebar = () => {
                 item.items ? (
                   <SidebarCollapsibleMenu key={item.title} item={item} />
                 ) : (
-                  <SidebarSingleMenuItem key={item.title} item={item} />
+                  item.userRoles.includes(userType) && (
+                    <SidebarSingleMenuItem key={item.title} item={item} />
+                  )
                 )
               )}
             </SidebarMenu>
