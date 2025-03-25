@@ -6,6 +6,9 @@ import {
   Building2,
   GraduationCap,
   StickyNote,
+  Pointer,
+  Handshake,
+  Lightbulb,
 } from "lucide-react";
 import {
   Sidebar,
@@ -71,6 +74,18 @@ const items = [
     url: "/icts",
     icon: GraduationCap,
     userRoles: ["admin"],
+  },
+  {
+    title: "Propostas",
+    url: "/propostas",
+    icon: Lightbulb,
+    userRoles: ["admin", "empresa"],
+  },
+  {
+    title: "Parcerias",
+    url: "/parcerias",
+    icon: Handshake,
+    userRoles: ["admin", "empresa"],
   },
 ];
 
