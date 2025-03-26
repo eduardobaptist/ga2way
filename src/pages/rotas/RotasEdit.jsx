@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/useAuthStore";
-import { MainWrapper } from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AlertDialog,

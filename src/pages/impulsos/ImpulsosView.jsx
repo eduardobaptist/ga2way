@@ -1,4 +1,4 @@
-import { MainWrapper } from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeftCircle, Loader2 } from "lucide-react";

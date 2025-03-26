@@ -1,4 +1,4 @@
-import { MainWrapper } from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
   AlertDialog,

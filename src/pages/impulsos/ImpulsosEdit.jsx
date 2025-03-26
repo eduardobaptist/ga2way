@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { MainWrapper } from "@/components/mainWrapper";
+import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   AlertDialog,
