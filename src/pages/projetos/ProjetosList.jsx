@@ -157,8 +157,20 @@ export const ProjetosList = () => {
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
                     <div className="flex overflow-hidden max-w-[calc(100%-40px)]">
-                      <span className="p-4 bg-slate-200 rounded-[99999px] flex-shrink-0">
-                        <Image className="padding" />
+                      <span className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 flex items-center justify-center">
+                        <img
+                          src={
+                            projeto?.Programa?.Rota?.Empresa?.foto_perfil
+                              ? `${import.meta.env.VITE_API_URL}${
+                                  projeto.Programa.Rota.Empresa.foto_perfil
+                                }`
+                              : "https://via.placeholder.com/100?text=Empresa"
+                          }
+                          alt={`Logo da empresa ${
+                            projeto?.Programa?.Rota?.Empresa?.nome || ""
+                          }`}
+                          className="w-full h-full object-cover"
+                        />
                       </span>
                       <div className="flex flex-col gap-1 ml-2 overflow-hidden">
                         <CardTitle className="truncate">
@@ -173,7 +185,7 @@ export const ProjetosList = () => {
                     />
                   </div>
                   <div className="w-max flex gap-2">
-                    <Badge >
+                    <Badge>
                       {projeto.status === "NÃO PÚBLICADO"
                         ? "Rascunho"
                         : "Publicado"}

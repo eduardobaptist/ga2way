@@ -129,10 +129,11 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       formData.append("trl", data.trl);
       formData.append("acatech", data.acatech);
       formData.append("prioridade", data.prioridade);
-      formData.append("impulso_id", data.impulso_id);
-
+      if (data.impulso_id !== null) {
+        formData.append("impulso_id", data.impulso_id);
+      }
       if (data.upload && data.upload.length > 0) {
-        formData.append("upload", data.upload[0]);
+        "upload", data.upload[0];
       }
 
       onSubmit(formData);

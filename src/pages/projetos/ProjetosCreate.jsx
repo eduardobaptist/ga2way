@@ -47,22 +47,13 @@ export const ProjetosCreate = () => {
       formData.append("beneficios", canvasData["beneficios"]?.textarea_value);
       formData.append("produto", canvasData["produto"]?.textarea_value);
       formData.append("requisitos", canvasData["requisitos"]?.textarea_value);
-      formData.append(
-        "stakeholders",
-        canvasData["stakeholders"]?.textarea_value
-      );
+      formData.append("stakeholders",canvasData["stakeholders"]?.textarea_value);
       formData.append("equipe", canvasData["equipe"]?.textarea_value);
       formData.append("premissas", canvasData["premissas"]?.textarea_value);
-      formData.append(
-        "grupo_de_entrega",
-        canvasData["grupo_de_entrega"]?.textarea_value
-      );
+      formData.append( "grupo_de_entrega",canvasData["grupo_de_entrega"]?.textarea_value);
       formData.append("restricoes", canvasData["restricoes"]?.textarea_value);
       formData.append("riscos", canvasData["riscos"]?.textarea_value);
-      formData.append(
-        "linha_do_tempo",
-        canvasData["linha_do_tempo"]?.textarea_value
-      );
+      formData.append("linha_do_tempo",canvasData["linha_do_tempo"]?.textarea_value);
       formData.append("custos", canvasData["custos"]?.textarea_value);
       formData.append("estilo", JSON.stringify(canvasData));
 
