@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { Building2, GraduationCap, UserCog, ChevronDown } from "lucide-react";
+import {
+  Building2,
+  GraduationCap,
+  UserCog,
+  EllipsisVertical,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,25 +18,43 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export const SidebarHeaderInfo = () => {
-  const { authData, getUserTipo } = useAuthStore();
+  const { authData, getUserTipo, getUserEmpresaNome, getUserIctNome } =
+    useAuthStore();
 
-  const userTipo = getUserTipo();
-  const email = authData?.email;
+  const [userInfo, setUserInfo] = useState({
+    empresa_nome: '',
+    ict_nome: '',
+    userTipo: '',
+    email: ''
+  });
+
+  useEffect(() => {
+    if (authData) {
+      setUserInfo({
+        empresa_nome: getUserEmpresaNome() || '',
+        ict_nome: getUserIctNome() || '',
+        userTipo: getUserTipo() || '',
+        email: authData.email || ''
+      });
+    }
+  }, [authData, getUserEmpresaNome, getUserIctNome, getUserTipo]);
+
   const info =
-    userTipo === "admin"
+    userInfo.userTipo === "admin"
       ? "Administrador"
-      : userTipo === "empresa"
-        ? "Empresa"
-        : "ICT";
+      : userInfo.userTipo === "empresa"
+      ? userInfo.empresa_nome
+      : userInfo.ict_nome;
+
   const logo =
-    userTipo === "admin"
+    userInfo.userTipo === "admin"
       ? UserCog
-      : userTipo === "empresa"
-        ? Building2
-        : GraduationCap;
+      : userInfo.userTipo === "empresa"
+      ? Building2
+      : GraduationCap;
 
   return (
     <div className="flex w-full items-center gap-2 p-2">
@@ -40,10 +63,14 @@ export const SidebarHeaderInfo = () => {
       </div>
       <div className="min-w-0 flex-1 text-left">
         <div className="flex items-center justify-between gap-4">
-          <div className="truncate font-semibold text-sm">{email}</div>
+          <div className="truncate font-semibold text-sm">{userInfo.email}</div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <ChevronDown height={20} width={20} className="cursor-pointer" />
+              <EllipsisVertical
+                height={20}
+                width={20}
+                className="cursor-pointer"
+              />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
@@ -55,15 +82,15 @@ export const SidebarHeaderInfo = () => {
                     <DropdownMenuSubContent>
                       <DropdownMenuItem>Atualizar informações</DropdownMenuItem>
                       <DropdownMenuItem>Redefinir senha</DropdownMenuItem>
-                      <DropdownMenuItem disabled>Excluir conta</DropdownMenuItem>
+                      <DropdownMenuItem disabled>
+                        Excluir conta
+                      </DropdownMenuItem>
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                Configurações
-              </DropdownMenuItem>
+              <DropdownMenuItem>Configurações</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

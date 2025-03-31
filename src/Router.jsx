@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 import { Home } from "@/pages/Home";
+import { HomePage } from "./pages/Home2";
 import { PrivateRoute } from "@/components/PrivateRoute";
 import { Layout } from "./components/Layout";
 
@@ -38,6 +39,8 @@ import { ImpulsosList } from "./pages/impulsos/ImpulsosList";
 import { ImpulsosCreate } from "./pages/impulsos/ImpulsosCreate";
 import { ImpulsosEdit } from "./pages/impulsos/ImpulsosEdit";
 import { ImpulsosView } from "./pages/impulsos/ImpulsosView";
+
+import { PropostasList } from "./pages/propostas/PropostasList";
 
 export const router = createBrowserRouter([
   {
@@ -109,6 +112,12 @@ export const router = createBrowserRouter([
               { path: "novo", element: <IctsCreate /> },
               { path: ":id", element: <IctsView /> },
               { path: "editar/:id", element: <IctsEdit /> },
+            ],
+          },
+          {
+            path: "projetos/propostas",
+            children: [
+              { path: ":id", element: <PropostasList /> },
             ],
           },
         ],

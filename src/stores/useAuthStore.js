@@ -34,32 +34,8 @@ export const useAuthStore = create((set, get) => ({
   getUser: () => get().authData,
   getUserEmpresaId: () => get().authData?.empresa_id,
   getUserIctId: () => get().authData?.ict_id,
+  getUserEmpresaNome: () => get().authData?.empresa?.nome,
+  getUserIctNome: () => get().authData?.ict?.nome,
   getUserTipo: () => get().authData?.tipo,
-  getUserIctNome: () => {
-    try {
-      const response = api.get(`/icts/${get().authData?.ict_id}`);
-
-      if (response?.data) {
-        return response?.data.nome;
-      } else {
-        throw new Error("ICT não encontrado ao procurar na Sidebar");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  getUserEmpresaNome: () => {
-    try {
-      const response = api.get(`/empresas/${get().authData?.empresa_id}`);
-
-      if (response?.data) {
-        return response?.data.nome;
-      } else {
-        throw new Error("Empresa não encontrada ao procurar na Sidebar");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  },
   getToken: () => get().token,
 }));

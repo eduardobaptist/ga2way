@@ -21,14 +21,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Menu, Trash2, Edit2, Eye, Handshake, Send } from "lucide-react";
+import {
+  Menu,
+  Trash2,
+  Edit2,
+  Eye,
+  Handshake,
+  Send,
+  Lightbulb,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 
 export const ProjetosActions = ({ projeto, onRefresh }) => {
   const navigate = useNavigate();
@@ -44,6 +51,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
 
   const handleView = () => navigate(`/projetos/${projeto.id}`);
   const handleEdit = () => navigate(`/projetos/editar/${projeto.id}`);
+  const handleProposta = () => navigate(`/projetos/propostas/${projeto.id}`);
 
   const handleDelete = async () => {
     try {
@@ -161,6 +169,15 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                   <span>Demonstrar interesse</span>
                 </DropdownMenuItem>
               ) : null}
+              {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
+                <DropdownMenuItem
+                  className="flex items-center gap-2 cursor-pointer"
+                  onClick={handleProposta}
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  <span>Propostas</span>
+                </DropdownMenuItem>
+              ) : null}
               {["admin", "empresa"].includes(userTipo) ? (
                 <DropdownMenuItem
                   onClick={() => {
@@ -215,7 +232,11 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
             <Label htmlFor="proposta">
               Escreva sua proposta para este projeto.
             </Label>
-            <Input id="proposta" placeholder="Digite sua proposta..." />
+            <Input
+              onChange={() => setProposta(event.target.value)}
+              id="proposta"
+              placeholder="Digite sua proposta..."
+            />
           </div>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>

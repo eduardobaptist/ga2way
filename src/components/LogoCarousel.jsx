@@ -37,14 +37,14 @@ export const LogoCarousel = () => {
           animation: 50s slide infinite linear;
         }
       `}</style>
-      <div className="slide-track my-5">
-        <div className="blur-sm h-full w-10 fixed"></div>
+      <div className="slide-track">
+        <div className="blur-sm w-5 fixed"></div>
         {images.concat(images).map((img, index) => (
           <img
             key={index}
             src={img}
             alt=""
-            className="w-[15vw] h-auto object-contain relative"
+            className="w-[10vw] h-auto object-contain relative"
           />
         ))}
       </div>

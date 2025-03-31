@@ -30,13 +30,15 @@ import {
 } from "@/components/ui/table";
 import {
   DollarSign,
-  Clock,
+  Calendar,
   Grid,
   List,
   Search,
   PlusCircle,
   Filter,
   Image,
+  EyeOff,
+  Eye,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -151,32 +153,36 @@ export const ProjetosList = () => {
             {projetos.map((projeto) => (
               <Card
                 key={projeto.id}
-                className="w-full
-                 col-span-1 shadow-md flex flex-col"
+                className="w-full col-span-1 shadow-md flex flex-col relative"
               >
+                <div className="absolute -top-2 -right-2 z-10">
+                  <Badge className="bg-red-500 text-white hover:bg-red-600 px-2 py-1 rounded-full border border-white shadow-md">
+                    99+
+                  </Badge>
+                </div>
+
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
                     <div className="flex overflow-hidden max-w-[calc(100%-40px)]">
-                      <span className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-slate-200 flex items-center justify-center">
-                        <img
-                          src={
-                            projeto?.Programa?.Rota?.Empresa?.foto_perfil
-                              ? `${import.meta.env.VITE_API_URL}${
-                                  projeto.Programa.Rota.Empresa.foto_perfil
-                                }`
-                              : "https://via.placeholder.com/100?text=Empresa"
-                          }
-                          alt={`Logo da empresa ${
-                            projeto?.Programa?.Rota?.Empresa?.nome || ""
-                          }`}
-                          className="w-full h-full object-cover"
-                        />
+                      <span className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
+                        {projeto?.Programa?.Rota?.Empresa?.foto_perfil ? (
+                          <img
+                            src={`${import.meta.env.VITE_API_URL}${
+                              projeto.Programa.Rota.Empresa.foto_perfil
+                            }`}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <Image />
+                        )}
                       </span>
                       <div className="flex flex-col gap-1 ml-2 overflow-hidden">
                         <CardTitle className="truncate">
                           {projeto.nome}
                         </CardTitle>
-                        <p className="text-sm font-semibold">Empresa</p>
+                        <p className="text-sm font-semibold">
+                          {projeto?.Programa?.Rota?.Empresa?.nome}
+                        </p>
                       </div>
                     </div>
                     <ProjetosActions
@@ -185,11 +191,17 @@ export const ProjetosList = () => {
                     />
                   </div>
                   <div className="w-max flex gap-2">
-                    <Badge>
-                      {projeto.status === "NÃO PÚBLICADO"
-                        ? "Rascunho"
-                        : "Publicado"}
-                    </Badge>
+                    {projeto.status === "NÃO PÚBLICADO" ? (
+                      <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300">
+                        <EyeOff className="mr-1 h-3 w-3" />
+                        Rascunho
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-green-100 text-green-800 hover:bg-green-200 border border-green-300">
+                        <Eye className="mr-1 h-3 w-3" />
+                        Publicado
+                      </Badge>
+                    )}
                   </div>
                   <CardDescription className="h-full">
                     {projeto.descricao}
@@ -197,8 +209,11 @@ export const ProjetosList = () => {
                 </CardHeader>
                 <CardFooter className="border-t p-2 flex items-center mt-auto">
                   <div className="flex justify-between items-center w-full">
-                    <div className="flex">
-                      <Clock size={20} className="mr-2" />
+                    <div className="flex items-center">
+                      <Calendar
+                        size={15}
+                        className="mr-2 text-muted-foreground"
+                      />
                       <span className="text-sm tracking-tight">
                         Criado em {formatDatetime(projeto.createdAt)}
                       </span>
@@ -223,6 +238,7 @@ export const ProjetosList = () => {
                   <TableHead></TableHead>
                   <TableHead>Nome</TableHead>
                   <TableHead>Descrição</TableHead>
+                  <TableHead>Empresa</TableHead>
                   <TableHead className="w-[200px]">Status</TableHead>
                   <TableHead className="text-right">
                     Impulso Acadêmico
@@ -230,46 +246,47 @@ export const ProjetosList = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <ProjetosActions />
-                  </TableCell>
-                  <TableCell>Teste de Segurança</TableCell>
-                  <TableCell>
-                    <div className="max-w-md relative group">
-                      <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                        Lorem ipsum dolor sit amet. Hic possimus velit sit
-                        suscipit dolorem non voluptatem officia rem sunt quod.
+                {projetos.map((projeto) => (
+                  <TableRow>
+                    <TableCell>
+                      <div className="relative">
+                        <ProjetosActions
+                          projeto={projeto}
+                          onRefresh={fetchProjetos}
+                        />
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-green-300">
-                      Aberto
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">Sim</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <ProjetosActions />
-                  </TableCell>
-                  <TableCell>Modelagem UML</TableCell>
-                  <TableCell>
-                    <div className="max-w-md relative group">
-                      <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                        Lorem ipsum dolor sit amet. Hic possimus velit sit
-                        suscipit dolorem non voluptatem officia rem sunt quod.
+                    </TableCell>
+                    <TableCell>{projeto.nome}</TableCell>
+                    <TableCell>
+                      <div className="max-w-md relative group">
+                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
+                          {projeto.descricao}
+                        </div>
                       </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="bg-red-300">
-                      Finalizado
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">Não</TableCell>
-                </TableRow>
+                    </TableCell>
+                    <TableCell>
+                      <div className="truncate">
+                        {projeto?.Programa?.Rota?.Empresa?.nome}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {projeto.status === "NÃO PÚBLICADO" ? (
+                        <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300">
+                          <EyeOff className="mr-1 h-3 w-3" />
+                          Rascunho
+                        </Badge>
+                      ) : (
+                        <Badge className="bg-green-100 text-green-800 hover:bg-green-200 border border-green-300">
+                          <Eye className="mr-1 h-3 w-3" />
+                          Publicado
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {projeto.impulso_id ? "Sim" : "Não"}
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </div>

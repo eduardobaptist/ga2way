@@ -41,7 +41,7 @@ const items = [
         title: "Programas",
         url: "/programas",
         icon: StickyNote,
-        userRoles: ["admin", "ict", "empresa"],
+        userRoles: ["admin", "empresa"],
       },
       {
         title: "Projetos",
@@ -76,16 +76,10 @@ const items = [
     userRoles: ["admin"],
   },
   {
-    title: "Propostas",
-    url: "/propostas",
-    icon: Lightbulb,
-    userRoles: ["admin", "empresa"],
-  },
-  {
     title: "Parcerias",
     url: "/parcerias",
     icon: Handshake,
-    userRoles: ["admin", "empresa"],
+    userRoles: ["admin", "empresa", "ict"],
   },
 ];
 
