@@ -18,6 +18,7 @@ import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
+import { ProjetosView } from "./pages/projetos/ProjetosView";
 
 import { UsuariosList } from "./pages/usuarios/UsuariosList";
 
@@ -41,6 +42,7 @@ import { ImpulsosEdit } from "./pages/impulsos/ImpulsosEdit";
 import { ImpulsosView } from "./pages/impulsos/ImpulsosView";
 
 import { PropostasList } from "./pages/propostas/PropostasList";
+import { ParceriasList } from "./pages/parcerias/ParceriasList";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +78,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <ProjetosList /> },
               { path: "novo", element: <ProjetosCreate /> },
+              { path: ":id", element: <ProjetosView /> },
             ],
           },
           {
@@ -115,10 +118,12 @@ export const router = createBrowserRouter([
             ],
           },
           {
-            path: "projetos/propostas",
-            children: [
-              { path: ":id", element: <PropostasList /> },
-            ],
+            path: "/projetos/propostas",
+            children: [{ path: ":id", element: <PropostasList /> }],
+          },
+          {
+            path: "/parcerias",
+            children: [{ index: true, element: <ParceriasList /> }],
           },
         ],
       },

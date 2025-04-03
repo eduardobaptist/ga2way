@@ -110,6 +110,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
 
   const handleSubmitInterest = async () => {
     try {
+      toast({ title: "Enviando interesse à empresa, aguarde...", variant: "warning" });
       await api.post("/interesses", {
         proposta,
         oferta_id: ofertaId,
@@ -135,7 +136,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               {["admin", "empresa"].includes(userTipo) &&
-              projeto.status !== "PUBLICADO" ? (
+              projeto.status === "NÃO PÚBLICADO" ? (
                 <DropdownMenuItem
                   className="flex items-center gap-2 cursor-pointer"
                   onClick={handlePublish}
@@ -151,7 +152,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                 <Eye className="h-4 w-4" />
                 <span>Ver detalhes</span>
               </DropdownMenuItem>
-              {["admin", "empresa"].includes(userTipo) ? (
+              {/* {["admin", "empresa"].includes(userTipo) ? (
                 <DropdownMenuItem
                   onClick={handleEdit}
                   className="flex items-center gap-2 cursor-pointer"
@@ -159,7 +160,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                   <Edit2 className="h-4 w-4" />
                   <span>Alterar</span>
                 </DropdownMenuItem>
-              ) : null}
+              ) : null} */}
               {userTipo === "ict" ? (
                 <DropdownMenuItem
                   onClick={handleInterest}

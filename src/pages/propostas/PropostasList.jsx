@@ -17,10 +17,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Filter, Loader2, CheckCircle } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Search,
+  Filter,
+  Loader2,
+  CheckCircle,
+  AlertTriangle,
+  CircleAlert
+} from "lucide-react";
 import { useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import api from "@/axios.config";
 
 export const PropostasList = () => {
@@ -29,8 +44,13 @@ export const PropostasList = () => {
   const [propostas, setPropostas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isApproving, setIsApproving] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedPropostaId, setSelectedPropostaId] = useState(null);
+  const [selectedPropostaInfo, setSelectedPropostaInfo] = useState(null);
 
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const filters = [
     { value: "proposta", label: "Proposta" },
@@ -88,6 +108,50 @@ export const PropostasList = () => {
   useEffect(() => {
     fetchPropostas();
   }, []);
+
+  const openConfirmDialog = (proposta) => {
+    setSelectedPropostaId(proposta.id);
+    setSelectedPropostaInfo({
+      nome: proposta.Usuario?.nome,
+      ict: proposta.Usuario?.Responsavels[0]?.Ict?.nome,
+    });
+    setDialogOpen(true);
+  };
+
+  const handleApprove = async () => {
+    if (!selectedPropostaId) return;
+
+    try {
+      setIsApproving(true);
+      setDialogOpen(false);
+
+      toast({
+        title: "Aprovando parceria, aguarde...",
+        variant: "warning",
+      });
+
+      const response = await api.post("/parcerias", {
+        interesse_id: selectedPropostaId,
+      });
+
+      toast({
+        title: "Parceria formalizada com sucesso!",
+        variant: "success",
+      });
+
+      navigate("/projetos");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Erro ao aprovar proposta.";
+      setError(errorMessage);
+      toast({
+        title: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsApproving(false);
+    }
+  };
 
   const filteredPropostas = propostas.filter((proposta) => {
     if (!searchTerm) return true;
@@ -199,8 +263,10 @@ export const PropostasList = () => {
                         size="sm"
                         variant="outline"
                         className="bg-green-100 text-green-800 hover:bg-green-200 border border-green-300"
+                        onClick={() => openConfirmDialog(proposta)}
+                        disabled={isApproving}
                       >
-                        <CheckCircle className="mr-1 h-3 w-3 " />
+                        <CheckCircle className="mr-1 h-4 w-4" />
                         Aprovar proposta
                       </Button>
                     </TableCell>
@@ -266,6 +332,86 @@ export const PropostasList = () => {
           </Table>
         </div>
       </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+          <DialogHeader className="px-6 pt-6 pb-2 bg-amber-50 border-b border-amber-100">
+            <DialogTitle className="flex items-center text-lg font-semibold text-amber-800">
+              <AlertTriangle className="mr-2 h-5 w-5 text-amber-600" />
+              Confirmar aprovação
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="px-6 py-4 bg-white">
+            <h3 className="text-base font-medium mb-2">
+              Detalhes da proposta:
+            </h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center">
+                <span className="w-24 text-gray-500">Usuário:</span>
+                <span className="font-medium">
+                  {selectedPropostaInfo?.nome}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="w-24 text-gray-500">Instituição:</span>
+                <span className="font-medium">{selectedPropostaInfo?.ict}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="px-6 py-4 bg-white border-t border-gray-100">
+            <h3 className="text-base font-medium text-red-600 mb-2 flex items-center">
+              <CircleAlert className="mr-2 h-4 w-4" />
+              Atenção
+            </h3>
+            <div className="text-sm space-y-3">
+              <p className="text-gray-700">Ao aprovar esta proposta:</p>
+
+              <ul className="list-disc pl-5 mt-1 space-y-1">
+                <li>
+                  Todas as demais propostas serão <strong>descartadas</strong>
+                </li>
+                <li>
+                  Uma parceria formal será <strong>criada</strong> com a
+                  instituição selecionada
+                </li>
+                <li>
+                  Esta ação <strong>não poderá</strong> ser desfeita
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <DialogFooter className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
+            <Button
+              variant="outline"
+              onClick={() => setDialogOpen(false)}
+              disabled={isApproving}
+              className="w-full sm:w-auto order-2 sm:order-1"
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={handleApprove}
+              disabled={isApproving}
+              className="w-full sm:w-auto bg-green-600 hover:bg-green-700 order-1 sm:order-2"
+            >
+              {isApproving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processando...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Confirmar aprovação
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </MainWrapper>
   );
 };

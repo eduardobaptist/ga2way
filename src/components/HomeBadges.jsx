@@ -41,7 +41,7 @@ export const HomeBadges = () => {
     {
       title: "Para a comunidade",
       content:
-        "O gat2way impulsiona a inovação, gerando soluções tecnológicas para os desafios da sociedade. A colaboração entre empresas e ICTs fomenta o desenvolvimento de talentos e a Data de Criação de um ecossistema de inovação vibrante.",
+        "O gat2way impulsiona a inovação, gerando soluções tecnológicas para os desafios da sociedade. A colaboração entre empresas e ICTs fomenta o desenvolvimento de talentos e a criação de um ecossistema de inovação vibrante.",
       icon: Users,
     },
     {

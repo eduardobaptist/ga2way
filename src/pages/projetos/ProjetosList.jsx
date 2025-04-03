@@ -1,4 +1,3 @@
-import bruningLogo from "/img/bruning-logo-redondo.png";
 import { MainWrapper } from "@/components/MainWrapper";
 import { ProjetosActions } from "./ProjetosActions";
 import { useState, useEffect } from "react";
@@ -39,6 +38,7 @@ import {
   Image,
   EyeOff,
   Eye,
+  Hourglass,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -153,13 +153,19 @@ export const ProjetosList = () => {
             {projetos.map((projeto) => (
               <Card
                 key={projeto.id}
-                className="w-full col-span-1 shadow-md flex flex-col relative"
+                className="w-full col-span-1 shadow-md flex flex-col relative transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] hover:z-10"
               >
-                <div className="absolute -top-2 -right-2 z-10">
-                  <Badge className="bg-red-500 text-white hover:bg-red-600 px-2 py-1 rounded-full border border-white shadow-md">
-                    99+
-                  </Badge>
-                </div>
+                {projeto.total_interesses &&
+                projeto.status === "PUBLICADO" &&
+                ["admin", "empresa"].includes(userTipo) ? (
+                  <div className="absolute -top-2 -right-2 z-10">
+                    <Badge className="bg-red-500 text-white hover:bg-red-600 px-2 py-1 rounded-full border border-white shadow-md">
+                      {projeto.total_interesses <= 99
+                        ? projeto.total_interesses
+                        : "+99"}
+                    </Badge>
+                  </div>
+                ) : null}
 
                 <CardHeader className="gap-2">
                   <div className="flex items-start justify-between">
@@ -178,7 +184,12 @@ export const ProjetosList = () => {
                       </span>
                       <div className="flex flex-col gap-1 ml-2 overflow-hidden">
                         <CardTitle className="truncate">
-                          {projeto.nome}
+                          <Link
+                            to={`/projetos/${projeto.id}`}
+                            className="transition-colors duration-200 hover:text-blue-700 cursor-pointer"
+                          >
+                            {projeto.nome}
+                          </Link>
                         </CardTitle>
                         <p className="text-sm font-semibold">
                           {projeto?.Programa?.Rota?.Empresa?.nome}
@@ -195,6 +206,11 @@ export const ProjetosList = () => {
                       <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300">
                         <EyeOff className="mr-1 h-3 w-3" />
                         Rascunho
+                      </Badge>
+                    ) : projeto.status === "EM ANDAMENTO" ? (
+                      <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border border-yellow-300">
+                        <Hourglass className="mr-1 h-3 w-3" />
+                        Em andamento
                       </Badge>
                     ) : (
                       <Badge className="bg-green-100 text-green-800 hover:bg-green-200 border border-green-300">
@@ -274,6 +290,11 @@ export const ProjetosList = () => {
                         <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 border border-slate-300">
                           <EyeOff className="mr-1 h-3 w-3" />
                           Rascunho
+                        </Badge>
+                      ) : projeto.status === "EM ANDAMENTO" ? (
+                        <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border border-yellow-300">
+                          <Hourglass className="mr-1 h-3 w-3" />
+                          Em andamento
                         </Badge>
                       ) : (
                         <Badge className="bg-green-100 text-green-800 hover:bg-green-200 border border-green-300">
