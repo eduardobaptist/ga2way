@@ -33,6 +33,7 @@ export const UsuariosList = () => {
 
   const filters = [
     { value: "nome", label: "Nome" },
+    { value: "organizacao", label: "Organização" }, // novo filtro
     { value: "email", label: "Email" },
     { value: "tipo", label: "Tipo" },
     { value: "dataCriacao", label: "Data de Criação" },
@@ -77,6 +78,13 @@ export const UsuariosList = () => {
           .toLocaleDateString()
           .toLowerCase()
           .includes(searchLower);
+      case "organizacao":
+        const org =
+          usuario.tipo === "ict"
+            ? usuario?.Responsavels?.[0]?.Ict?.nome
+            : usuario?.Responsavels?.[0]?.Empresa?.nome;
+
+        return org?.toLowerCase().includes(searchLower);
       default:
         return true;
     }
@@ -141,6 +149,7 @@ export const UsuariosList = () => {
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
+                <TableHead>Organização</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Tipo</TableHead>
                 <TableHead>Data de Criação</TableHead>
@@ -183,7 +192,36 @@ export const UsuariosList = () => {
                         onRefresh={fetchUsuarios}
                       />
                     </TableCell>
-                    <TableCell>{usuario.nome}</TableCell>
+                    <TableCell className="flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border flex items-center justify-center">
+                        {usuario.tipo === "ict"
+                          ? usuario?.Responsavels?.[0]?.Ict?.foto_perfil && (
+                              <img
+                                src={`${import.meta.env.VITE_API_URL}${
+                                  usuario.Responsavels[0].Ict.foto_perfil
+                                }`}
+                                alt="Foto ICT"
+                                className="w-full h-full object-cover"
+                              />
+                            )
+                          : usuario?.Responsavels?.[0]?.Empresa
+                              ?.foto_perfil && (
+                              <img
+                                src={`${import.meta.env.VITE_API_URL}${
+                                  usuario.Responsavels[0].Empresa.foto_perfil
+                                }`}
+                                alt="Foto Empresa"
+                                className="w-full h-full object-cover"
+                              />
+                            )}
+                      </span>
+                      <span>{usuario.nome}</span>
+                    </TableCell>
+                    <TableCell>
+                      {usuario.tipo === "ict"
+                        ? usuario?.Responsavels?.[0]?.Ict?.nome || "-"
+                        : usuario?.Responsavels?.[0]?.Empresa?.nome || "-"}
+                    </TableCell>
                     <TableCell>{usuario.email}</TableCell>
                     <TableCell>
                       {
