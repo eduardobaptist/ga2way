@@ -75,8 +75,6 @@ export const ImpulsosCreate = () => {
   const handleSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      //data.valor = data.valor.replace(/[^0-9,]/g, "").replace(",", ".");
-
       const response = await api.post("/impulsos", {
         ...data,
       });

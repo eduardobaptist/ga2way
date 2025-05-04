@@ -10,7 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "./ui/input";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+import { Input } from "../../components/ui/input";
 import {
   Select,
   SelectContent,
@@ -242,7 +243,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="nome"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nome</FormLabel>
+                      <FormLabel>
+                        Nome do Projeto <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>

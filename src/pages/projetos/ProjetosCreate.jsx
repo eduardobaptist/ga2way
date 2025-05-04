@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { MainWrapper } from "@/components/MainWrapper";
-import { ProjetosProjectCanvas } from "@/components/ProjetosProjectCanvas";
-import { ProjetosForm } from "@/components/ProjetosForm";
+import { ProjetosProjectCanvas } from "@/pages/projetos/ProjetosProjectCanvas";
+import { ProjetosForm } from "@/pages/projetos/ProjetosForm";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertDialog,
@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon } from "lucide-react";
+import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon, Presentation } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import api from "@/axios.config";
 import { useToast } from "@/hooks/use-toast";
@@ -47,13 +47,22 @@ export const ProjetosCreate = () => {
       formData.append("beneficios", canvasData["beneficios"]?.textarea_value);
       formData.append("produto", canvasData["produto"]?.textarea_value);
       formData.append("requisitos", canvasData["requisitos"]?.textarea_value);
-      formData.append("stakeholders",canvasData["stakeholders"]?.textarea_value);
+      formData.append(
+        "stakeholders",
+        canvasData["stakeholders"]?.textarea_value
+      );
       formData.append("equipe", canvasData["equipe"]?.textarea_value);
       formData.append("premissas", canvasData["premissas"]?.textarea_value);
-      formData.append( "grupo_de_entrega",canvasData["grupo_de_entrega"]?.textarea_value);
+      formData.append(
+        "grupo_de_entrega",
+        canvasData["grupo_de_entrega"]?.textarea_value
+      );
       formData.append("restricoes", canvasData["restricoes"]?.textarea_value);
       formData.append("riscos", canvasData["riscos"]?.textarea_value);
-      formData.append("linha_do_tempo",canvasData["linha_do_tempo"]?.textarea_value);
+      formData.append(
+        "linha_do_tempo",
+        canvasData["linha_do_tempo"]?.textarea_value
+      );
       formData.append("custos", canvasData["custos"]?.textarea_value);
       formData.append("estilo", JSON.stringify(canvasData));
 
@@ -127,7 +136,7 @@ export const ProjetosCreate = () => {
             >
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="infosGerais">
-                  Informações gerais
+                  <Library /> Informações gerais
                 </TabsTrigger>
                 <TabsTrigger value="projectCanvas">Project canvas</TabsTrigger>
               </TabsList>
@@ -174,9 +183,10 @@ export const ProjetosCreate = () => {
             >
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="infosGerais">
+                  <Library size="20" className="mr-2" />
                   Informações gerais
                 </TabsTrigger>
-                <TabsTrigger value="projectCanvas">Project canvas</TabsTrigger>
+                <TabsTrigger value="projectCanvas"><PanelsTopLeftIcon size="20" className="mr-2" />Project canvas</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
