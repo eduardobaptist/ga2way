@@ -76,12 +76,8 @@ const empresaFormSchema = z.object({
   foto_perfil: z
     .instanceof(FileList)
     .nullable()
-    .refine(
-      (files) => files && files.length > 0,
-      "Foto de perfil é obrigatória"
-    )
     .refine((files) => {
-      if (!files || files.length === 0) return false;
+      if (!files || files.length === 0) return true; // se está vazio nem verifica a extensão; É NÃO OBRIGATÓRIO!
       const allowedExtensions = ["jpg", "jpeg", "png"];
       return allowedExtensions.includes(
         files[0].name.split(".").pop().toLowerCase()
