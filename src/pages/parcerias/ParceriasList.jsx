@@ -28,7 +28,7 @@ import {
   Search,
   Filter,
   Loader2,
-  Image,
+  ImageOff,
   CheckCircle,
   AlertTriangle,
   CircleAlert,
@@ -206,7 +206,7 @@ export const ParceriasList = () => {
                               className="w-full h-full object-contain"
                             />
                           ) : (
-                            <Image />
+                            <ImageOff className="w-4 h-4 text-muted-foreground" />
                           )}
                         </span>
                         <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">

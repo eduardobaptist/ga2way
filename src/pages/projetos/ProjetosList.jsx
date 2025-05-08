@@ -35,7 +35,7 @@ import {
   Search,
   PlusCircle,
   Filter,
-  Image,
+  ImageOff,
   EyeOff,
   Eye,
   Hourglass,
@@ -191,7 +191,7 @@ export const ProjetosList = () => {
                               className="w-full h-full object-contain"
                             />
                           ) : (
-                            <Image />
+                            <ImageOff />
                           )}
                         </span>
                         <div className="flex flex-col gap-1 ml-2 overflow-hidden">

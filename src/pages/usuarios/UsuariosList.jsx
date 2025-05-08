@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
+import { Search, PlusCircle, Filter, Loader2, ImageOff } from "lucide-react";
 import { UsuariosActions } from "./UsuariosActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -193,27 +193,30 @@ export const UsuariosList = () => {
                       />
                     </TableCell>
                     <TableCell className="flex items-center gap-2">
-                      <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border flex items-center justify-center">
-                        {usuario.tipo === "ict"
-                          ? usuario?.Responsavels?.[0]?.Ict?.foto_perfil && (
-                              <img
-                                src={`${import.meta.env.VITE_API_URL}${
-                                  usuario.Responsavels[0].Ict.foto_perfil
-                                }`}
-                                alt="Foto ICT"
-                                className="w-full h-full object-cover"
-                              />
-                            )
-                          : usuario?.Responsavels?.[0]?.Empresa
-                              ?.foto_perfil && (
-                              <img
-                                src={`${import.meta.env.VITE_API_URL}${
-                                  usuario.Responsavels[0].Empresa.foto_perfil
-                                }`}
-                                alt="Foto Empresa"
-                                className="w-full h-full object-cover"
-                              />
-                            )}
+                      <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
+                        {usuario.tipo === "ict" ? (
+                          usuario?.Responsavels?.[0]?.Ict?.foto_perfil ? (
+                            <img
+                              src={`${import.meta.env.VITE_API_URL}${
+                                usuario.Responsavels[0].Ict.foto_perfil
+                              }`}
+                              alt="Foto ICT"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <ImageOff className="w-4 h-4 text-muted-foreground" />
+                          )
+                        ) : usuario?.Responsavels?.[0]?.Empresa?.foto_perfil ? (
+                          <img
+                            src={`${import.meta.env.VITE_API_URL}${
+                              usuario.Responsavels[0].Empresa.foto_perfil
+                            }`}
+                            alt="Foto Empresa"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <ImageOff className="w-4 h-4 text-muted-foreground" />
+                        )}
                       </span>
                       <span>{usuario.nome}</span>
                     </TableCell>

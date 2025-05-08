@@ -30,7 +30,8 @@ import {
   Loader2,
   CheckCircle,
   AlertTriangle,
-  CircleAlert
+  CircleAlert,
+  ImageOff
 } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -290,7 +291,7 @@ export const PropostasList = () => {
                               className="w-full h-full object-contain"
                             />
                           ) : (
-                            <Image />
+                            <ImageOff className="w-4 h-4 text-muted-foreground" />
                           )}
                         </span>
                         <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
