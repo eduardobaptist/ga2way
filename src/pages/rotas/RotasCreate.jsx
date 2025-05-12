@@ -31,6 +31,7 @@ import { useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const rotaFormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -153,7 +154,7 @@ export const RotasCreate = () => {
               name="nome"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -166,7 +167,7 @@ export const RotasCreate = () => {
               name="descricao"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>

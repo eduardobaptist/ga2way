@@ -50,6 +50,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/axios.config";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const programaFormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -205,7 +206,7 @@ export const ProgramasCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Nome</FormLabel>
+                    <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -219,7 +220,7 @@ export const ProgramasCreate = () => {
               name="rota_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Rota do programa</FormLabel>
+                  <FormLabel>Rota do programa <RequiredFieldSpan /></FormLabel>
                   <Popover open={open} onOpenChange={handleRotas}>
                     <PopoverTrigger asChild>
                       <Button
@@ -288,7 +289,7 @@ export const ProgramasCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2">
-                    <FormLabel>Descrição</FormLabel>
+                    <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
