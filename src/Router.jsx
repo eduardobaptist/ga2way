@@ -1,8 +1,9 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
-import { Home } from "@/pages/Home";
-import { HomePage } from "./pages/Home2";
+import { Home } from "@/pages/home/Home";
+import { HomePage } from "./pages/home/Home2";
+import { Login } from "./pages/home/Login";
 import { PrivateRoute } from "@/components/PrivateRoute";
 import { Layout } from "./components/Layout";
 
@@ -47,7 +48,11 @@ import { ParceriasList } from "./pages/parcerias/ParceriasList";
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <HomePage />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
   {
     element: <PrivateRoute />,
