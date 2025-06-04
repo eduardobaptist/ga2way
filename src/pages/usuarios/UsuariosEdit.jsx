@@ -31,6 +31,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/axios.config";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const usuarioFormSchema = z.object({
   nome: z
@@ -223,7 +224,7 @@ export const UsuariosEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel>E-mail</FormLabel>
+                      <FormLabel>E-mail <RequiredFieldSpan /></FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>
@@ -238,7 +239,7 @@ export const UsuariosEdit = () => {
                 name="senha"
                 render={({ field }) => (
                   <FormItem className="relative col-span-2 md:col-span-1">
-                    <FormLabel>Senha</FormLabel>
+                    <FormLabel>Senha <RequiredFieldSpan /></FormLabel>
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
@@ -268,7 +269,7 @@ export const UsuariosEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel>Nome</FormLabel>
+                      <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>
@@ -283,7 +284,7 @@ export const UsuariosEdit = () => {
                 name="telefone"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Telefone</FormLabel>
+                    <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
                     <FormControl ref={withMask("+99 (99) 9999-9999")}>
                       <Input
                         type="tel"
@@ -305,7 +306,7 @@ export const UsuariosEdit = () => {
                 name="endereco"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Endereço</FormLabel>
+                    <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>

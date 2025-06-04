@@ -168,8 +168,8 @@ export const ProjetosList = () => {
                   className="w-full col-span-1 shadow-md flex flex-col relative transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] hover:z-10"
                 >
                   {projeto.total_interesses &&
-                  projeto.status === "PUBLICADO" &&
-                  ["admin", "empresa"].includes(userTipo) ? (
+                    projeto.status === "PUBLICADO" &&
+                    ["admin", "empresa"].includes(userTipo) ? (
                     <div className="absolute -top-2 -right-2 z-10">
                       <Badge className="bg-red-500 text-white hover:bg-red-600 px-2 py-1 rounded-full border border-white shadow-md">
                         {projeto.total_interesses <= 99
@@ -185,20 +185,19 @@ export const ProjetosList = () => {
                         <span className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
                           {projeto?.Programa?.Rota?.Empresa?.foto_perfil ? (
                             <img
-                              src={`${import.meta.env.VITE_API_URL}${
-                                projeto.Programa.Rota.Empresa.foto_perfil
-                              }`}
+                              src={`${import.meta.env.VITE_API_URL}${projeto.Programa.Rota.Empresa.foto_perfil
+                                }`}
                               className="w-full h-full object-contain"
                             />
                           ) : (
                             <ImageOff />
                           )}
                         </span>
-                        <div className="flex flex-col gap-1 ml-2 overflow-hidden">
-                          <CardTitle className="truncate">
+                        <div className="flex flex-col gap-1 ml-2">
+                          <CardTitle className="">
                             <Link
                               to={`/projetos/${projeto.id}`}
-                              className="transition-colors duration-200 hover:text-blue-700 cursor-pointer"
+                              className="transition-colors duration-200 hover:text-blue-700 cursor-pointer overflow-hidden text-ellipsis"
                             >
                               {projeto.nome}
                             </Link>
@@ -258,44 +257,44 @@ export const ProjetosList = () => {
                 </Card>
               ))
             ) : isLoading ? (
-                <div className="col-span-full flex justify-center items-center p-8 bg-white rounded-lg border border-slate-200 h-[calc(100vh-280px)] min-h-[500px] w-full">
-                  <div className="flex flex-col items-center text-center">
-                    <Loader2 className="h-12 w-12 animate-spin text-slate-400 mb-4" />
-                    <h2 className="text-2xl font-semibold text-slate-700">
-                      Carregando projetos...
-                    </h2>
-                  </div>
+              <div className="col-span-full flex justify-center items-center p-8 bg-white rounded-lg border border-slate-200 h-[calc(100vh-280px)] min-h-[500px] w-full">
+                <div className="flex flex-col items-center text-center">
+                  <Loader2 className="h-12 w-12 animate-spin text-slate-400 mb-4" />
+                  <h2 className="text-2xl font-semibold text-slate-700">
+                    Carregando projetos...
+                  </h2>
                 </div>
-              ) : (
-                <div className="col-span-full flex justify-center items-center p-8 bg-white rounded-lg border border-slate-200 h-[calc(100vh-280px)] min-h-[500px] w-full">
-                  <div className="flex flex-col items-center text-center max-w-md">
-                    <div className="bg-slate-50 p-6 rounded-full mb-6">
-                      <SearchX className="h-16 w-16 text-slate-400" />
-                    </div>
-                    
-                    <h2 className="text-2xl font-semibold text-slate-700 mb-3">
-                      Nenhum projeto encontrado
-                    </h2>
-                    
-                    <p className="text-slate-500 mb-6">
-                      {["admin", "empresa"].includes(userTipo)
-                        ? "Não foram encontrados projetos com os filtros atuais. Tente ajustar os filtros ou crie um novo projeto."
-                        : "Não foram encontrados projetos com os filtros atuais. Tente ajustar os critérios de busca."}
-                    </p>
-                    
-                    {["admin", "empresa"].includes(userTipo) && (
-                      <Link to="/projetos/novo">
-                        <Button 
-                          className="bg-[#7C3AED] text-white hover:bg-[#6D28D9]"
-                        >
-                          Criar novo projeto
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    )}
+              </div>
+            ) : (
+              <div className="col-span-full flex justify-center items-center p-8 bg-white rounded-lg border border-slate-200 h-[calc(100vh-280px)] min-h-[500px] w-full">
+                <div className="flex flex-col items-center text-center max-w-md">
+                  <div className="bg-slate-50 p-6 rounded-full mb-6">
+                    <SearchX className="h-16 w-16 text-slate-400" />
                   </div>
+
+                  <h2 className="text-2xl font-semibold text-slate-700 mb-3">
+                    Nenhum projeto encontrado
+                  </h2>
+
+                  <p className="text-slate-500 mb-6">
+                    {["admin", "empresa"].includes(userTipo)
+                      ? "Não foram encontrados projetos com os filtros atuais. Tente ajustar os filtros ou crie um novo projeto."
+                      : "Não foram encontrados projetos com os filtros atuais. Tente ajustar os critérios de busca."}
+                  </p>
+
+                  {["admin", "empresa"].includes(userTipo) && (
+                    <Link to="/projetos/novo">
+                      <Button
+                        className="bg-[#7C3AED] text-white hover:bg-[#6D28D9]"
+                      >
+                        Criar novo projeto
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  )}
                 </div>
-              )
+              </div>
+            )
             }
           </div>
         ) : (

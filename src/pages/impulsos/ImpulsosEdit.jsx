@@ -41,6 +41,7 @@ import { withMask } from "use-mask-input";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const impulsoFormSchema = z
   .object({
@@ -155,7 +156,7 @@ export const ImpulsosEdit = () => {
   };
 
   return (
-    <MainWrapper title="Novo impulso acadêmico">
+    <MainWrapper title="Editar impulso acadêmico">
       <div className="flex items-center justify-between">
         <AlertDialog>
           <AlertDialogTrigger asChild>
@@ -215,7 +216,7 @@ export const ImpulsosEdit = () => {
               name="descricao"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -244,7 +245,7 @@ export const ImpulsosEdit = () => {
               name="data_inicio"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data de início</FormLabel>
+                  <FormLabel>Data de início <RequiredFieldSpan /></FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -283,7 +284,7 @@ export const ImpulsosEdit = () => {
               name="data_fim"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data de término</FormLabel>
+                  <FormLabel>Data de término <RequiredFieldSpan /></FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
