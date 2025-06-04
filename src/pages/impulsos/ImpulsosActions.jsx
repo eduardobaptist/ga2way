@@ -61,7 +61,7 @@ export const ImpulsosActions = ({ impulso, onRefresh }) => {
   };
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger>
           <DropdownMenu

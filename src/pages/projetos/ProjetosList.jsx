@@ -47,7 +47,7 @@ import {
   ArrowRight,
   Loader2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios.config";
 import { cn, formatDatetime } from "@/lib/utils";
@@ -61,6 +61,12 @@ export const ProjetosList = () => {
 
   const { getUserTipo } = useAuthStore();
   const userTipo = getUserTipo();
+
+  const navigate = useNavigate();
+
+  const handleCardOnClick = (id) => {
+    navigate(`/projetos/${id}`)
+  }
 
   const fetchProjetos = async () => {
     try {
@@ -165,7 +171,8 @@ export const ProjetosList = () => {
               projetos.map((projeto) => (
                 <Card
                   key={projeto.id}
-                  className="w-full col-span-1 shadow-md flex flex-col relative transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.02] hover:z-10"
+                  className="w-full col-span-1 shadow-md flex flex-col relative transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-[1.0] hover:z-10 cursor-pointer"
+                  onClick={() => handleCardOnClick(projeto.id)}
                 >
                   {projeto.total_interesses &&
                     projeto.status === "PUBLICADO" &&
@@ -193,14 +200,11 @@ export const ProjetosList = () => {
                             <ImageOff />
                           )}
                         </span>
-                        <div className="flex flex-col gap-1 ml-2">
-                          <CardTitle className="">
-                            <Link
-                              to={`/projetos/${projeto.id}`}
-                              className="transition-colors duration-200 hover:text-blue-700 cursor-pointer overflow-hidden text-ellipsis"
-                            >
-                              {projeto.nome}
-                            </Link>
+                        <div className="flex flex-col gap-1 ml-2 overflow-hidden min-w-0">
+                          <CardTitle className="truncate">
+
+                            {projeto.nome}
+
                           </CardTitle>
                           <p className="text-sm font-semibold">
                             {projeto?.Programa?.Rota?.Empresa?.nome}

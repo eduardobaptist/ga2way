@@ -61,7 +61,7 @@ export const IctsActions = ({ ict, onRefresh }) => {
   };
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger>
           <DropdownMenu
