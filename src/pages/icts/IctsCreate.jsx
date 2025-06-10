@@ -33,6 +33,7 @@ import { validarCnpj } from "@/lib/utils";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const ictFormSchema = z.object({
   nome: z
@@ -213,7 +214,7 @@ export const IctsCreate = () => {
               name="nome"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -227,7 +228,7 @@ export const IctsCreate = () => {
               name="razao_social"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Razão social</FormLabel>
+                  <FormLabel>Razão social <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -241,7 +242,7 @@ export const IctsCreate = () => {
               name="cnpj"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>CNPJ</FormLabel>
+                  <FormLabel>CNPJ <RequiredFieldSpan /></FormLabel>
                   <FormControl ref={withMask("99.999.999/9999-99")}>
                     <Input
                       type="text"
@@ -263,7 +264,7 @@ export const IctsCreate = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="email" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -277,7 +278,7 @@ export const IctsCreate = () => {
               name="endereco"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Endereço</FormLabel>
+                  <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -291,7 +292,7 @@ export const IctsCreate = () => {
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Telefone</FormLabel>
+                  <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
                   <FormControl ref={withMask("+99 (99) 9999-9999")}>
                     <Input
                       type="tel"

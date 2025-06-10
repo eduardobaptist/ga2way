@@ -33,6 +33,7 @@ import { validarCnpj } from "@/lib/utils";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const empresaFormSchema = z.object({
   nome: z
@@ -69,10 +70,7 @@ const empresaFormSchema = z.object({
     .min(12, "Telefone inválido")
     .max(12, "Telefone inválido")
     .regex(/^[1-9][0-9]{11}$/, "Telefone inválido"),
-  site: z
-    .string()
-    .min(1, "Site é obrigatório")
-    .max(100, "Site não deve exceder 100 caracteres"),
+  site: z.string().max(100, "Site não deve exceder 100 caracteres"),
   foto_perfil: z
     .instanceof(FileList)
     .nullable()
@@ -221,7 +219,7 @@ export const EmpresasCreate = () => {
               name="nome"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Nome</FormLabel>
+                  <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -235,7 +233,7 @@ export const EmpresasCreate = () => {
               name="razao_social"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Razão social</FormLabel>
+                  <FormLabel>Razão social <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -249,7 +247,7 @@ export const EmpresasCreate = () => {
               name="cnpj"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>CNPJ</FormLabel>
+                  <FormLabel>CNPJ <RequiredFieldSpan /></FormLabel>
                   <FormControl ref={withMask("99.999.999/9999-99")}>
                     <Input
                       type="text"
@@ -271,7 +269,7 @@ export const EmpresasCreate = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="email" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -285,7 +283,7 @@ export const EmpresasCreate = () => {
               name="endereco"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Endereço</FormLabel>
+                  <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -299,7 +297,7 @@ export const EmpresasCreate = () => {
               name="area"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Área de atuação</FormLabel>
+                  <FormLabel>Área de atuação <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -313,7 +311,7 @@ export const EmpresasCreate = () => {
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Telefone</FormLabel>
+                  <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
                   <FormControl ref={withMask("+99 (99) 9999-9999")}>
                     <Input
                       type="tel"
