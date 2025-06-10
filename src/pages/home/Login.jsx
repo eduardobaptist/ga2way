@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Loader2,
+  PopcornIcon,
+  InfoIcon,
+  Sparkle,
+  Sparkles,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,16 +23,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/axios.config";
 import { toast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const formSchema = z.object({
-  email: z.string().min(1, { message: "Email é obrigatório" }).email({ message: "Email inválido" }),
+  email: z
+    .string()
+    .min(1, { message: "Email é obrigatório" })
+    .email({ message: "Email inválido" }),
   senha: z.string().min(1, { message: "Senha é obrigatória" }),
 });
 
@@ -93,7 +115,10 @@ export function Login() {
 
           <CardContent className="space-y-4">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="email"
@@ -105,7 +130,6 @@ export function Login() {
                           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
                           <Input
                             type="email"
-                            placeholder="seu@email.com"
                             className="bg-white border-slate-200 focus:border-purple-600 focus:ring-purple-600"
                             {...field}
                           />
@@ -136,7 +160,9 @@ export function Login() {
                             type="button"
                             onClick={togglePasswordVisibility}
                             className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                            aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
+                            aria-label={
+                              showPassword ? "Esconder senha" : "Mostrar senha"
+                            }
                           >
                             {showPassword ? (
                               <EyeOff className="h-4 w-4" />
@@ -169,19 +195,12 @@ export function Login() {
             </Form>
           </CardContent>
 
-          <CardFooter className="flex flex-col items-center justify-center space-y-8 text-center mt-2">
-            <div className="relative">
-              <div className="inline-flex items-center rounded-lg bg-purple-100 px-4 py-2 border border-purple-200">
-                <span className="text-sm font-medium text-purple-800">
-                  Em breve, contas Gate2way poderão ser autocadastradas!
-                </span>
-              </div>
-              <div className="absolute -top-4 -right-1">
-                <span className="inline-flex items-center rounded-md bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700 border border-purple-200">
-                  ✨ Novidade
-                </span>
-              </div>
-            </div>
+          <CardFooter>
+            <Alert>
+              <AlertDescription>
+                Contas Gate2way poderão ser autocadastradas em breve.
+              </AlertDescription>
+            </Alert>
           </CardFooter>
         </Card>
       </main>

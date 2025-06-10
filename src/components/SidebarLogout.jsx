@@ -29,7 +29,7 @@ export const SidebarLogout = () => {
       <SidebarMenuItem className="list-none">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <SidebarMenuButton className="w-full d-flex justify-center gap-2 border border-black/20 bg-transparent hover:bg-gray-100 rounded-md transition-colors text-red-500 hover:text-red-600">
+            <SidebarMenuButton className="w-full d-flex justify-center gap-2 border border-black/20 bg-transparent hover:bg-gray-100 rounded-md transition-colors text-red-500 hover:text-red-600 focus:text-red-600">
               <LogOut className="h-4 w-4" />
               <span className="font-medium">Encerrar sessão</span>
             </SidebarMenuButton>

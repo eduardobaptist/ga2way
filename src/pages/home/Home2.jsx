@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export function HomePage() {
   const incentives = [
@@ -61,13 +62,16 @@ export function HomePage() {
           <div className="flex flex-1 items-center justify-end space-x-4">
             <nav className="flex items-center gap-2">
               <Button
+                className="border-white text-white text-lg"
                 variant="outline"
-                className="border-none text-white"
                 asChild
               >
                 <Link to="/login">Entrar</Link>
               </Button>
-              <Button className="border-white text-white" variant="outline">
+              <Button
+                className="border-white text-white hidden"
+                variant="outline"
+              >
                 Começar
               </Button>
             </nav>
@@ -107,7 +111,7 @@ export function HomePage() {
                     asChild
                   >
                     <Link to="/login">
-                      Começar agora <ArrowUpRight className="ml-2 h-5 w-5" />
+                      Acessar <ArrowUpRight className="ml-1 h-5 w-5" />
                     </Link>
                   </Button>
                   <Button
@@ -201,15 +205,15 @@ export function HomePage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-500 text-white">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-900 text-white">
                     <Bell className="h-5 w-5" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <h3 className="text-xl font-bold">
                         Gerenciamento de projetos{" "}
-                        <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-medium text-amber-800">
-                          Em breve
+                        <span className="inline-flex items-center rounded-full bg-orange-500 hover:bg-orange-500 text-white px-2.5 py-0.5 text-xs font-medium">
+                          em breve
                         </span>
                       </h3>
                     </div>
@@ -241,8 +245,8 @@ export function HomePage() {
               </div>
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                  <span className="text-blue-900">Impulsione sua</span>{" "}
-                  <span className="text-purple-600">carreira acadêmica</span>
+                  <span className="text-blue-900">Te levando</span>{" "}
+                  <span className="text-purple-600">mais longe</span>
                 </h2>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   O Gate2way incentiva que as empresas parceiras ofereçam
@@ -251,9 +255,9 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-center">
               {/* Animação Lottie */}
-              <div className="flex justify-center lg:justify-start order-2 lg:order-1">
+              <div className="flex justify-center order-2 lg:order-1">
                 <div className="w-full max-w-md">
                   <Player
                     src={animation}
@@ -282,7 +286,7 @@ export function HomePage() {
                           >
                             <Icon className="h-6 w-6" />
                           </div>
-                          <h3 className="text-xl font-bold mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                          <h3 className="text-2xl font-bold mb-2 group-hover:text-purple-600 transition-colors duration-300">
                             {item.title}
                           </h3>
                           <p className="text-muted-foreground">
@@ -298,7 +302,9 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="mt-12 flex justify-center">
+            <div className="mt-12 justify-center hidden">
+              {" "}
+              //botão escondido
               <Button
                 size="lg"
                 variant="outline"
@@ -323,9 +329,9 @@ export function HomePage() {
                 </h2>
                 <p className="max-w-[800px] mx-auto md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-center">
                   Empresas ganham acesso a mentes brilhantes e soluções
-                  inovadoras. ICTs proporcionam experiência real e oportunidades
-                  de carreira para seus talentos. Uma conexão onde todos saem
-                  ganhando.
+                  inovadoras. ICTs (Institutos de Ciência e Tecnologia)
+                  proporcionam experiência real e oportunidades de carreira para
+                  seus talentos. Uma conexão onde todos saem ganhando.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
@@ -337,9 +343,22 @@ export function HomePage() {
                     Acesse talentos em formação e reduza custos de P&D com
                     projetos inovadores guiados por especialistas acadêmicos.
                   </p>
-                  <Button size="lg" variant="secondary" className="w-full">
-                    Cadastre sua empresa
-                  </Button>
+                  <div className="relative">
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      className="w-full"
+                      disabled
+                    >
+                      Cadastre-se como empresa
+                    </Button>
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
+                    >
+                      em breve
+                    </Badge>
+                  </div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
                   <h3 className="text-xl font-semibold mb-2 text-center">
@@ -349,13 +368,22 @@ export function HomePage() {
                     Ofereça experiências práticas aos seus talentos e fortaleça
                     parcerias com o setor produtivo através de projetos reais.
                   </p>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full bg-transparent border-white text-white hover:bg-white/10 hover:text-white"
-                  >
-                    Sou uma ICT
-                  </Button>
+                  <div className="relative">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full bg-transparent border-white text-white hover:bg-white/10 hover:text-white"
+                      disabled
+                    >
+                      Sou de uma ICT e quero participar
+                    </Button>
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
+                    >
+                      em breve
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </div>
