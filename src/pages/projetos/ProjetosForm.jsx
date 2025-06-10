@@ -10,7 +10,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "./ui/input";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+import { Input } from "../../components/ui/input";
 import {
   Select,
   SelectContent,
@@ -52,8 +53,8 @@ const projectFormSchema = z
     data_fim: z.date({
       invalid_type_error: "Formato de data inválido",
     }),
-    trl: z.string().min(1, "Nível TRL é obrigatório"),
-    acatech: z.string().min(1, "Nível ACATECH é obrigatório"),
+    trl: z.string().nullable(),
+    acatech: z.string().nullable(),
     prioridade: z.string().min(1, "Prioridade é obrigatória"),
     impulso: z.boolean(),
     impulso_id: z.number().nullable(),
@@ -106,8 +107,8 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       data_inicio: new Date(),
       data_fim: null,
       programa_id: 0,
-      trl: "",
-      acatech: "",
+      trl: null,
+      acatech: null,
       prioridade: "",
       impulso: false,
       impulso_id: null,
@@ -198,16 +199,18 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
     }
   };
 
-  const renderSelect = (name, label, options) => (
+  const renderSelect = (name, label, options, required) => (
     <FormField
       control={form.control}
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel>
+            {label} {required && <RequiredFieldSpan /> }
+          </FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <SelectTrigger>
-              <SelectValue placeholder="Selecione" />
+              <SelectValue placeholder={required && "Selecione"} />
             </SelectTrigger>
             <SelectContent>
               {options.map((opt) => (
@@ -242,7 +245,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="nome"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nome</FormLabel>
+                      <FormLabel>
+                        Nome do projeto <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -257,7 +262,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="descricao"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Descrição</FormLabel>
+                      <FormLabel>
+                        Descrição <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} />
                       </FormControl>
@@ -272,7 +279,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="programa_id"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Programa do projeto</FormLabel>
+                      <FormLabel>
+                        Programa do projeto <RequiredFieldSpan />
+                      </FormLabel>
                       <Popover
                         open={programasOpen}
                         onOpenChange={handleProgramas}
@@ -383,7 +392,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                       name="impulso_id"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Impulso acadêmico</FormLabel>
+                          <FormLabel>
+                            Impulso acadêmico <RequiredFieldSpan />
+                          </FormLabel>
                           <Popover
                             open={impulsosOpen}
                             onOpenChange={handleImpulsos}
@@ -455,7 +466,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="data_inicio"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Data de início</FormLabel>
+                      <FormLabel>
+                        Data de início <RequiredFieldSpan />
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -495,7 +508,9 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   name="data_fim"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>Data de término</FormLabel>
+                      <FormLabel>
+                        Data de término <RequiredFieldSpan />
+                      </FormLabel>
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
@@ -561,25 +576,42 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
             </legend>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                {renderSelect("trl", "Nível TRL", [
-                  { value: "1", label: "1. A teoria" },
-                  { value: "2", label: "2. O protótipo" },
-                  { value: "3", label: "3. O MVP" },
-                ])}
+                {renderSelect(
+                  "trl",
+                  "Nível TRL",
+                  [
+                    { value: null, label: "Indefinido" },
+                    { value: "1", label: "1. A teoria" },
+                    { value: "2", label: "2. O protótipo" },
+                    { value: "3", label: "3. O MVP" },
+                  ],
+                  false
+                )}
               </div>
               <div>
-                {renderSelect("acatech", "Nível ACATECH", [
-                  { value: "1", label: "1. Computadorização" },
-                  { value: "2", label: "2. Conectividade" },
-                  { value: "3", label: "3. Visibilidade" },
-                ])}
+                {renderSelect(
+                  "acatech",
+                  "Nível ACATECH",
+                  [
+                    { value: null, label: "Indefinido" },
+                    { value: "1", label: "1. Computadorização" },
+                    { value: "2", label: "2. Conectividade" },
+                    { value: "3", label: "3. Visibilidade" },
+                  ],
+                  false
+                )}
               </div>
               <div>
-                {renderSelect("prioridade", "Prioridade", [
-                  { value: "1", label: "Baixa" },
-                  { value: "2", label: "Média" },
-                  { value: "3", label: "Alta" },
-                ])}
+                {renderSelect(
+                  "prioridade",
+                  "Prioridade",
+                  [
+                    { value: "1", label: "Baixa" },
+                    { value: "2", label: "Média" },
+                    { value: "3", label: "Alta" },
+                  ],
+                  true
+                )}
               </div>
             </div>
           </fieldset>

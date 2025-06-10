@@ -61,7 +61,7 @@ export const UsuariosActions = ({ usuario, onRefresh }) => {
   };
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger>
           <DropdownMenu

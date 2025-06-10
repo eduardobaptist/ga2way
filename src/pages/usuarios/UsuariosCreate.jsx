@@ -59,6 +59,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/axios.config";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const usuarioFormSchema = z
   .object({
@@ -294,7 +295,7 @@ export const UsuariosCreate = () => {
               name="tipo"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Tipo de Usuário</FormLabel>
+                  <FormLabel>Tipo de Usuário <RequiredFieldSpan /></FormLabel>
                   <Select
                     onValueChange={(value) => {
                       setTipo(value);
@@ -324,7 +325,7 @@ export const UsuariosCreate = () => {
                 name="ict_id"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>ICT</FormLabel>
+                    <FormLabel>ICT <RequiredFieldSpan /></FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -391,7 +392,7 @@ export const UsuariosCreate = () => {
                 name="empresa_id"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Empresa</FormLabel>
+                    <FormLabel>Empresa <RequiredFieldSpan /></FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -461,7 +462,7 @@ export const UsuariosCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>E-mail</FormLabel>
+                    <FormLabel>E-mail <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -476,7 +477,7 @@ export const UsuariosCreate = () => {
               name="senha"
               render={({ field }) => (
                 <FormItem className="relative col-span-2 md:col-span-1">
-                  <FormLabel>Senha</FormLabel>
+                  <FormLabel>Senha <RequiredFieldSpan /></FormLabel>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -506,7 +507,7 @@ export const UsuariosCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Nome</FormLabel>
+                    <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -522,7 +523,7 @@ export const UsuariosCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Cargo</FormLabel>
+                    <FormLabel>Cargo <RequiredFieldSpan /></FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -537,7 +538,7 @@ export const UsuariosCreate = () => {
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Telefone</FormLabel>
+                  <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
                   <FormControl ref={withMask("+99 (99) 9999-9999")}>
                     <Input
                       type="tel"
@@ -564,7 +565,7 @@ export const UsuariosCreate = () => {
                     tipo === "admin" ? "" : "md:col-span-1"
                   )}
                 >
-                  <FormLabel>Endereço</FormLabel>
+                  <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>

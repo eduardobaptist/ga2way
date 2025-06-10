@@ -70,7 +70,7 @@ const items = [
     userRoles: ["admin"],
   },
   {
-    title: "Institutos (ICTs)",
+    title: "Instituições (ICTs)",
     url: "/icts",
     icon: GraduationCap,
     userRoles: ["admin"],

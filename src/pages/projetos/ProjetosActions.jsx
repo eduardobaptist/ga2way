@@ -127,7 +127,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
   };
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={100}>
       <Tooltip>
         <TooltipTrigger>
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>

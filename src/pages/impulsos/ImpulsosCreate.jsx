@@ -40,6 +40,7 @@ import { withMask } from "use-mask-input";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const impulsoFormSchema = z
   .object({
@@ -75,8 +76,6 @@ export const ImpulsosCreate = () => {
   const handleSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      //data.valor = data.valor.replace(/[^0-9,]/g, "").replace(",", ".");
-
       const response = await api.post("/impulsos", {
         ...data,
       });
@@ -176,7 +175,7 @@ export const ImpulsosCreate = () => {
               name="descricao"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Descrição</FormLabel>
+                  <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -205,7 +204,7 @@ export const ImpulsosCreate = () => {
               name="data_inicio"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data de início</FormLabel>
+                  <FormLabel>Data de início <RequiredFieldSpan /></FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -244,7 +243,7 @@ export const ImpulsosCreate = () => {
               name="data_fim"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Data de término</FormLabel>
+                  <FormLabel>Data de término <RequiredFieldSpan /></FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
