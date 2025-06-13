@@ -18,7 +18,7 @@ import { ProgramasView } from "@/pages/programas/ProgramasView";
 import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
-import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate_teste";
+import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
 import { ProjetosView } from "./pages/projetos/ProjetosView";
 
 import { UsuariosList } from "./pages/usuarios/UsuariosList";
