@@ -21,7 +21,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon, CalendarIcon } from "lucide-react";
+import { ArrowLeftCircle, CheckCircleIcon, CalendarIcon, Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -63,6 +63,7 @@ export const ImpulsosEdit = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
@@ -94,7 +95,7 @@ export const ImpulsosEdit = () => {
         form.reset({
           descricao: impulso.descricao,
           valor: impulso.valor,
-          data_inicio:  new Date(impulso.data_inicio),
+          data_inicio: new Date(impulso.data_inicio),
           data_fim: new Date(impulso.data_fim),
         });
       } catch (error) {
@@ -115,9 +116,9 @@ export const ImpulsosEdit = () => {
   const handleSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      //data.valor = data.valor.replace(/[^0-9,]/g, "").replace(",", ".");
+      data.valor = data.valor.replace(/[^0-9,]/g, "").replace(",", ".");
 
-      const response = await api.put("/impulsos", {
+      const response = await api.put(`/impulsos/${id}`, {
         ...data,
       });
 
@@ -200,125 +201,132 @@ export const ImpulsosEdit = () => {
       </div>
 
       <div className="mt-5">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="w-full grid grid-cols-2 gap-4"
-          >
-            {form.formState.errors.root && (
-              <div className="col-span-2 text-red-500 text-sm">
-                {form.formState.errors.root.message}
-              </div>
-            )}
-
-            <FormField
-              control={form.control}
-              name="descricao"
-              render={({ field }) => (
-                <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
-                  <FormControl>
-                    <Input type="text" disabled={isSubmitting} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+        {isLoading ? (
+          <div className="flex mt-5 items-center justify-center">
+            <Loader2 className="h-6 w-6 animate-spin mr-2" />
+            Carregando impulso acadêmico...
+          </div>
+        ) : (
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="w-full grid grid-cols-2 gap-4"
+            >
+              {form.formState.errors.root && (
+                <div className="col-span-2 text-red-500 text-sm">
+                  {form.formState.errors.root.message}
+                </div>
               )}
-            />
 
-            <FormField
-              control={form.control}
-              name="valor"
-              render={({ field }) => (
-                <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Valor</FormLabel>
-                  <Input
-                    {...field}
-                    ref={withMask("brl-currency", { rightAlign: false })}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="descricao"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 md:col-span-1">
+                    <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
+                    <FormControl>
+                      <Input type="text" disabled={isSubmitting} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="data_inicio"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Data de início <RequiredFieldSpan /></FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd/MM/y", { locale: ptBR })
-                          ) : (
-                            <span>Selecione uma data</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="valor"
+                render={({ field }) => (
+                  <FormItem className="col-span-2 md:col-span-1">
+                    <FormLabel>Valor</FormLabel>
+                    <Input
+                      {...field}
+                      ref={withMask("brl-currency", { rightAlign: false })}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="data_fim"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Data de término <RequiredFieldSpan /></FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "dd/MM/y", { locale: ptBR })
-                          ) : (
-                            <span>Selecione uma data</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+              <FormField
+                control={form.control}
+                name="data_inicio"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Data de início <RequiredFieldSpan /></FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "dd/MM/y", { locale: ptBR })
+                            ) : (
+                              <span>Selecione uma data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="data_fim"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Data de término <RequiredFieldSpan /></FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "dd/MM/y", { locale: ptBR })
+                            ) : (
+                              <span>Selecione uma data</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
+        )}
       </div>
     </MainWrapper>
   );
