@@ -42,34 +42,29 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isInteresseDialogOpen, setIsInteresseDialogOpen] = useState(false);
-
   const [proposta, setProposta] = useState("");
   const [ofertaId, setOfertaId] = useState(null);
 
   const { getUserTipo } = useAuthStore();
   const userTipo = getUserTipo();
 
-  const handleView = () => navigate(`/projetos/${projeto.id}`);
-  const handleEdit = () => navigate(`/projetos/editar/${projeto.id}`);
-  const handleProposta = () => navigate(`/projetos/propostas/${projeto.id}`);
-
-  const handleDelete = async () => {
-    try {
-      await api.delete(`/projetos/${projeto.id}`);
-      toast({ title: "Projeto excluído com sucesso", variant: "success" });
-      onRefresh?.();
-    } catch (error) {
-      toast({
-        title: error.response?.data?.error || "Erro ao excluir projeto",
-        variant: "destructive",
-      });
-    } finally {
-      setIsDeleteDialogOpen(false);
-      setIsDropdownOpen(false);
-    }
+  const handleView = (e) => {
+    e.stopPropagation();
+    navigate(`/projetos/${projeto.id}`);
   };
 
-  const handlePublish = async () => {
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    navigate(`/projetos/editar/${projeto.id}`);
+  };
+
+  const handleProposta = (e) => {
+    e.stopPropagation();
+    navigate(`/projetos/propostas/${projeto.id}`);
+  };
+
+  const handlePublish = async (e) => {
+    e.stopPropagation();
     try {
       await api.post("/ofertas", {
         projeto_id: projeto.id,
@@ -88,7 +83,8 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     }
   };
 
-  const handleInterest = async () => {
+  const handleInterest = async (e) => {
+    e.stopPropagation();
     try {
       const response = await api.get("/ofertas");
       const oferta = response?.data?.find(
@@ -108,9 +104,30 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     }
   };
 
-  const handleSubmitInterest = async () => {
+  const handleDelete = async (e) => {
+    e.stopPropagation();
     try {
-      toast({ title: "Enviando interesse à empresa, aguarde...", variant: "warning" });
+      await api.delete(`/projetos/${projeto.id}`);
+      toast({ title: "Projeto excluído com sucesso", variant: "success" });
+      onRefresh?.();
+    } catch (error) {
+      toast({
+        title: error.response?.data?.error || "Erro ao excluir projeto",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleteDialogOpen(false);
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const handleSubmitInterest = async (e) => {
+    e.stopPropagation();
+    try {
+      toast({
+        title: "Enviando interesse à empresa, aguarde...",
+        variant: "warning",
+      });
       await api.post("/interesses", {
         proposta,
         oferta_id: ofertaId,
@@ -129,70 +146,74 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
   return (
     <TooltipProvider delayDuration={100}>
       <Tooltip>
-        <TooltipTrigger>
-          <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-            <DropdownMenuTrigger className="focus:outline-none">
-              <Menu className="h-6 w-6 text-gray-500 hover:text-gray-700" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              {["admin", "empresa"].includes(userTipo) &&
-              projeto.status === "NÃO PÚBLICADO" ? (
-                <DropdownMenuItem
-                  className="flex items-center gap-2 cursor-pointer"
-                  onClick={handlePublish}
-                >
-                  <Send className="h-4 w-4" />
-                  <span>Publicar</span>
-                </DropdownMenuItem>
-              ) : null}
-              <DropdownMenuItem
-                onClick={handleView}
-                className="flex items-center gap-2 cursor-pointer"
+        <TooltipTrigger asChild>
+          <div className="inline-block">
+            <DropdownMenu
+              open={isDropdownOpen}
+              onOpenChange={setIsDropdownOpen}
+            >
+              <DropdownMenuTrigger
+                className="focus:outline-none"
+                onClick={(e) => e.stopPropagation()}
               >
-                <Eye className="h-4 w-4" />
-                <span>Ver detalhes</span>
-              </DropdownMenuItem>
-              {/* {["admin", "empresa"].includes(userTipo) ? (
+                <Menu className="h-6 w-6 text-gray-500 hover:text-gray-700" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-48"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {["admin", "empresa"].includes(userTipo) &&
+                projeto.status === "NÃO PÚBLICADO" ? (
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={(e) => handlePublish(e)}
+                  >
+                    <Send className="h-4 w-4" />
+                    <span>Publicar</span>
+                  </DropdownMenuItem>
+                ) : null}
                 <DropdownMenuItem
-                  onClick={handleEdit}
+                  onClick={(e) => handleView(e)}
                   className="flex items-center gap-2 cursor-pointer"
                 >
-                  <Edit2 className="h-4 w-4" />
-                  <span>Alterar</span>
+                  <Eye className="h-4 w-4" />
+                  <span>Ver detalhes</span>
                 </DropdownMenuItem>
-              ) : null} */}
-              {userTipo === "ict" ? (
-                <DropdownMenuItem
-                  onClick={handleInterest}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Handshake className="h-4 w-4" />
-                  <span>Demonstrar interesse</span>
-                </DropdownMenuItem>
-              ) : null}
-              {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
-                <DropdownMenuItem
-                  className="flex items-center gap-2 cursor-pointer"
-                  onClick={handleProposta}
-                >
-                  <Lightbulb className="h-4 w-4" />
-                  <span>Propostas</span>
-                </DropdownMenuItem>
-              ) : null}
-              {["admin", "empresa"].includes(userTipo) ? (
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsDeleteDialogOpen(true);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                  <span>Deletar</span>
-                </DropdownMenuItem>
-              ) : null}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                {userTipo === "ict" ? (
+                  <DropdownMenuItem
+                    onClick={(e) => handleInterest(e)}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Handshake className="h-4 w-4" />
+                    <span>Demonstrar interesse</span>
+                  </DropdownMenuItem>
+                ) : null}
+                {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={(e) => handleProposta(e)}
+                  >
+                    <Lightbulb className="h-4 w-4" />
+                    <span>Propostas</span>
+                  </DropdownMenuItem>
+                ) : null}
+                {["admin", "empresa"].includes(userTipo) ? (
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsDeleteDialogOpen(true);
+                      setIsDropdownOpen(false);
+                    }}
+                    className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span>Deletar</span>
+                  </DropdownMenuItem>
+                ) : null}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </TooltipTrigger>
         <TooltipContent>
           <p>Opções</p>
@@ -203,7 +224,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
         open={isDeleteDialogOpen}
         onOpenChange={setIsDeleteDialogOpen}
       >
-        <AlertDialogContent>
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
           <AlertDialogHeader>
             <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -212,9 +233,11 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleDelete}
+              onClick={(e) => handleDelete(e)}
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
               Excluir
@@ -227,23 +250,25 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
         open={isInteresseDialogOpen}
         onOpenChange={setIsInteresseDialogOpen}
       >
-        <AlertDialogContent>
+        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
           <AlertDialogHeader></AlertDialogHeader>
           <div className="space-y-2">
             <Label htmlFor="proposta">
               Escreva sua proposta para este projeto.
             </Label>
             <Input
-              onChange={() => setProposta(event.target.value)}
+              onChange={(e) => setProposta(e.target.value)}
               id="proposta"
+              onClick={(e) => e.stopPropagation()}
               placeholder="Digite sua proposta..."
             />
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-
+            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleSubmitInterest}
+              onClick={(e) => handleSubmitInterest(e)}
               className="bg-green-600 hover:bg-green-700 focus:ring-green-600"
             >
               Enviar
