@@ -6,13 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/Field";
 import { formatDatetime } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const UsuariosView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [usuario, setUsuario] = useState(null);
   const navigate = useNavigate();
+
+  const formatPhone = (phone) => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11) {
+      return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return phone;
+  };
 
   const fetchUsuario = async () => {
     setIsLoading(true);
@@ -66,13 +78,7 @@ export const UsuariosView = () => {
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
           <Field label="E-mail" value={`${usuario.email}`} />
           <Field label="Nome" value={usuario.nome} />
-          <Field
-            label="Telefone"
-            value={`${usuario.telefone.replace(
-              /(\d{2})(\d{2})(\d{4})(\d{4})/,
-              "+$1 ($2) $3-$4"
-            )}`}
-          />
+          <Field label="Telefone" value={formatPhone(usuario.telefone)} />
           <Field label="Endereço" value={`${usuario.endereco}`} />
           <Field
             label="Data de criação"

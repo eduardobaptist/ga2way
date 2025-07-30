@@ -21,7 +21,7 @@ import { Search, PlusCircle, Filter, Loader2, ImageOff } from "lucide-react";
 import { UsuariosActions } from "./UsuariosActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 import { formatDatetime } from "@/lib/utils";
 
 export const UsuariosList = () => {

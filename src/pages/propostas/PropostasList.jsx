@@ -37,7 +37,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const PropostasList = () => {
   const [filterType, setFilterType] = useState("proposta");

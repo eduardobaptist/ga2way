@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { Link } from "react-router-dom"
 import { toast } from "@/hooks/use-toast"
 import { formatDatetime } from "@/lib/utils"
-import api from "@/axios.config"
+import api from "@/axios"
 import { ImpulsosActions } from "./ImpulsosActions"
 
 export const ImpulsosList = () => {
@@ -32,7 +32,6 @@ export const ImpulsosList = () => {
     setError(null)
     try {
       const response = await api.get("/impulsos")
-      console.log(response.data)
       setImpulsos(response.data)
     } catch (error) {
       const errorMessage = error.response?.data?.error || "Erro ao carregar impulsos."

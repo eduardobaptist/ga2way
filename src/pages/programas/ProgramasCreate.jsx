@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
@@ -49,7 +49,7 @@ import { toast } from "@/hooks/use-toast";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/axios.config";
+import api from "@/axios";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const programaFormSchema = z.object({
@@ -63,7 +63,8 @@ export const ProgramasCreate = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
+  const { user } = useAuth();
+  const empresa_id = user?.empresa_id;
 
   const fetchRotas = async () => {
     setIsLoading(true);

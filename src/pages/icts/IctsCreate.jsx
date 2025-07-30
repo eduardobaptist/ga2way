@@ -23,10 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
+import InputMask from "react-input-mask";
 
-import { withMask } from "use-mask-input";
-
-import api from "@/axios.config";
+import api from "@/axios";
 import { useState } from "react";
 import { validarCnpj } from "@/lib/utils";
 
@@ -34,6 +33,17 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+
+const getPhoneMask = (value) => {
+  const digits = value.replace(/\D/g, "");
+  if (
+    digits.length === 11 ||
+    (digits.length >= 3 && digits.charAt(2) === "9")
+  ) {
+    return "(99) 99999-9999"; // celular
+  }
+  return "(99) 9999-9999"; // telefone fixo
+};
 
 const ictFormSchema = z.object({
   nome: z
@@ -63,12 +73,14 @@ const ictFormSchema = z.object({
     .max(100, "Endereço não deve exceder 100 caracteres"),
   telefone: z
     .string()
-    .min(12, "Telefone inválido")
-    .max(12, "Telefone inválido")
-    .regex(/^[1-9][0-9]{11}$/, "Telefone inválido"),
-  site: z
-    .string()
-    .max(100, "Site não deve exceder 100 caracteres"),
+    .min(1, "Telefone é obrigatório")
+    .refine((value) => {
+      const digits = value.replace(/\D/g, "");
+      if (digits.length === 11) return true;
+      if (digits.length === 10 && digits.charAt(2) !== "9") return true;
+      return false;
+    }, "Telefone inválido. Use 10 dígitos para fixo (sem 9) ou 11 para celular"),
+  site: z.string().max(100, "Site não deve exceder 100 caracteres"),
   foto_perfil: z
     .instanceof(FileList)
     .nullable()
@@ -85,6 +97,7 @@ export const IctsCreate = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneMask, setPhoneMask] = useState("(99) 9999-9999");
 
   const form = useForm({
     resolver: zodResolver(ictFormSchema),
@@ -109,7 +122,7 @@ export const IctsCreate = () => {
       formData.append("cnpj", data.cnpj);
       formData.append("email", data.email);
       formData.append("endereco", data.endereco);
-      formData.append("telefone", data.telefone);
+      formData.append("telefone", data.telefone.replace(/\D/g, ""));
       formData.append("site", data.site);
 
       if (data.foto_perfil && data.foto_perfil.length > 0) {
@@ -214,7 +227,9 @@ export const IctsCreate = () => {
               name="nome"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Nome <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -228,7 +243,9 @@ export const IctsCreate = () => {
               name="razao_social"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Razão social <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Razão social <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -242,17 +259,27 @@ export const IctsCreate = () => {
               name="cnpj"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>CNPJ <RequiredFieldSpan /></FormLabel>
-                  <FormControl ref={withMask("99.999.999/9999-99")}>
-                    <Input
-                      type="text"
-                      disabled={isSubmitting}
-                      {...field}
+                  <FormLabel>
+                    CNPJ <RequiredFieldSpan />
+                  </FormLabel>
+                  <FormControl>
+                    <InputMask
+                      mask="99.999.999/9999-99"
+                      value={field.value}
                       onChange={(e) => {
                         const rawValue = e.target.value.replace(/\D/g, "");
                         field.onChange(rawValue);
                       }}
-                    />
+                      disabled={isSubmitting}
+                    >
+                      {(inputProps) => (
+                        <Input
+                          {...inputProps}
+                          type="text"
+                          placeholder="00.000.000/0000-00"
+                        />
+                      )}
+                    </InputMask>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -264,7 +291,9 @@ export const IctsCreate = () => {
               name="email"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Email <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Email <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="email" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -278,7 +307,9 @@ export const IctsCreate = () => {
               name="endereco"
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Endereço <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -292,17 +323,33 @@ export const IctsCreate = () => {
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
-                  <FormControl ref={withMask("+99 (99) 9999-9999")}>
-                    <Input
-                      type="tel"
-                      disabled={isSubmitting}
-                      {...field}
+                  <FormLabel>
+                    Telefone/celular <RequiredFieldSpan />
+                  </FormLabel>
+                  <FormControl>
+                    <InputMask
+                      mask={phoneMask}
+                      value={field.value}
                       onChange={(e) => {
-                        const rawValue = e.target.value.replace(/\D/g, "");
-                        field.onChange(rawValue);
+                        const digits = e.target.value.replace(/\D/g, "");
+                        const newMask = getPhoneMask(digits);
+
+                        if (newMask !== phoneMask) {
+                          setPhoneMask(newMask);
+                        }
+
+                        field.onChange(e.target.value);
                       }}
-                    />
+                      disabled={isSubmitting}
+                    >
+                      {(inputProps) => (
+                        <Input
+                          {...inputProps}
+                          type="tel"
+                          placeholder="(99) 9999-9999"
+                        />
+                      )}
+                    </InputMask>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,314 +1,423 @@
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Player } from "@lottiefiles/react-lottie-player";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import megafone from "/img/megafone.svg";
+import gate2way from "/img/gate2way-logo.png";
+import agregar from "/img/agregar-logo.svg";
+import iffar from "/img/iffar-logo.svg";
+import bruning from "/img/bruning-logo.svg";
+import animation from "/animations/lottie-impulsos.json?url";
+import frame from "/img/frame.png";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LogoCarousel } from "@/components/LogoCarousel";
-import { HomeBadges } from "@/components/HomeBadges";
-import { HomeNossasMetricas } from "@/components/HomeNossasMetricas";
-import { HomeIncentivos } from "@/components/HomeIncentivos";
-import { LoginForm } from "@/components/LoginForm";
-import { RegisterFormEmpresa } from "@/components/RegisterFormEmpresa";
-import { RegisterFormIct } from "@/components/RegisterFormIct";
-import gatewayLogo from "/img/gateway_logo_branco.png";
+  ArrowRight,
+  Mail,
+  LayoutPanelTop,
+  Bell,
+  Building2,
+  BookOpenCheck,
+  Rocket,
+  Plus,
+  ArrowUpRight,
+} from "lucide-react";
+import { Player } from "@lottiefiles/react-lottie-player";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-import highFive from "/animations/high-five.json?url";
-import rocket from "/animations/rocket.json?url";
-
-export const Home = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
-
-  const [isLoginDialogOpen, setLoginDialog] = useState(false);
-  const [isRegisterDialogOpen, setRegisterDialog] = useState(false);
-
-  const openLoginDialog = () => {
-    setLoginDialog(true);
-    setRegisterDialog(false);
-  };
-
-  const openRegisterDialog = () => {
-    setLoginDialog(false);
-    setRegisterDialog(true);
-  };
-
-  const closeRegisterDialog = () => {
-    setRegisterDialog(false);
-  };
+export function Home() {
+  const incentives = [
+    {
+      icon: Building2,
+      title: "Infraestrutura",
+      description: "Acesso a laboratórios e espaços de pesquisa",
+      color: "bg-blue-500",
+    },
+    {
+      icon: BookOpenCheck,
+      title: "Bolsa",
+      description: "Suporte financeiro para desenvolvimento",
+      color: "bg-purple-600",
+    },
+    {
+      icon: Rocket,
+      title: "Estágio",
+      description: "Oportunidades em empresas parceiras",
+      color: "bg-emerald-500",
+    },
+    {
+      icon: Plus,
+      title: "Personalizado",
+      description: "Impulsos específicos cadastrados por empresas",
+      color: "bg-orange-500",
+    },
+  ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-50 bg-[var(--azul-agregar)] shadow-lg">
-        <nav className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full flex items-center justify-between py-4">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Link to="/">
-              <img src={gatewayLogo} alt="Gateway Logo" className="h-10" />
+    <div className="flex min-h-screen flex-col">
+      {/* Navbar */}
+      <header className="sticky top-0 z-40 w-full border-b bg-blue-900 backdrop-blur flex justify-center">
+        <div className="container flex h-16 items-center mx-3 md:mx-0 space-x-4 sm:justify-between sm:space-x-0">
+          <div className="flex gap-6 md:gap-10">
+            <Link to="/" className="flex items-center">
+              <img src={gate2way} alt="Gate2way Logo" className="w-40 h-auto" />
             </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-x-4"
-          >
-            <Button
-              variant="ghost"
-              className="text-white text-lg hover:bg-white/10 transition-colors"
-              onClick={openLoginDialog}
-            >
-              Entrar
-            </Button>
-            <Button
-              variant="outline"
-              className="text-white text-lg border-white hover:bg-white hover:text-[var(--azul-agregar)] transition-colors"
-              onClick={openRegisterDialog}
-            >
-              Começar
-            </Button>
-          </motion.div>
-        </nav>
+          </div>
+          <div className="flex flex-1 items-center justify-end space-x-4">
+            <nav className="flex items-center gap-2">
+              <Button
+                className="border-white text-white text-lg"
+                variant="outline"
+                asChild
+              >
+                <Link to="/login">Entrar</Link>
+              </Button>
+              <Button
+                className="border-white text-white hidden"
+                variant="outline"
+              >
+                Começar
+              </Button>
+            </nav>
+          </div>
+        </div>
       </header>
 
-      <main className="flex-grow">
-        <section>
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="md:col-span-2 text-center md:text-left order-2 md:order-1"
-                data-aos="fade-right"
-              >
-                <h1 className="text-4xl font-bold leading-tight tracking-tighter text-black md:text-5xl lg:text-6xl dark:text-white mb-6">
-                  Ideias que transformam, parcerias que evoluem.
-                </h1>
-                <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-700 dark:text-gray-300">
-                  Gate2Way conecta empresas e Institutos de Ciência e Tecnologia (ICTs), unindo demandas do
-                  mercado a soluções criadas por talentos em formação.
-                </p>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8 }}
-                className="md:col-span-1 order-1 md:order-2"
-                data-aos="fade-left"
-              >
-                <Player
-                  src={highFive}
-                  className="w-full h-[400px]"
-                  autoplay
-                  loop
+      <main className="flex-1">
+        {/* Seção Hero */}
+        <section className="w-full py-6 md:py-12 lg:py-16 bg-gradient-to-br from-blue-900/10 via-purple-600/5 to-background relative overflow-hidden flex justify-center">
+          {/* Elementos decorativos */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute top-20 left-10 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-900/10 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container px-4 md:px-6 relative z-10 space-y-12">
+            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+              <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-full bg-purple-600/10 px-4 py-1.5 text-sm font-medium text-purple-600 mb-4">
+                    ✨ Conectando saberes
+                  </div>
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                    <span className="text-blue-900">Conectando talentos a</span>{" "}
+                    <span className="text-purple-600">oportunidades reais</span>
+                  </h1>
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                    A ponte entre o conhecimento acadêmico e os desafios do
+                    mercado.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button
+                    size="lg"
+                    className="bg-blue-900 hover:bg-blue-900/90"
+                    asChild
+                  >
+                    <Link to="/login">
+                      Acessar <ArrowUpRight className="ml-1 h-5 w-5" />
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-purple-600 text-purple-600 hover:bg-purple-600/10"
+                    asChild
+                  >
+                    <a href="#more">Saiba mais</a>
+                  </Button>
+                </div>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="relative w-full max-w-[500px] aspect-square">
+                  <img
+                    src={megafone}
+                    alt="Conexão entre academia e empresas"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+              <div className="flex justify-start">
+                <img
+                  src={agregar}
+                  alt="Instituto Agregar"
+                  className="h-15 object-contain"
                 />
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        <div data-aos="fade-up">
-          <LogoCarousel />
-        </div>
-
-        <section className="py-20 bg-gradient-to-r from-sky-500 to-indigo-500">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <h2
-              className="text-3xl md:text-4xl font-semibold text-white text-center mb-12"
-              data-aos="fade-up"
-            >
-              O que podemos fazer por você?
-            </h2>
-            <div data-aos="fade-up" data-aos-delay="200">
-              <HomeBadges />
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-gradient-to-r from-purple-600 to-indigo-600 overflow-hidden">
-          <div className="container mx-auto px-4">
-            <h2
-              className="text-4xl font-bold text-center text-white mb-8"
-              data-aos="fade-up"
-            >
-              Nossas métricas
-            </h2>
-
-            <div
-              className="max-w-3xl mx-auto text-center mb-16"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              <p className="text-white/90 text-lg mb-6">
-                Utilizamos duas métricas complementares para avaliar e
-                acompanhar o desenvolvimento dos nossos projetos: TRL
-                (Technology Readiness Level) e ACATECH, garantindo uma visão
-                completa do progresso tecnológico e industrial.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              <div
-                className="space-y-8 flex flex-col"
-                data-aos="fade-right"
-                data-aos-delay="200"
-              >
-                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                  <h3 className="text-2xl font-semibold text-white mb-4">
-                    Technology Readiness Level (TRL)
-                  </h3>
-                  <p className="text-white/80">
-                    O TRL é uma métrica desenvolvida pela NASA que avalia o
-                    nível de maturidade de uma tecnologia em uma escala de 1 a
-                    9, desde os princípios básicos até a operação comprovada.
-                    Esta metodologia nos permite identificar precisamente em
-                    qual estágio de desenvolvimento cada projeto se encontra.
-                  </p>
-                </div>
-                <div className="flex justify-center overflow-x-auto max-w-full">
-                  <div className="w-full">
-                    <HomeNossasMetricas trlOnly />
-                  </div>
-                </div>
               </div>
-
-              <div
-                className="space-y-8 flex flex-col"
-                data-aos="fade-left"
-                data-aos-delay="300"
-              >
-                <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm flex-1">
-                  <h3 className="text-2xl font-semibold text-white mb-4">
-                    Índice ACATECH
-                  </h3>
-                  <p className="text-white/80">
-                    O modelo ACATECH, desenvolvido pela Academia Alemã de
-                    Ciências e Engenharia, complementa o TRL focando na
-                    maturidade industrial. Com quatro estágios principais, esta
-                    métrica nos ajuda a avaliar a preparação para manufatura e
-                    implementação em escala industrial.
-                  </p>
-                </div>
-                <div className="flex justify-center overflow-x-auto max-w-full">
-                  <div className="w-full">
-                    <HomeNossasMetricas acatechOnly />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-gradient-to-l from-blue-900 via-gray-900 to-black">
-          <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <h2
-              className="text-3xl md:text-4xl font-semibold text-white text-center mb-12"
-              data-aos="fade-up"
-            >
-              Te ajudamos a chegar mais longe
-            </h2>
-            <div
-              className="max-w-3xl mx-auto text-center"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
-              <p className="text-white/90 text-lg">
-                O Gate2Way incentiva que as empresas parceiras incluam em seus
-                projetos um impulso acadêmico para a permanência e valorização
-                do talento em formação
-              </p>
-            </div>
-            <div
-              className="flex flex-col lg:flex-row items-center justify-center space-y-4 lg:space-y-0 lg:space-x-8"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              <Player
-                src={rocket}
-                className="w-full lg:w-2/3 h-[700px]"
-                autoplay
-                loop
+              <img
+                src={iffar}
+                alt="IFFar - Campus Panambi"
+                className="mx-auto h-15 object-contain"
               />
-              <HomeIncentivos />
+              <div className="flex justify-end">
+                <img
+                  src={bruning}
+                  alt="Bruning Tecnometal"
+                  className="h-15 object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Seção de Features */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-background flex justify-center">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-blue-900">
+                  Simplificando as{" "}
+                  <span className="text-purple-600">conexões</span>
+                </h2>
+                <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Acompanhe o progresso, gerencie equipes e entregue resultados
+                  com nossa plataforma intuitiva.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+              <div className="grid gap-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-900 text-white">
+                    <LayoutPanelTop className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold">Project Canvas</h3>
+                    <p className="text-muted-foreground">
+                      Visualize todo o ciclo do projeto em um único lugar.
+                      Defina objetivos, marcos e resultados esperados com
+                      facilidade.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-purple-600 text-white">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold">
+                      Notificações Automáticas
+                    </h3>
+                    <p className="text-muted-foreground">
+                      Receba atualizações por e-mail sempre que houver mudanças
+                      nas etapas do projeto, mantendo todos os envolvidos
+                      informados.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-900 text-white">
+                    <Bell className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <h3 className="text-xl font-bold">
+                        Gerenciamento de projetos{" "}
+                        <span className="inline-flex items-center rounded-full bg-orange-500 hover:bg-orange-500 text-white px-2.5 py-0.5 text-xs font-medium">
+                          em breve
+                        </span>
+                      </h3>
+                    </div>
+                    <p className="text-muted-foreground">
+                      Monitore o progresso dos projetos em tempo real, com
+                      dashboards personalizados e relatórios detalhados.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <img src={frame} alt="" className="h-auto w-full" />
+            </div>
+          </div>
+        </section>
+
+        {/* Seção de Impulsos Acadêmicos */}
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-br from-purple-600/5 via-blue-900/5 to-background relative overflow-hidden flex justify-center">
+          {/* Elementos decorativos de fundo */}
+          <div className="absolute inset-0 z-0">
+            <div className="absolute top-20 left-10 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-900/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container px-4 md:px-6 relative z-10">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
+              <div className="inline-block rounded-full bg-gradient-to-r from-purple-600/20 to-blue-900/20 px-4 py-1.5 text-sm font-medium text-purple-600">
+                🚀 Impulsos Acadêmicos
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                  <span className="text-blue-900">Te levando</span>{" "}
+                  <span className="text-purple-600">mais longe</span>
+                </h2>
+                <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  O Gate2way incentiva que as empresas parceiras ofereçam
+                  impulsos acadêmicos aos talentos que desenvolvem os projetos.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-center">
+              {/* Animação Lottie */}
+              <div className="flex justify-center order-2 lg:order-1">
+                <div className="w-full max-w-md">
+                  <Player
+                    src={animation}
+                    className="w-full h-auto"
+                    autoplay
+                    loop
+                  />
+                </div>
+              </div>
+
+              {/* Cards de Incentivos */}
+              <div className="order-1 lg:order-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {incentives.map((item, index) => {
+                    const Icon = item.icon;
+                    return (
+                      <div
+                        key={index}
+                        className="relative group bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800 hover:border-purple-600/20 dark:hover:border-purple-600/20 overflow-hidden"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/5 to-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        <div className="relative z-10">
+                          <div
+                            className={`mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl ${item.color} text-white shadow-md group-hover:scale-110 transition-transform duration-300`}
+                          >
+                            <Icon className="h-6 w-6" />
+                          </div>
+                          <h3 className="text-2xl font-bold mb-2 group-hover:text-purple-600 transition-colors duration-300">
+                            {item.title}
+                          </h3>
+                          <p className="text-muted-foreground">
+                            {item.description}
+                          </p>
+                        </div>
+
+                        <div className="absolute -bottom-2 -right-2 w-16 h-16 bg-purple-600/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-12 justify-center hidden">
+              {" "}
+              //botão escondido
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-purple-600 text-purple-600 hover:bg-purple-600/10"
+              >
+                Saiba mais sobre os impulsos
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-blue-900 to-purple-600 text-white flex justify-center"
+          id="more"
+        >
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-6 text-center">
+              <div className="space-y-3 text-center">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center">
+                  Onde a inovação empresarial encontra o talento acadêmico
+                </h2>
+                <p className="max-w-[800px] mx-auto md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed text-center">
+                  Empresas ganham acesso a mentes brilhantes e soluções
+                  inovadoras. ICTs (Institutos de Ciência e Tecnologia)
+                  proporcionam experiência real e oportunidades de carreira para
+                  seus talentos. Uma conexão onde todos saem ganhando.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl">
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                  <h3 className="text-xl font-semibold mb-2 text-center">
+                    Para Empresas
+                  </h3>
+                  <p className="mb-4 text-white/80 text-center">
+                    Acesse talentos em formação e reduza custos de P&D com
+                    projetos inovadores guiados por especialistas acadêmicos.
+                  </p>
+                  <div className="relative">
+                    <Button
+                      size="lg"
+                      variant="secondary"
+                      className="w-full"
+                      disabled
+                    >
+                      Cadastre-se como empresa
+                    </Button>
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
+                    >
+                      em breve
+                    </Badge>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
+                  <h3 className="text-xl font-semibold mb-2 text-center">
+                    Para ICTs
+                  </h3>
+                  <p className="mb-4 text-white/80 text-center">
+                    Ofereça experiências práticas aos seus talentos e fortaleça
+                    parcerias com o setor produtivo através de projetos reais.
+                  </p>
+                  <div className="relative">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full bg-transparent border-white text-white hover:bg-white/10 hover:text-white"
+                      disabled
+                    >
+                      Sou de uma ICT e quero participar
+                    </Button>
+                    <Badge
+                      variant="secondary"
+                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
+                    >
+                      em breve
+                    </Badge>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className="bg-gray-100 dark:bg-gray-800 py-8">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            © 2024 Gate2Way. Todos os direitos reservados.
+      <footer className="w-full border-t bg-background py-6 md:py-0 flex justify-center">
+        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            © {new Date().getFullYear()} Gate2way. Todos os direitos reservados.
           </p>
+          <div className="flex gap-4">
+            <Link
+              to="#"
+              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Termos
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Privacidade
+            </Link>
+            <Link
+              to="#"
+              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+            >
+              Contato
+            </Link>
+          </div>
         </div>
       </footer>
-
-      <Dialog open={isLoginDialogOpen} onOpenChange={setLoginDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Entrar</DialogTitle>
-            <DialogDescription>Insira suas credenciais</DialogDescription>
-          </DialogHeader>
-          <LoginForm />
-          <div className="flex items-center justify-center mt-4">
-            <span className="font-semibold text-sm">Não tem uma conta?</span>
-            <Button
-              variant="link"
-              className="text-sm font-semibold text-[var(--azul-agregar)] px-2"
-              onClick={openRegisterDialog}
-            >
-              Cadastre-se
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isRegisterDialogOpen} onOpenChange={setRegisterDialog}>
-        <DialogContent className="sm:max-w-md md:max-w-xl overflow-y-auto max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>Primeiros passos</DialogTitle>
-            <DialogDescription>
-              Selecione a modalidade do cadastro e insira os dados
-            </DialogDescription>
-          </DialogHeader>
-          <Tabs defaultValue="empresa" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-5">
-              <TabsTrigger value="empresa">Empresa</TabsTrigger>
-              <TabsTrigger value="ict">ICT</TabsTrigger>
-            </TabsList>
-            <TabsContent value="empresa">
-              <RegisterFormEmpresa closeDialog={closeRegisterDialog} />
-            </TabsContent>
-            <TabsContent value="ict">
-              <RegisterFormIct closeDialog={closeRegisterDialog} />
-            </TabsContent>
-          </Tabs>
-          <div className="flex items-center justify-center mt-4">
-            <span className="font-semibold text-sm">Já tem uma conta?</span>
-            <Button
-              variant="link"
-              className="text-sm font-semibold text-[var(--azul-agregar)] px-2"
-              onClick={openLoginDialog}
-            >
-              Entrar
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
-};
+}

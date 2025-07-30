@@ -5,7 +5,7 @@ import { ArrowLeftCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/Field";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const RotasView = () => {
   const { id } = useParams();

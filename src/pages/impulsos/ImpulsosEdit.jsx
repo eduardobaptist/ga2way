@@ -21,7 +21,12 @@ import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon, CalendarIcon, Loader2 } from "lucide-react";
+import {
+  ArrowLeftCircle,
+  CheckCircleIcon,
+  CalendarIcon,
+  Loader2,
+} from "lucide-react";
 import {
   Form,
   FormControl,
@@ -33,10 +38,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
-import api from "@/axios.config";
+import api from "@/axios";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { withMask } from "use-mask-input";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -94,7 +98,11 @@ export const ImpulsosEdit = () => {
 
         form.reset({
           descricao: impulso.descricao,
-          valor: impulso.valor,
+          valor: (parseFloat(impulso.valor)).toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+          }),
           data_inicio: new Date(impulso.data_inicio),
           data_fim: new Date(impulso.data_fim),
         });
@@ -116,10 +124,8 @@ export const ImpulsosEdit = () => {
   const handleSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      data.valor = data.valor.replace(/[^0-9,]/g, "").replace(",", ".");
-
       const response = await api.put(`/impulsos/${id}`, {
-        ...data,
+        ...data, valor: parseFloat(data.valor.replace(/[^\d,]/g, "").replace(",", "."))
       });
 
       toast({
@@ -223,7 +229,9 @@ export const ImpulsosEdit = () => {
                 name="descricao"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Descrição <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>
@@ -238,10 +246,34 @@ export const ImpulsosEdit = () => {
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>Valor</FormLabel>
-                    <Input
-                      {...field}
-                      ref={withMask("brl-currency", { rightAlign: false })}
-                    />
+                    <FormControl>
+                      <Input
+                        type="text"
+                        {...field}
+                        disabled={isSubmitting}
+                        placeholder="R$ 0,00"
+                        onChange={(e) => {
+                          const digits = e.target.value.replace(/\D/g, "");
+
+                          if (digits.length === 0) {
+                            field.onChange("");
+                            return;
+                          }
+
+                          const numericValue = parseFloat(digits) / 100;
+                          const formatted = numericValue.toLocaleString(
+                            "pt-BR",
+                            {
+                              style: "currency",
+                              currency: "BRL",
+                              minimumFractionDigits: 2,
+                            }
+                          );
+
+                          field.onChange(formatted);
+                        }}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -252,7 +284,9 @@ export const ImpulsosEdit = () => {
                 name="data_inicio"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Data de início <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Data de início <RequiredFieldSpan />
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
@@ -291,7 +325,9 @@ export const ImpulsosEdit = () => {
                 name="data_fim"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Data de término <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Data de término <RequiredFieldSpan />
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>

@@ -32,10 +32,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
-import api from "@/axios.config";
+import api from "@/axios";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { withMask } from "use-mask-input";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -77,7 +76,7 @@ export const ImpulsosCreate = () => {
     setIsSubmitting(true);
     try {
       const response = await api.post("/impulsos", {
-        ...data,
+        ...data, valor: parseFloat(data.valor.replace(/[^\d,]/g, "").replace(",", "."))
       });
 
       toast({
@@ -190,10 +189,31 @@ export const ImpulsosCreate = () => {
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
                   <FormLabel>Valor</FormLabel>
-                  <Input
-                    {...field}
-                    ref={withMask("brl-currency", { rightAlign: false })}
-                  />
+                  <FormControl>
+                    <Input
+                      type="text"
+                      {...field}
+                      disabled={isSubmitting}
+                      placeholder="R$ 0,00"
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, "");
+                        
+                        if (digits.length === 0) {
+                          field.onChange("");
+                          return;
+                        }
+                        
+                        const numericValue = parseFloat(digits) / 100;
+                        const formatted = numericValue.toLocaleString("pt-BR", {
+                          style: "currency",
+                          currency: "BRL",
+                          minimumFractionDigits: 2
+                        });
+                        
+                        field.onChange(formatted);
+                      }}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
-import { useAuthStore } from "@/stores/useAuthStore";
-
+import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 
 const CollapsibleMenuItem = ({ subItem }) => {
@@ -49,7 +48,9 @@ const CollapsibleMenuItem = ({ subItem }) => {
 };
 
 export const SidebarCollapsibleMenu = ({ item }) => {
-  const userType = useAuthStore((state) => state.getUserTipo());
+  
+  const { user } = useAuth();
+  const userType = user?.tipo
 
   return (
     <Collapsible asChild defaultOpen className="group/collapsible">

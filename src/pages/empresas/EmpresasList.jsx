@@ -22,7 +22,7 @@ import { EmpresasActions } from "./EmpresasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const EmpresasList = () => {
   const [filterType, setFilterType] = useState("nome");
@@ -30,6 +30,18 @@ export const EmpresasList = () => {
   const [empresas, setEmpresas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const formatPhone = (phone) => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11) {
+      return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return phone;
+  };
 
   const filters = [
     { value: "nome", label: "Nome" },
@@ -151,7 +163,7 @@ export const EmpresasList = () => {
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
                 <TableHead>CNPJ</TableHead>
-                <TableHead>Telefone</TableHead>
+                <TableHead>Telefone/celular</TableHead>
                 <TableHead>Área de Atuação</TableHead>
                 <TableHead>Data de Criação</TableHead>
               </TableRow>
@@ -201,10 +213,7 @@ export const EmpresasList = () => {
                       )}
                     </TableCell>
                     <TableCell>
-                      {empresa.telefone.replace(
-                        /(\d{2})(\d{2})(\d{4})(\d{4})/,
-                        "+$1 ($2) $3-$4"
-                      )}
+                      {formatPhone(empresa.telefone)}
                     </TableCell>
                     <TableCell>{empresa.area}</TableCell>
                     <TableCell>

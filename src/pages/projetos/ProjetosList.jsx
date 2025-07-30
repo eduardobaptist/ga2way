@@ -39,19 +39,15 @@ import {
   EyeOff,
   Eye,
   Hourglass,
-  HeartHandshake,
-  Lightbulb,
-  Plus,
   SearchX,
-  Sparkles,
   ArrowRight,
   Loader2,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 import { cn, formatDatetime } from "@/lib/utils";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const ProjetosList = () => {
   const [layout, setLayout] = useState("grid");
@@ -59,8 +55,8 @@ export const ProjetosList = () => {
   const [projetos, setProjetos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { getUserTipo } = useAuthStore();
-  const userTipo = getUserTipo();
+  const { user } = useAuth();
+  const userTipo = user?.tipo;
 
   const navigate = useNavigate();
 

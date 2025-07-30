@@ -24,7 +24,7 @@ import {
 import { Menu, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const EmpresasActions = ({ empresa, onRefresh }) => {
   const navigate = useNavigate();

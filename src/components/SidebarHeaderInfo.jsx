@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { toast } from "@/hooks/use-toast";
 import {
   Building2,
   GraduationCap,
@@ -29,35 +29,39 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const SidebarHeaderInfo = () => {
-  const { authData, getUserTipo, getUserEmpresaNome, getUserIctNome, logout } =
-    useAuthStore();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState({
-    empresa_nome: '',
-    ict_nome: '',
-    userTipo: '',
-    email: ''
-  });
+  const userInfo = {
+    empresa_nome: user?.empresa?.nome,
+    ict_nome: user?.ict?.nome,
+    userTipo: user?.tipo,
+    email: user?.email,
+  };
 
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    if (authData) {
-      setUserInfo({
-        empresa_nome: getUserEmpresaNome() || '',
-        ict_nome: getUserIctNome() || '',
-        userTipo: getUserTipo() || '',
-        email: authData.email || ''
-      });
-    }
-  }, [authData, getUserEmpresaNome, getUserIctNome, getUserTipo]);
-
   const handleLogout = () => {
-    logout();
-    setIsLogoutDialogOpen(false);
+    logout()
+      .then(({ success, error }) => {
+        if (success) {
+          navigate("/");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Erro ao fazer logout",
+            description: error.response?.data?.message || error.message,
+          });
+        }
+      })
+      .finally(() => {
+        setIsLogoutDialogOpen(false);
+      });
   };
 
   const handleLogoutClick = () => {
@@ -69,15 +73,15 @@ export const SidebarHeaderInfo = () => {
     userInfo.userTipo === "admin"
       ? "Administrador"
       : userInfo.userTipo === "empresa"
-        ? userInfo.empresa_nome
-        : userInfo.ict_nome;
+      ? userInfo.empresa_nome
+      : userInfo.ict_nome;
 
   const LogoIcon =
     userInfo.userTipo === "admin"
       ? UserCog
       : userInfo.userTipo === "empresa"
-        ? Building2
-        : GraduationCap;
+      ? Building2
+      : GraduationCap;
 
   return (
     <div className="flex w-full items-center gap-2 p-2">
@@ -95,8 +99,8 @@ export const SidebarHeaderInfo = () => {
                 className="cursor-pointer"
               />
             </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              className="w-56" 
+            <DropdownMenuContent
+              className="w-56"
               onCloseAutoFocus={(e) => e.preventDefault()}
             >
               <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
@@ -106,14 +110,20 @@ export const SidebarHeaderInfo = () => {
                   <DropdownMenuSubTrigger>Perfil</DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItem className="cursor-pointer">Atualizar informações</DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">Redefinir senha</DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        Atualizar informações
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer">
+                        Redefinir senha
+                      </DropdownMenuItem>
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
               </DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">Configurações</DropdownMenuItem>
-              <DropdownMenuItem 
+              <DropdownMenuItem className="cursor-pointer">
+                Configurações
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 className="text-red-600 focus:text-red-500 cursor-pointer"
                 onClick={handleLogoutClick}
               >
@@ -125,7 +135,10 @@ export const SidebarHeaderInfo = () => {
         <div className="truncate text-xs text-gray-500">{info}</div>
       </div>
 
-      <AlertDialog open={isLogoutDialogOpen} onOpenChange={setIsLogoutDialogOpen}>
+      <AlertDialog
+        open={isLogoutDialogOpen}
+        onOpenChange={setIsLogoutDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Tem certeza que deseja sair?</AlertDialogTitle>

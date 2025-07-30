@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/Field";
 import { formatDatetime } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const ImpulsosView = () => {
   const { id } = useParams();

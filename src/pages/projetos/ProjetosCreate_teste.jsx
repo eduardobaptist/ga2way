@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon, Presentation } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import api from "@/axios.config";
+import api from "@/axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { ProjetoWizard } from "./wizard/ProjetoWizard";

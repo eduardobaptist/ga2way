@@ -25,7 +25,7 @@ import { SidebarLogout } from "./SidebarLogout";
 import { SidebarSingleMenuItem } from "./SidebarSingleMenuItem";
 import { SidebarCollapsibleMenu } from "./SidebarCollapsibleMenu";
 import { SidebarHeaderInfo } from "./SidebarHeaderInfo";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth } from "@/contexts/AuthContext";
 
 const items = [
   {
@@ -84,7 +84,8 @@ const items = [
 ];
 
 export const AppSidebar = () => {
-  const userType = useAuthStore((state) => state.getUserTipo());
+  const { user } = useAuth();
+  const userType = user?.tipo;
 
   return (
     <Sidebar>

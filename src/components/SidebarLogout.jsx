@@ -15,13 +15,25 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const SidebarLogout = () => {
-  const logout = useAuthStore((state) => state.logout);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    logout().then(({ success, error }) => {
+      if (success) {
+        navigate("/");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Erro ao fazer logout",
+          description: error.response?.data?.message || error.message,
+        });
+      }
+    });
   };
 
   return (

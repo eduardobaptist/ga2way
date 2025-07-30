@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/useAuthStore";
 import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
@@ -24,13 +23,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 import { useState, useEffect } from "react";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+import { useAuth } from "@/contexts/AuthContext";
 
 const rotaFormSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
@@ -41,7 +41,10 @@ export const RotasEdit = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { id } = useParams();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
+  
+  const { user } = useAuth();
+  const empresa_id = user?.empresa_id;
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -93,7 +96,7 @@ export const RotasEdit = () => {
     try {
       await api.put(`/rotas/${id}`, {
         ...data,
-        empresa_id
+        empresa_id,
       });
 
       toast({
@@ -196,7 +199,9 @@ export const RotasEdit = () => {
                 name="nome"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Nome <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>
@@ -209,7 +214,9 @@ export const RotasEdit = () => {
                 name="descricao"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Descrição <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>

@@ -6,13 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/Field";
 import { formatDatetime } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const EmpresasView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [empresa, setEmpresa] = useState(null);
   const navigate = useNavigate();
+
+  const formatPhone = (phone) => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11) {
+      return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return phone;
+  };
+
   const fetchEmpresas = async () => {
     setIsLoading(true);
 
@@ -75,14 +88,11 @@ export const EmpresasView = () => {
             )}`}
           />
           <Field
-            label="Telefone"
-            value={`${empresa.telefone.replace(
-              /(\d{2})(\d{2})(\d{4})(\d{4})/,
-              "+$1 ($2) $3-$4"
-            )}`}
+            label="Telefone/ceular"
+            value={formatPhone(empresa.telefone)}
           />
           <Field label="Área de atuação" value={`${empresa.area}`} />
-          <Field label="Site" value={`${empresa.site}`} />
+          <Field label="Site" value={empresa.site || "Não especificado"} />
           <Field
             label="Data de criação"
             value={`${formatDatetime(empresa.createdAt) || ""}`}

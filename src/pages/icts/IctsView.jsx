@@ -6,13 +6,26 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/Field";
 import { formatDatetime } from "@/lib/utils";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const IctsView = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [icts, setict] = useState(null);
   const navigate = useNavigate();
+
+  const formatPhone = (phone) => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11) {
+      return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return phone;
+  };
+
   const fetchIcts = async () => {
     setIsLoading(true);
 
@@ -26,9 +39,7 @@ export const IctsView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
-        "Erro ao carregar ICT.";
+        error.response?.data?.error || error.message || "Erro ao carregar ICT.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -74,14 +85,8 @@ export const IctsView = () => {
               "$1.$2.$3/$4-$5"
             )}`}
           />
-          <Field
-            label="Telefone"
-            value={`${icts.telefone.replace(
-              /(\d{2})(\d{2})(\d{4})(\d{4})/,
-              "+$1 ($2) $3-$4"
-            )}`}
-          />
-          <Field label="Site" value={`${icts.site}`} />
+          <Field label="Telefone" value={formatPhone(icts.telefone)} />
+          <Field label="Site" value={icts.site || "Não especificado"} />
           <Field
             label="Data de criação"
             value={`${formatDatetime(icts.createdAt) || ""}`}

@@ -22,7 +22,7 @@ import { IctsActions } from "./IctsActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const IctsList = () => {
   const [filterType, setFilterType] = useState("nome");
@@ -30,6 +30,18 @@ export const IctsList = () => {
   const [icts, setIcts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const formatPhone = (phone) => {
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length === 11) {
+      return digits.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+    } else if (digits.length === 10) {
+      return digits.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+    }
+
+    return phone;
+  };
 
   const filters = [
     { value: "nome", label: "Nome" },
@@ -89,7 +101,7 @@ export const IctsList = () => {
   });
 
   return (
-    <MainWrapper title="Institutos de Ciência e Tecnologia (ICTs)">
+    <MainWrapper title="Instituições de Ciência e Tecnologia (ICTs)">
       <div className="grid grid-cols-2 gap-3">
         <div className="flex col-span-2 md:col-span-1">
           <Select
@@ -148,7 +160,7 @@ export const IctsList = () => {
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
                 <TableHead>CNPJ</TableHead>
-                <TableHead>Telefone</TableHead>
+                <TableHead>Telefone/celular</TableHead>
                 <TableHead>Data de Criação</TableHead>
               </TableRow>
             </TableHeader>
@@ -197,10 +209,7 @@ export const IctsList = () => {
                       )}
                     </TableCell>
                     <TableCell>
-                      {ict.telefone.replace(
-                        /(\d{2})(\d{2})(\d{4})(\d{4})/,
-                        "+$1 ($2) $3-$4"
-                      )}
+                      {formatPhone(ict.telefone)}
                     </TableCell>
                     <TableCell>
                       {formatDatetime(ict.createdAt) || "-"}

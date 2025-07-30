@@ -1,50 +1,33 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { useEffect, useState } from "react";
-import { toast } from "@/hooks/use-toast";
-
-import { Card, CardContent } from "./ui/card";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from "react";
+import api from "@/axios";
 
 export const PrivateRoute = () => {
-  const { token, fetchUser } = useAuthStore();
-  const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, setUser } = useAuth();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(!user);
 
   useEffect(() => {
-    const verifyAuth = async () => {
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+    if (!user) {
+      api
+        .get("/me")
+        .then((res) => {
+          setUser(res.data.usuario);
+        })
+        .catch(() => setUser(null))
+        .finally(() => setIsCheckingAuth(false));
+    }
+  }, []);
 
-      const valid = await fetchUser();
-      setIsAuthenticated(valid);
-      setLoading(false);
-    };
-
-    verifyAuth();
-  }, [token]);
-
-  if (loading)
+  if (isCheckingAuth)
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <Card className="shadow-lg rounded-lg p-6">
-          <CardContent className="flex flex-col items-center gap-4">
-            <Loader2 className="w-10 h-10 text-primary animate-spin" />
-            <p className="text-gray-600 text-lg">Verificando sessão...</p>
-          </CardContent>
-        </Card>
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <p className="text-gray-600 text-lg">Carregando...</p>
       </div>
     );
-
-  if (!isAuthenticated) {
-    toast({
-      variant: "destructive",
-      title: "Sessão expirada. Faça login novamente",
-    });
-    return <Navigate to="/" replace />;
-  }
+  if (!user) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 };

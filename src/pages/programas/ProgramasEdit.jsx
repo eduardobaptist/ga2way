@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MainWrapper } from "@/components/MainWrapper";
@@ -50,7 +50,7 @@ import { toast } from "@/hooks/use-toast";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/axios.config";
+import api from "@/axios";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const programaFormSchema = z.object({
@@ -65,7 +65,8 @@ export const ProgramasEdit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
+  const { user } = useAuth();
+  const empresa_id = user?.empresa_id;
 
   const form = useForm({
     resolver: zodResolver(programaFormSchema),
@@ -153,7 +154,7 @@ export const ProgramasEdit = () => {
     try {
       const response = await api.put(`/programas/${id}`, {
         ...data,
-        empresa_id
+        empresa_id,
       });
 
       toast({
@@ -251,7 +252,9 @@ export const ProgramasEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
+                      <FormLabel>
+                        Nome <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>
@@ -265,7 +268,9 @@ export const ProgramasEdit = () => {
                 name="rota_id"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rota do programa <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Rota do programa <RequiredFieldSpan />
+                    </FormLabel>
                     <Popover open={open} onOpenChange={handleRotas}>
                       <PopoverTrigger asChild>
                         <Button
@@ -306,7 +311,11 @@ export const ProgramasEdit = () => {
                                       field.onChange(prog.value);
                                       setOpen(false);
                                     }}
-                                    data-selected={field.value === prog.value ? "true" : "false"}
+                                    data-selected={
+                                      field.value === prog.value
+                                        ? "true"
+                                        : "false"
+                                    }
                                   >
                                     <Check
                                       className={cn(
@@ -335,7 +344,9 @@ export const ProgramasEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2">
-                      <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
+                      <FormLabel>
+                        Descrição <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>

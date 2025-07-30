@@ -31,9 +31,9 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -45,8 +45,8 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
   const [proposta, setProposta] = useState("");
   const [ofertaId, setOfertaId] = useState(null);
 
-  const { getUserTipo } = useAuthStore();
-  const userTipo = getUserTipo();
+  const { user } = useAuth();
+  const userTipo = user?.tipo;
 
   const handleView = (e) => {
     e.stopPropagation();

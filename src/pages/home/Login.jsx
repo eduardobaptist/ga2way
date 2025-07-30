@@ -34,10 +34,10 @@ import {
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/axios.config";
+import api from "@/axios";
 import { toast } from "@/hooks/use-toast";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useAuth } from "@/contexts/AuthContext";
 
 const formSchema = z.object({
   email: z
@@ -62,27 +62,26 @@ export function Login() {
   });
 
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { login } = useAuth();
 
   const handleSubmit = async (data) => {
     setIsLoading(true);
-    try {
-      const response = await api.post("/login", data);
-      const authData = {
-        usuario: response.data.usuario,
-        token: response.data.token,
-      };
-      login(authData);
-      navigate("/projetos");
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Erro ao fazer login",
-        description: error.response?.data?.message || error.message,
+
+    login(data)
+      .then(({ success, error }) => {
+        if (success) {
+          navigate("/projetos");
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Erro ao fazer login",
+            description: error.response?.data?.message || error.message,
+          });
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (

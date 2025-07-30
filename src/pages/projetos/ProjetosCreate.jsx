@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon, Presentation } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import api from "@/axios.config";
+import api from "@/axios";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -66,7 +66,7 @@ export const ProjetosCreate = () => {
       formData.append("custos", canvasData["custos"]?.textarea_value);
       formData.append("estilo", JSON.stringify(canvasData));
 
-      console.log(`ProjetosCreate data: ${formData}`);
+      console.log(JSON.stringify(formData))
 
       const response = await api.post("/projetos", formData, {
         headers: {

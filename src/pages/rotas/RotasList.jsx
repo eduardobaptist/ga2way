@@ -22,7 +22,7 @@ import { RotasActions } from "./RotasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
-import api from "@/axios.config";
+import api from "@/axios";
 import { InfoSection } from "@/components/InfoSection";
 
 export const RotasList = () => {
@@ -87,7 +87,7 @@ export const RotasList = () => {
     <MainWrapper title="Rotas">
       <InfoSection
         title="Sistema de rotas"
-        description="Clique para ver mais informações"
+        description="Clique para ver detalhes importantes"
         sections={[
           {
             title: "Gerenciamento de Rotas",

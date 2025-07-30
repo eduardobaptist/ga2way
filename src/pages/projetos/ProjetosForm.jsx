@@ -40,7 +40,7 @@ import { ChevronsUpDown, Check, Loader2, CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 const projectFormSchema = z
   .object({
@@ -107,8 +107,8 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       data_inicio: new Date(),
       data_fim: null,
       programa_id: 0,
-      trl: null,
-      acatech: null,
+      trl: "null",
+      acatech: "null",
       prioridade: "",
       impulso: false,
       impulso_id: null,
@@ -118,7 +118,6 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
 
   const handleFormSubmit = (data) => {
     if (onSubmit) {
-      console.log(`ProjetosForm data: ${data}`);
 
       const formData = new FormData();
 
@@ -127,14 +126,18 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       formData.append("data_inicio", data.data_inicio);
       formData.append("data_fim", data.data_fim);
       formData.append("programa_id", data.programa_id);
-      formData.append("trl", data.trl);
-      formData.append("acatech", data.acatech);
+      if (data.trl !== "null") {
+        formData.append("trl", data.trl);
+      }
+      if (data.acatech !== "null") {
+        formData.append("acatech", data.acatech);
+      }
       formData.append("prioridade", data.prioridade);
       if (data.impulso_id !== null) {
         formData.append("impulso_id", data.impulso_id);
       }
       if (data.upload && data.upload.length > 0) {
-        "upload", data.upload[0];
+        formData.append("upload", data.upload[0]);
       }
 
       onSubmit(formData);
@@ -206,11 +209,13 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       render={({ field }) => (
         <FormItem>
           <FormLabel>
-            {label} {required && <RequiredFieldSpan /> }
+            {label} {required && <RequiredFieldSpan />}
           </FormLabel>
           <Select onValueChange={field.onChange} value={field.value}>
             <SelectTrigger>
-              <SelectValue placeholder={required && "Selecione"} />
+              <SelectValue
+                placeholder={required ? "Selecione" : "Indefinido"}
+              />
             </SelectTrigger>
             <SelectContent>
               {options.map((opt) => (
@@ -580,7 +585,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   "trl",
                   "Nível TRL",
                   [
-                    { value: null, label: "Indefinido" },
+                    { value: "null", label: "Indefinido" },
                     { value: "1", label: "1. A teoria" },
                     { value: "2", label: "2. O protótipo" },
                     { value: "3", label: "3. O MVP" },
@@ -593,7 +598,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                   "acatech",
                   "Nível ACATECH",
                   [
-                    { value: null, label: "Indefinido" },
+                    { value: "null", label: "Indefinido" },
                     { value: "1", label: "1. Computadorização" },
                     { value: "2", label: "2. Conectividade" },
                     { value: "3", label: "3. Visibilidade" },

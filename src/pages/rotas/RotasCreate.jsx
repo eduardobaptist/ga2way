@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/useAuthStore";
 import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -25,8 +24,9 @@ import {
 } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
-import api from "@/axios.config";
+import api from "@/axios";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -42,7 +42,8 @@ export const RotasCreate = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const empresa_id = useAuthStore((state) => state.getUserEmpresaId());
+  const { user } = useAuth();
+  const empresa_id = user?.empresa_id;
 
   const form = useForm({
     resolver: zodResolver(rotaFormSchema),
@@ -154,7 +155,9 @@ export const RotasCreate = () => {
               name="nome"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Nome <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
@@ -167,7 +170,9 @@ export const RotasCreate = () => {
               name="descricao"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Descrição <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Descrição <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>

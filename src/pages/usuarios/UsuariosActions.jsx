@@ -21,10 +21,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Menu, Trash2, Edit2, Eye, Loader2 } from "lucide-react";
+import { Menu, Trash2, Edit2, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import api from "@/axios.config";
+import api from "@/axios";
 
 export const UsuariosActions = ({ usuario, onRefresh }) => {
   const navigate = useNavigate();

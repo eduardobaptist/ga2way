@@ -14,8 +14,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
+import InputMask from "react-input-mask";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon, Loader2, EyeOff, Eye } from "lucide-react";
+import {
+  ArrowLeftCircle,
+  CheckCircleIcon,
+  Loader2,
+  EyeOff,
+  Eye,
+} from "lucide-react";
 import {
   Form,
   FormControl,
@@ -26,11 +33,10 @@ import {
 } from "@/components/ui/form";
 
 import { toast } from "@/hooks/use-toast";
-import { withMask } from "use-mask-input";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/axios.config";
+import api from "@/axios";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
 
 const usuarioFormSchema = z.object({
@@ -53,9 +59,8 @@ const usuarioFormSchema = z.object({
     .max(100, "Endereço não deve exceder 100 caracteres"),
   telefone: z
     .string()
-    .min(12, "Telefone inválido")
-    .max(12, "Telefone inválido")
-    .regex(/^[1-9][0-9]{11}$/, "Telefone inválido"),
+    .min(10, "Telefone inválido")
+    .max(15, "Telefone inválido"),
 });
 
 export const UsuariosEdit = () => {
@@ -63,6 +68,19 @@ export const UsuariosEdit = () => {
   const [usuarioState, setUsuarioState] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const getPhoneMask = (value) => {
+    const digits = value.replace(/\D/g, "");
+    if (
+      digits.length === 11 ||
+      (digits.length >= 3 && digits.charAt(2) === "9")
+    ) {
+      return "(99) 99999-9999"; // celular
+    }
+    return "(99) 9999-9999"; // telefone fixo
+  };
+
+  const [phoneMask, setPhoneMask] = useState("(99) 9999-9999");
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -94,12 +112,15 @@ export const UsuariosEdit = () => {
         }
 
         setUsuarioState(usuario);
+        
+        setPhoneMask(getPhoneMask(usuario.telefone))
 
         form.reset({
           nome: usuario.nome,
           email: usuario.email,
           endereco: usuario.endereco,
           telefone: usuario.telefone,
+          senha: ""
         });
       } catch (error) {
         toast({
@@ -121,6 +142,7 @@ export const UsuariosEdit = () => {
     try {
       const response = await api.put(`/usuarios/${id}`, {
         ...data,
+        telefone: data.telefone.replace(/\D/g, ""),
         ict_id: usuarioState.ict_id,
         empresa_id: usuarioState.empresa_id,
         tipo: usuarioState.tipo,
@@ -224,7 +246,9 @@ export const UsuariosEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel>E-mail <RequiredFieldSpan /></FormLabel>
+                      <FormLabel>
+                        E-mail <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>
@@ -239,7 +263,9 @@ export const UsuariosEdit = () => {
                 name="senha"
                 render={({ field }) => (
                   <FormItem className="relative col-span-2 md:col-span-1">
-                    <FormLabel>Senha <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Senha <RequiredFieldSpan />
+                    </FormLabel>
                     <div className="relative">
                       <Input
                         type={showPassword ? "text" : "password"}
@@ -269,7 +295,9 @@ export const UsuariosEdit = () => {
                 render={({ field }) => {
                   return (
                     <FormItem className="col-span-2 md:col-span-1">
-                      <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
+                      <FormLabel>
+                        Nome <RequiredFieldSpan />
+                      </FormLabel>
                       <FormControl>
                         <Input type="text" {...field} disabled={isSubmitting} />
                       </FormControl>
@@ -284,17 +312,33 @@ export const UsuariosEdit = () => {
                 name="telefone"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
-                    <FormControl ref={withMask("+99 (99) 9999-9999")}>
-                      <Input
-                        type="tel"
-                        disabled={isSubmitting}
-                        {...field}
+                    <FormLabel>
+                      Telefone/celular <RequiredFieldSpan />
+                    </FormLabel>
+                    <FormControl>
+                      <InputMask
+                        mask={phoneMask}
+                        value={field.value}
                         onChange={(e) => {
-                          const rawValue = e.target.value.replace(/\D/g, "");
-                          field.onChange(rawValue);
+                          const digits = e.target.value.replace(/\D/g, "");
+                          const newMask = getPhoneMask(digits);
+
+                          if (newMask !== phoneMask) {
+                            setPhoneMask(newMask);
+                          }
+
+                          field.onChange(e.target.value);
                         }}
-                      />
+                        disabled={isSubmitting}
+                      >
+                        {(inputProps) => (
+                          <Input
+                            {...inputProps}
+                            type="tel"
+                            placeholder="(99) 9999-9999"
+                          />
+                        )}
+                      </InputMask>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -306,7 +350,9 @@ export const UsuariosEdit = () => {
                 name="endereco"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Endereço <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MainWrapper } from "@/components/MainWrapper";
 import { Link, useNavigate } from "react-router-dom";
+import InputMask from "react-input-mask";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,12 +55,22 @@ import {
 import { cn } from "@/lib/utils";
 
 import { toast } from "@/hooks/use-toast";
-import { withMask } from "use-mask-input";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import api from "@/axios.config";
+import api from "@/axios";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+
+const getPhoneMask = (value) => {
+  const digits = value.replace(/\D/g, "");
+  if (
+    digits.length === 11 ||
+    (digits.length >= 3 && digits.charAt(2) === "9")
+  ) {
+    return "(99) 99999-9999"; // celular
+  }
+  return "(99) 9999-9999"; // telefone fixo
+};
 
 const usuarioFormSchema = z
   .object({
@@ -77,19 +88,19 @@ const usuarioFormSchema = z
       .min(1, "Insira a senha do usuário")
       .max(20, "Senha não deve exceder os 20 caracteres"),
     tipo: z.string().min(1, "Selecione o tipo de usuário"),
-    cargo: z
-      .string()
-      .min(1, "Insira um cargo")
-      .max(45, "Cargo não deve exceder os 45 caracteres"),
     endereco: z
       .string()
       .min(1, "Endereço é obrigatório")
       .max(100, "Endereço não deve exceder 100 caracteres"),
     telefone: z
       .string()
-      .min(12, "Telefone inválido")
-      .max(12, "Telefone inválido")
-      .regex(/^[1-9][0-9]{11}$/, "Telefone inválido"),
+      .min(1, "Telefone é obrigatório")
+      .refine((value) => {
+        const digits = value.replace(/\D/g, "");
+        if (digits.length === 11) return true;
+        if (digits.length === 10 && digits.charAt(2) !== "9") return true;
+        return false;
+      }, "Telefone inválido. Use 10 dígitos para fixo (sem 9) ou 11 para celular"),
     empresa_id: z.number().nullable(),
     ict_id: z.number().nullable(),
   })
@@ -125,12 +136,13 @@ export const UsuariosCreate = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [phoneMask, setPhoneMask] = useState("(99) 9999-9999");
   const navigate = useNavigate();
 
   const tipos = [
     { value: "admin", label: "Administrador" },
     { value: "empresa", label: "Empresa" },
-    { value: "ict", label: "Instituto de Ciência e Tecnologia (ICT)" },
+    { value: "ict", label: "Instituções de Ciência e Tecnologia (ICT)" },
   ];
 
   useEffect(() => {
@@ -191,6 +203,7 @@ export const UsuariosCreate = () => {
     try {
       const response = await api.post("/usuarios", {
         ...data,
+        telefone: data.telefone.replace(/\D/g, ""),
       });
 
       toast({
@@ -227,9 +240,9 @@ export const UsuariosCreate = () => {
       email: "",
       senha: "",
       tipo: "admin",
-      cargo: "",
       endereco: "",
       telefone: "",
+      cnpj: "",
       empresa_id: 0,
       ict_id: 0,
     },
@@ -295,7 +308,9 @@ export const UsuariosCreate = () => {
               name="tipo"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Tipo de Usuário <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Tipo de Usuário <RequiredFieldSpan />
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => {
                       setTipo(value);
@@ -325,7 +340,9 @@ export const UsuariosCreate = () => {
                 name="ict_id"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>ICT <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      ICT <RequiredFieldSpan />
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -392,7 +409,9 @@ export const UsuariosCreate = () => {
                 name="empresa_id"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Empresa <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Empresa <RequiredFieldSpan />
+                    </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -462,7 +481,9 @@ export const UsuariosCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>E-mail <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      E-mail <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -477,7 +498,9 @@ export const UsuariosCreate = () => {
               name="senha"
               render={({ field }) => (
                 <FormItem className="relative col-span-2 md:col-span-1">
-                  <FormLabel>Senha <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Senha <RequiredFieldSpan />
+                  </FormLabel>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
@@ -507,23 +530,9 @@ export const UsuariosCreate = () => {
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Nome <RequiredFieldSpan /></FormLabel>
-                    <FormControl>
-                      <Input type="text" {...field} disabled={isSubmitting} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-
-            <FormField
-              control={form.control}
-              name="cargo"
-              render={({ field }) => {
-                return (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>Cargo <RequiredFieldSpan /></FormLabel>
+                    <FormLabel>
+                      Nome <RequiredFieldSpan />
+                    </FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
                     </FormControl>
@@ -538,17 +547,33 @@ export const UsuariosCreate = () => {
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>Telefone <RequiredFieldSpan /></FormLabel>
-                  <FormControl ref={withMask("+99 (99) 9999-9999")}>
-                    <Input
-                      type="tel"
-                      disabled={isSubmitting}
-                      {...field}
+                  <FormLabel>
+                    Telefone/celular <RequiredFieldSpan />
+                  </FormLabel>
+                  <FormControl>
+                    <InputMask
+                      mask={phoneMask}
+                      value={field.value}
                       onChange={(e) => {
-                        const rawValue = e.target.value.replace(/\D/g, "");
-                        field.onChange(rawValue);
+                        const digits = e.target.value.replace(/\D/g, "");
+                        const newMask = getPhoneMask(digits);
+
+                        if (newMask !== phoneMask) {
+                          setPhoneMask(newMask);
+                        }
+
+                        field.onChange(e.target.value);
                       }}
-                    />
+                      disabled={isSubmitting}
+                    >
+                      {(inputProps) => (
+                        <Input
+                          {...inputProps}
+                          type="tel"
+                          placeholder="(99) 9999-9999"
+                        />
+                      )}
+                    </InputMask>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -565,7 +590,9 @@ export const UsuariosCreate = () => {
                     tipo === "admin" ? "" : "md:col-span-1"
                   )}
                 >
-                  <FormLabel>Endereço <RequiredFieldSpan /></FormLabel>
+                  <FormLabel>
+                    Endereço <RequiredFieldSpan />
+                  </FormLabel>
                   <FormControl>
                     <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
