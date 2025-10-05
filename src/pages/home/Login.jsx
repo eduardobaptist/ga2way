@@ -11,6 +11,10 @@ import {
   InfoIcon,
   Sparkle,
   Sparkles,
+  Info,
+  CheckCircle2Icon,
+  AlertCircleIcon,
+  UserRoundPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,9 +72,14 @@ export function Login() {
     setIsLoading(true);
 
     login(data)
-      .then(({ success, error }) => {
+      .then(({ success, user, error }) => {
         if (success) {
-          navigate("/projetos");
+          console.log(user?.tipo);
+          if (user?.tipo === "admin") {
+            navigate("/dashboard");
+          } else {
+            navigate("/projetos");
+          }
         } else {
           toast({
             variant: "destructive",
@@ -98,14 +107,14 @@ export function Login() {
             <div className="flex justify-start mb-4">
               <Link
                 to="/"
-                className="inline-flex items-center text-blue-900 hover:text-blue-800 transition-colors text-sm"
+                className="inline-flex items-center text-blue-900 hover:text-blue-800 transition-colors text-md"
               >
-                <ArrowLeft className="mr-2 h-4 w-4" />
+                <ArrowLeft className="mr-2 h-5 w-5" />
                 <span>Voltar à página inicial</span>
               </Link>
             </div>
             <CardTitle className="text-2xl font-bold tracking-tight text-blue-900">
-              Entrar na sua conta
+              Entrar no Gate2way
             </CardTitle>
             <CardDescription className="text-gray-500">
               Digite suas credenciais abaixo
@@ -187,7 +196,7 @@ export function Login() {
                       Carregando...
                     </>
                   ) : (
-                    "Entrar"
+                    "Confirmar"
                   )}
                 </Button>
               </form>
@@ -196,17 +205,14 @@ export function Login() {
 
           <CardFooter>
             <Alert>
-              <AlertDescription>
-                Contas Gate2way poderão ser autocadastradas em breve.
+              <AlertDescription className="flex items-center gap-3 md:gap-2">
+                <UserRoundPlus className="w-5 h-5"/>
+                Contas poderão ser autocadastradas em breve
               </AlertDescription>
             </Alert>
           </CardFooter>
         </Card>
       </main>
-
-      <footer className="w-full z-10 py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} Gate2way. Todos os direitos reservados.
-      </footer>
     </div>
   );
 }

@@ -173,13 +173,15 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                     <span>Publicar</span>
                   </DropdownMenuItem>
                 ) : null}
-                <DropdownMenuItem
-                  onClick={(e) => handleView(e)}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Eye className="h-4 w-4" />
-                  <span>Ver detalhes</span>
-                </DropdownMenuItem>
+                {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 cursor-pointer"
+                    onClick={(e) => handleProposta(e)}
+                  >
+                    <Lightbulb className="h-4 w-4" />
+                    <span>Propostas</span>
+                  </DropdownMenuItem>
+                ) : null}
                 {userTipo === "ict" ? (
                   <DropdownMenuItem
                     onClick={(e) => handleInterest(e)}
@@ -189,13 +191,20 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                     <span>Demonstrar interesse</span>
                   </DropdownMenuItem>
                 ) : null}
-                {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
+                <DropdownMenuItem
+                  onClick={(e) => handleView(e)}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <Eye className="h-4 w-4" />
+                  <span>Ver detalhes</span>
+                </DropdownMenuItem>
+                {["admin", "empresa"].includes(userTipo) ? (
                   <DropdownMenuItem
+                    onClick={handleEdit}
                     className="flex items-center gap-2 cursor-pointer"
-                    onClick={(e) => handleProposta(e)}
                   >
-                    <Lightbulb className="h-4 w-4" />
-                    <span>Propostas</span>
+                    <Edit2 className="h-4 w-4" />
+                    <span>Alterar</span>
                   </DropdownMenuItem>
                 ) : null}
                 {["admin", "empresa"].includes(userTipo) ? (

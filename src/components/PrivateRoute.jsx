@@ -23,7 +23,7 @@ export const PrivateRoute = () => {
   if (isCheckingAuth)
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <Loader2 className="w-10 h-10 mr-5 text-primary animate-spin" />
         <p className="text-gray-600 text-lg">Carregando...</p>
       </div>
     );

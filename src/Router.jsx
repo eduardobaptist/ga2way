@@ -18,7 +18,7 @@ import { ProgramasEdit } from "@/pages/programas/ProgramasEdit";
 
 import { ProjetosList } from "@/pages/projetos/ProjetosList";
 import { ProjetosCreate } from "@/pages/projetos/ProjetosCreate";
-import { ProjetosView } from "./pages/projetos/ProjetosView";
+import { ProjetosView } from "./pages/projetos/view/ProjetosView";
 
 import { UsuariosList } from "./pages/usuarios/UsuariosList";
 
@@ -43,6 +43,7 @@ import { ImpulsosView } from "./pages/impulsos/ImpulsosView";
 
 import { PropostasList } from "./pages/propostas/PropostasList";
 import { ParceriasList } from "./pages/parcerias/ParceriasList";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         element: <Layout />,
         children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard />,
+          },
           {
             path: "/rotas",
             children: [
@@ -83,6 +88,7 @@ export const router = createBrowserRouter([
               { index: true, element: <ProjetosList /> },
               { path: "novo", element: <ProjetosCreate /> },
               { path: ":id", element: <ProjetosView /> },
+              { path: "editar/:id", element: <ProjetosView /> },
             ],
           },
           {

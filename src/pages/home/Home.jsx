@@ -92,9 +92,6 @@ export function Home() {
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
-                  <div className="inline-block rounded-full bg-purple-600/10 px-4 py-1.5 text-sm font-medium text-purple-600 mb-4">
-                    ✨ Conectando saberes
-                  </div>
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                     <span className="text-blue-900">Conectando talentos a</span>{" "}
                     <span className="text-purple-600">oportunidades reais</span>
@@ -107,17 +104,17 @@ export function Home() {
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button
                     size="lg"
-                    className="bg-blue-900 hover:bg-blue-900/90"
+                    className="bg-blue-900 text-lg hover:bg-blue-900/90"
                     asChild
                   >
                     <Link to="/login">
-                      Acessar <ArrowUpRight className="ml-1 h-5 w-5" />
+                      Entrar <ArrowUpRight className="ml-1 h-5 w-5" />
                     </Link>
                   </Button>
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-purple-600 text-purple-600 hover:bg-purple-600/10"
+                    className="border-purple-600 text-lg text-purple-600 hover:bg-purple-600/10"
                     asChild
                   >
                     <a href="#more">Saiba mais</a>
@@ -195,7 +192,7 @@ export function Home() {
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-xl font-bold">
-                      Notificações Automáticas
+                      Notificações automáticas
                     </h3>
                     <p className="text-muted-foreground">
                       Receba atualizações por e-mail sempre que houver mudanças
@@ -396,26 +393,6 @@ export function Home() {
           <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
             © {new Date().getFullYear()} Gate2way. Todos os direitos reservados.
           </p>
-          <div className="flex gap-4">
-            <Link
-              to="#"
-              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-            >
-              Termos
-            </Link>
-            <Link
-              to="#"
-              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-            >
-              Privacidade
-            </Link>
-            <Link
-              to="#"
-              className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-            >
-              Contato
-            </Link>
-          </div>
         </div>
       </footer>
     </div>

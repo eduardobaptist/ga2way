@@ -9,6 +9,8 @@ import {
   Pointer,
   Handshake,
   Lightbulb,
+  ChartLine,
+  ChartColumnBig,
 } from "lucide-react";
 import {
   Sidebar,
@@ -50,6 +52,12 @@ const items = [
         userRoles: ["admin", "ict", "empresa"],
       },
     ],
+  },
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    userRoles: ["admin"],
+    icon: ChartColumnBig,
   },
   {
     title: "Usuários",

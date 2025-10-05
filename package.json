@@ -50,6 +50,7 @@
     "react-hook-form": "^7.53.0",
     "react-input-mask": "^2.0.4",
     "react-router-dom": "^6.26.1",
+    "recharts": "^2.15.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "use-mask-input": "^3.4.2",

@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await api.post("/login", data);
       setUser(response.data.usuario);
-      return { success: true };
+      return { success: true, user: response.data.usuario};
     } catch (error) {
       return { success: false, error };
     }

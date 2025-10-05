@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -18,24 +17,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Search,
   Filter,
   Loader2,
   ImageOff,
-  CheckCircle,
-  AlertTriangle,
-  CircleAlert,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import api from "@/axios";
 
 export const ParceriasList = () => {
@@ -195,7 +183,7 @@ export const ParceriasList = () => {
                     </TableCell>
                     <TableCell>
                       <div className="max-w-md relative flex items-center group">
-                        <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border flex items-center justify-center">
+                        <span className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border p-1 mr-2 flex items-center justify-center">
                           {parceria.Interesse?.Oferta?.Projeto?.Programa?.Rota
                             .Empresa?.foto_perfil ? (
                             <img
