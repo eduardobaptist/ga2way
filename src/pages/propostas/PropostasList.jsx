@@ -16,11 +16,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Filter, Loader2, ImageOff } from "lucide-react";
+import {
+  Search,
+  Filter,
+  Loader2,
+  ImageOff,
+  SquareArrowDownRight,
+  SquareArrowUp,
+  SquareArrowUpRight,
+  ExternalLink,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import api from "@/axios";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export const PropostasList = () => {
   const [filterType, setFilterType] = useState("proposta");
@@ -134,6 +145,7 @@ export const PropostasList = () => {
               <TableRow>
                 <TableHead>Proposta</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Projeto</TableHead>
                 <TableHead>Empresa</TableHead>
                 <TableHead>Data de Envio</TableHead>
               </TableRow>
@@ -178,6 +190,19 @@ export const PropostasList = () => {
                       })()}
                     </TableCell>
                     <TableCell>
+                      <div className="max-w-md relative group">
+                        <div className="flex items-center truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
+                          <Link
+                            to={`/projetos/${proposta?.Oferta?.Projeto?.id}`}
+                            className="text-blue-700 hover:underline"
+                          >
+                            {proposta?.Oferta?.Projeto?.nome}
+                            <ExternalLink className="inline-block ml-2 h-4 w-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
                       <div className="max-w-md relative flex items-center group">
                         <span className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border p-1 mr-2 flex items-center justify-center">
                           {proposta?.Oferta?.Projeto?.Programa?.Rota?.Empresa
@@ -194,7 +219,10 @@ export const PropostasList = () => {
                           )}
                         </span>
                         <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {proposta?.Oferta?.Projeto?.Programa?.Rota?.Empresa?.nome}
+                          {
+                            proposta?.Oferta?.Projeto?.Programa?.Rota?.Empresa
+                              ?.nome
+                          }
                         </div>
                       </div>
                     </TableCell>
