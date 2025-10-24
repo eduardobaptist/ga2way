@@ -180,8 +180,8 @@ export const PropostasList = () => {
                     <TableCell>
                       <div className="max-w-md relative flex items-center group">
                         <span className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border p-1 mr-2 flex items-center justify-center">
-                          {proposta.Oferta.Projeto.Programa.Rota.Empresa
-                            .foto_perfil ? (
+                          {proposta?.Oferta?.Projeto?.Programa?.Rota?.Empresa
+                            ?.foto_perfil ? (
                             <img
                               src={`${import.meta.env.VITE_API_URL}${
                                 proposta.Oferta.Projeto.Programa.Rota.Empresa
