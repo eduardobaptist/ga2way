@@ -194,7 +194,7 @@ export const PropostasList = () => {
                           )}
                         </span>
                         <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {proposta.Oferta.Projeto.Programa.Rota.Empresa.nome}
+                          {proposta?.Oferta?.Projeto?.Programa?.Rota?.Empresa?.nome}
                         </div>
                       </div>
                     </TableCell>
