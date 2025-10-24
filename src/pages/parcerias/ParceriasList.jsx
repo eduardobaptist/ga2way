@@ -47,7 +47,7 @@ export const ParceriasList = () => {
       setParcerias(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar parcerias.";
+        error.response?.data?.message || "Erro ao carregar parcerias.";
       setError(errorMessage);
       toast({
         title: errorMessage,

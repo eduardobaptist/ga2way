@@ -49,7 +49,7 @@ export const UsuariosActions = ({ usuario, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir usuário";
+        error.response?.data?.message || "Erro ao excluir usuário";
       toast({
         title: errorMessage,
         variant: "destructive",

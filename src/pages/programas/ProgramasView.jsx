@@ -25,8 +25,7 @@ export const ProgramasView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
+        error.response?.data?.message ||
         "Erro ao carregar programa.";
       toast({
         title: errorMessage,

@@ -3,9 +3,10 @@ import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
 
-export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
+export const ProjetosProjectCanvas = ({ setCanvasData, initialData }) => {
   const gridRef = useRef(null);
   const [grid, setGrid] = useState(null);
+  const [widgetsLoaded, setWidgetsLoaded] = useState(false);
 
   const saveCanvasData = useCallback(() => {
     if (grid) {
@@ -41,6 +42,9 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
         column: 10,
         animate: true,
         margin: 6,
+        disableOneColumnMode: true,
+        row: 10,
+        maxRow: 10,
       },
       gridRef.current
     );
@@ -54,12 +58,17 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
     };
   }, []);
 
-  /* adiciona widgets ao gridstack */
+  /* adiciona widgets ao gridstack APENAS UMA VEZ */
   useEffect(() => {
-    if (!grid) return;
+    // Só executa se:
+    // 1. Grid existe
+    // 2. initialData não é undefined (já foi carregado da API)
+    // 3. Widgets ainda não foram carregados
+    if (!grid || initialData === undefined || widgetsLoaded) {
+      return;
+    }
 
     const items = [
-      // Coluna 1 (x: 0)
       {
         id: "justificativas",
         x: 0,
@@ -90,8 +99,6 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
         bg: "bg-yellow-200",
         bg_header: "bg-yellow-100",
       },
-
-      // Coluna 2 (x: 2)
       {
         id: "produto",
         x: 2,
@@ -112,8 +119,6 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
         bg: "bg-purple-200",
         bg_header: "bg-purple-100",
       },
-
-      // Coluna 3 (x: 4)
       {
         id: "stakeholders",
         x: 4,
@@ -144,8 +149,6 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
         bg: "bg-blue-200",
         bg_header: "bg-blue-100",
       },
-
-      // Coluna 4 (x: 6)
       {
         id: "premissas",
         x: 6,
@@ -166,8 +169,6 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
         bg: "bg-blue-200",
         bg_header: "bg-blue-100",
       },
-
-      // Coluna 5 (x: 8)
       {
         id: "riscos",
         x: 8,
@@ -200,34 +201,79 @@ export const ProjetosProjectCanvas = ({ setCanvasData, canvasData }) => {
       },
     ];
 
+    const MAX_ROWS = 10;
+
+    // Validação durante o movimento
+    const handleDrag = (event, element) => {
+      const node = element.gridstackNode;
+      if (node.y + node.h > MAX_ROWS) {
+        return false;
+      }
+    };
+    
+    // Validação durante o redimensionamento
+    const handleResize = (event, element) => {
+      const node = element.gridstackNode;
+      if (node.y + node.h > MAX_ROWS) {
+        return false;
+      }
+    };
+
+    grid.on("drag", handleDrag);
+    grid.on("resize", handleResize);
+    grid.on("change", saveCanvasData);
+
+    // Renderiza todos os widgets
     items.forEach(({ x, y, w, h, content, id, bg, bg_header }) => {
+      const savedWidget = initialData?.[id];
+      
+      const finalX = savedWidget?.x ?? x;
+      const finalY = savedWidget?.y ?? y;
+      const finalW = savedWidget?.w ?? w;
+      const finalH = savedWidget?.h ?? h;
+      const textareaValue = savedWidget?.textarea_value || "";
+      
+      const adjustedY = finalY + finalH > MAX_ROWS ? MAX_ROWS - finalH : finalY;
+    
+      
       grid.addWidget({
-        x,
-        y,
-        w,
-        h,
+        x: finalX,
+        y: adjustedY,
+        w: finalW,
+        h: finalH,
         content: `
           <div class="grid-stack-item-content ${bg} rounded-lg shadow-md hover:shadow-lg transition-all duration-300 flex flex-col h-full">
             <div class="w-full grid-stack-item-mover ${bg_header} text-gray-600 px-4 py-2 cursor-move flex justify-between">
               <span>${content}</span>
             </div>
-            <textarea class="w-full h-full resize-none outline-none px-4 py-2 ${bg} text-gray-800 rounded-lg" id="${id}"></textarea>
+            <textarea class="w-full h-full resize-none outline-none px-4 py-2 ${bg} text-gray-800 rounded-lg" id="${id}">${textareaValue}</textarea>
           </div>`,
       });
     });
 
-    grid.on("change", saveCanvasData);
-    saveCanvasData();
+    // Adiciona listeners nos textareas
+    setTimeout(() => {
+      const textareas = gridRef.current?.querySelectorAll("textarea");
+      textareas?.forEach(textarea => {
+        textarea.addEventListener("input", saveCanvasData);
+        textarea.addEventListener("blur", saveCanvasData);
+      });
+    }, 100);
 
-    return () => {
-      grid.off("change", saveCanvasData);
-    };
-  }, [grid, saveCanvasData]);
+    // Marca como carregado para nunca mais executar
+    setWidgetsLoaded(true)
+
+  }, [grid, initialData, widgetsLoaded, saveCanvasData]);
 
   return (
     <div
       ref={gridRef}
-      className="grid-stack bg-muted/40 border rounded-lg h-full w-full p-3"
+      className="grid-stack bg-muted/40 border rounded-lg w-full p-3"
+      style={{ 
+        height: 'calc(10 * 60px + 10 * 6px + 24px)',
+        minHeight: 'calc(10 * 60px + 10 * 6px + 24px)',
+        overflow: 'auto'
+      }}
     ></div>
   );
 };

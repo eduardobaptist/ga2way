@@ -59,7 +59,7 @@ export const EmpresasList = () => {
       setEmpresas(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar empresas.";
+        error.response?.data?.message || "Erro ao carregar empresas.";
       setError(errorMessage);
       toast({
         title: errorMessage,

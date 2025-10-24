@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
-import { Input } from "../../components/ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -91,13 +91,13 @@ const projectFormSchema = z
     path: ["data_inicio"],
   });
 
-export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
+export const ProjetosForm = forwardRef(({ onSubmit, formData }, ref) => {
   const [programasOpen, setProgramasOpen] = useState(false);
   const [impulsosOpen, setImpulsosOpen] = useState(false);
   const [hasImpulso, setHasImpulso] = useState(false);
   const [programas, setProgramas] = useState([]);
   const [impulsos, setimpulsos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingOptions, setIsLoadingOptions] = useState(true);
 
   const form = useForm({
     resolver: zodResolver(projectFormSchema),
@@ -116,90 +116,107 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
     },
   });
 
+  useEffect(() => {
+    const loadOptions = async () => {
+      setIsLoadingOptions(true);
+      try {
+        const [programasRes, impulsosRes] = await Promise.all([
+          api.get("/programas"),
+          api.get("/impulsos"),
+        ]);
+
+        setProgramas(
+          programasRes.data.map((programa) => ({
+            value: programa.id,
+            label: programa.nome,
+          }))
+        );
+
+        setimpulsos(
+          impulsosRes.data.map((impulso) => ({
+            value: impulso.id,
+            label: impulso.descricao,
+          }))
+        );
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Erro ao carregar opções.";
+        toast({
+          title: errorMessage,
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoadingOptions(false);
+      }
+    };
+
+    loadOptions();
+  }, []);
+
+  // Reset do formulário quando formData chega
+  useEffect(() => {
+    if (formData) {
+      const hasImpulsoValue = !!formData.impulso_id;
+      const programaId = formData.programa_id
+        ? Number(formData.programa_id)
+        : 0;
+      const impulsoId = formData.impulso_id
+        ? Number(formData.impulso_id)
+        : null;
+
+      form.reset({
+        nome: formData.nome || "",
+        descricao: formData.descricao || "",
+        data_inicio: formData.data_inicio
+          ? new Date(formData.data_inicio)
+          : new Date(),
+        data_fim: formData.data_fim ? new Date(formData.data_fim) : null,
+        programa_id: programaId,
+        trl: formData.trl || "null",
+        acatech: formData.acatech || "null",
+        prioridade: formData.prioridade || "",
+        impulso: hasImpulsoValue,
+        impulso_id: impulsoId,
+        upload: null,
+      });
+
+      setHasImpulso(hasImpulsoValue);
+    }
+  }, [formData, form]);
+
   const handleFormSubmit = (data) => {
     if (onSubmit) {
+      const formDataToSend = new FormData();
 
-      const formData = new FormData();
-
-      formData.append("nome", data.nome);
-      formData.append("descricao", data.descricao);
-      formData.append("data_inicio", data.data_inicio);
-      formData.append("data_fim", data.data_fim);
-      formData.append("programa_id", data.programa_id);
+      formDataToSend.append("nome", data.nome);
+      formDataToSend.append("descricao", data.descricao);
+      formDataToSend.append("data_inicio", data.data_inicio);
+      formDataToSend.append("data_fim", data.data_fim);
+      formDataToSend.append("programa_id", data.programa_id);
       if (data.trl !== "null") {
-        formData.append("trl", data.trl);
+        formDataToSend.append("trl", data.trl);
       }
       if (data.acatech !== "null") {
-        formData.append("acatech", data.acatech);
+        formDataToSend.append("acatech", data.acatech);
       }
-      formData.append("prioridade", data.prioridade);
+      formDataToSend.append("prioridade", data.prioridade);
       if (data.impulso_id !== null) {
-        formData.append("impulso_id", data.impulso_id);
+        formDataToSend.append("impulso_id", data.impulso_id);
       }
       if (data.upload && data.upload.length > 0) {
-        formData.append("upload", data.upload[0]);
+        formDataToSend.append("upload", data.upload[0]);
       }
 
-      onSubmit(formData);
-    }
-  };
-
-  const fetchProgramas = async () => {
-    setIsLoading(true);
-    try {
-      const response = await api.get("/programas");
-      setProgramas(
-        response.data.map((programa) => ({
-          value: programa.id,
-          label: programa.nome,
-        }))
-      );
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Erro ao carregar programas.";
-      toast({
-        title: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchImpulsos = async () => {
-    setIsLoading(true);
-    try {
-      const response = await api.get("/impulsos");
-      setimpulsos(
-        response.data.map((impulso) => ({
-          value: impulso.id,
-          label: impulso.descricao,
-        }))
-      );
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Erro ao carregar impulsos.";
-      toast({
-        title: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
+      onSubmit(formDataToSend);
     }
   };
 
   const handleProgramas = () => {
     setProgramasOpen(!programasOpen);
-    if (!programasOpen && programas.length === 0) {
-      fetchProgramas();
-    }
   };
 
   const handleImpulsos = () => {
     setImpulsosOpen(!impulsosOpen);
-    if (!impulsosOpen && impulsos.length === 0) {
-      fetchImpulsos();
-    }
   };
 
   const renderSelect = (name, label, options, required) => (
@@ -211,7 +228,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
           <FormLabel>
             {label} {required && <RequiredFieldSpan />}
           </FormLabel>
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select onValueChange={field.onChange} value={String(field.value)}>
             <SelectTrigger>
               <SelectValue
                 placeholder={required ? "Selecione" : "Indefinido"}
@@ -219,7 +236,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
             </SelectTrigger>
             <SelectContent>
               {options.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
+                <SelectItem key={opt.value} value={String(opt.value)}>
                   {opt.label}
                 </SelectItem>
               ))}
@@ -309,7 +326,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                         <PopoverContent className="w-[400px] p-0">
                           <Command>
                             <CommandInput placeholder="Buscar programa..." />
-                            {isLoading ? (
+                            {isLoadingOptions ? (
                               <div className="flex my-3 items-center justify-center">
                                 <Loader2 className="h-6 w-6 animate-spin mr-2" />
                                 Carregando programas...
@@ -422,7 +439,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
                             <PopoverContent className="w-[400px] p-0">
                               <Command>
                                 <CommandInput placeholder="Buscar impulso..." />
-                                {isLoading ? (
+                                {isLoadingOptions ? (
                                   <div className="flex my-3 items-center justify-center">
                                     <Loader2 className="h-6 w-6 animate-spin mr-2" />
                                     Carregando impulsos...

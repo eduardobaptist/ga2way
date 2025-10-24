@@ -136,7 +136,7 @@ export const ImpulsosEdit = () => {
       navigate("/impulsos");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao atualizar impulso. Tente novamente.";
 
       toast({

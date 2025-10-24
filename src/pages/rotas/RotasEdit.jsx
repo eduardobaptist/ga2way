@@ -107,7 +107,7 @@ export const RotasEdit = () => {
       navigate("/rotas");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao atualizar rota. Tente novamente.";
 
       toast({

@@ -58,7 +58,7 @@ export const IctsList = () => {
       setIcts(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar ICTs.";
+        error.response?.data?.message || "Erro ao carregar ICTs.";
       setError(errorMessage);
       toast({
         title: errorMessage,

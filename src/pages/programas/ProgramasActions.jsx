@@ -49,7 +49,7 @@ export const ProgramasActions = ({ programa, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir programa";
+        error.response?.data?.message || "Erro ao excluir programa";
       toast({
         title: errorMessage,
         variant: "destructive",

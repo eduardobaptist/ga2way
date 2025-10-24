@@ -39,8 +39,7 @@ export const EmpresasView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
+        error.response?.data?.message ||
         "Erro ao carregar empresa.";
       toast({
         title: errorMessage,

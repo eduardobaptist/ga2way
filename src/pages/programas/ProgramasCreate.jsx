@@ -78,7 +78,7 @@ export const ProgramasCreate = () => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar rotas.";
+        error.response?.data?.message || "Erro ao carregar rotas.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -117,7 +117,7 @@ export const ProgramasCreate = () => {
       navigate("/programas");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao criar programa. Tente novamente.";
 
       toast({

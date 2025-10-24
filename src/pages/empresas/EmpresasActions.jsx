@@ -49,7 +49,7 @@ export const EmpresasActions = ({ empresa, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir empresa";
+        error.response?.data?.message || "Erro ao excluir empresa";
       toast({
         title: errorMessage,
         variant: "destructive",

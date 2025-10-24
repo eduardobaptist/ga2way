@@ -47,7 +47,7 @@ export const ProgramasList = () => {
       setProgramas(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar programas.";
+        error.response?.data?.message || "Erro ao carregar programas.";
       setError(errorMessage);
       toast({
         title: errorMessage,

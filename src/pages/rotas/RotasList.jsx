@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import api from "@/axios";
-import { InfoSection } from "@/components/InfoSection";
+//import { InfoSection } from "@/components/InfoSection";
 
 export const RotasList = () => {
   const [filterType, setFilterType] = useState("nome");
@@ -47,7 +47,7 @@ export const RotasList = () => {
       setRotas(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar rotas.";
+        error.response?.data?.message || "Erro ao carregar rotas.";
       setError(errorMessage);
       toast({
         title: errorMessage,
@@ -85,7 +85,7 @@ export const RotasList = () => {
 
   return (
     <MainWrapper title="Rotas">
-      <InfoSection
+      {/* <InfoSection
         title="Sistema de rotas"
         description="Clique para ver detalhes importantes"
         sections={[
@@ -94,7 +94,7 @@ export const RotasList = () => {
             content: "As rotas são a definição do escopo dos seus programas (e consequentemente dos projetos desses programas). \nElas podem erepresentar no Gate2Way as diferentes áreas do conhecimento, setores da empresa ou temas específico de interesse do projetos que se originem nesta"
           },
         ]}
-      />
+      /> */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex col-span-2 md:col-span-1">
           <Select

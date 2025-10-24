@@ -55,8 +55,7 @@ export const ProjetosView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
+        error.response?.data?.message ||
         "Erro ao carregar projeto.";
       toast({
         title: errorMessage,

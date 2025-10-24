@@ -49,7 +49,7 @@ export const IctsActions = ({ ict, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir ICT";
+        error.response?.data?.message || "Erro ao excluir ICT";
       toast({
         title: errorMessage,
         variant: "destructive",

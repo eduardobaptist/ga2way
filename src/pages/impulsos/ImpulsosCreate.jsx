@@ -87,7 +87,7 @@ export const ImpulsosCreate = () => {
       navigate("/impulsos");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao criar impulso. Tente novamente.";
 
       toast({

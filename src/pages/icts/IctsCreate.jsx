@@ -143,7 +143,7 @@ export const IctsCreate = () => {
       navigate("/icts");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao criar ICT. Tente novamente.";
+        error.response?.data?.message || "Erro ao criar ICT. Tente novamente.";
 
       toast({
         title: "Erro ao criar a ICT",

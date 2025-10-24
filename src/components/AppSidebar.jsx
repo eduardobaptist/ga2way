@@ -6,10 +6,8 @@ import {
   Building2,
   GraduationCap,
   StickyNote,
-  Pointer,
   Handshake,
   Lightbulb,
-  ChartLine,
   ChartColumnBig,
 } from "lucide-react";
 import {
@@ -82,6 +80,12 @@ const items = [
     url: "/icts",
     icon: GraduationCap,
     userRoles: ["admin"],
+  },
+  {
+    title: "Minhas propostas",
+    url: "/minhas-propostas",
+    icon: Lightbulb,
+    userRoles: ["ict"],
   },
   {
     title: "Parcerias",

@@ -39,7 +39,7 @@ export const IctsView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || error.message || "Erro ao carregar ICT.";
+        error.response?.data?.message || "Erro ao carregar ICT.";
       toast({
         title: errorMessage,
         variant: "destructive",

@@ -34,7 +34,7 @@ export const ImpulsosList = () => {
       const response = await api.get("/impulsos")
       setImpulsos(response.data)
     } catch (error) {
-      const errorMessage = error.response?.data?.error || "Erro ao carregar impulsos."
+      const errorMessage = error.response?.data?.message || "Erro ao carregar impulsos."
       setError(errorMessage)
       toast({
         title: errorMessage,

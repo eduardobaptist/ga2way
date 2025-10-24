@@ -15,6 +15,7 @@ import {
   Handshake,
   Rocket,
   Loader2,
+  SearchX,
 } from "lucide-react";
 import {
   Bar,
@@ -88,16 +89,16 @@ export default function Dashboard() {
                 className="w-full sm:w-auto bg-[#0a2770] text-white hover:bg-[#082056]"
               >
                 <Handshake className="mr-2 h-4 w-4" />
-                Parcerias
+                Ver parcerias
               </Button>
             </Link>
           </div>
 
           <div className="mb-6 grid gap-4 sm:mb-8 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-            <Card className="bg-[#fef3c7] min-h-[140px] sm:min-h-[160px]">
+            <Card className="min-h-[140px] sm:min-h-[160px]">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-sm font-medium text-gray-600">
-                  Total de projetos
+                  Projetos cadastrados
                 </CardTitle>
                 <Rocket className="h-6 w-6" />
               </CardHeader>
@@ -108,7 +109,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#d1fae5] min-h-[140px] sm:min-h-[160px]">
+            <Card className="min-h-[140px] sm:min-h-[160px]">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   Organizações ativas
@@ -122,7 +123,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#fce7f3] min-h-[140px] sm:min-h-[160px]">
+            <Card className="min-h-[140px] sm:min-h-[160px]">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   Parcerias criadas
@@ -136,7 +137,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-[#e0e7ff] min-h-[140px] sm:min-h-[160px]">
+            <Card className="min-h-[140px] sm:min-h-[160px]">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <CardTitle className="text-sm font-medium text-gray-600">
                   Visualizações no mês
@@ -158,109 +159,129 @@ export default function Dashboard() {
                   Principais projetos por propostas
                 </CardTitle>
                 <CardDescription className="text-sm text-gray-600">
-                  Projetos recebendo mais propostas de universidades
+                  Projetos recebendo mais propostas no último mês
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-4 sm:p-6">
-                <ChartContainer
-                  config={{
-                    proposals: {
-                      label: "Propostas",
-                      color: "#0a2770",
-                    },
-                  }}
-                  className="h-[250px] sm:h-[280px] lg:h-[300px]"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={dashboardData?.charts.topProjects || []}
-                      layout="vertical"
-                    >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        type="number"
-                        className="text-xs"
-                        tick={{ fill: "#6b7280" }}
-                      />
-                      <YAxis
-                        dataKey="name"
-                        type="category"
-                        width={100}
-                        className="text-xs"
-                        tick={{ fill: "#6b7280" }}
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar
-                        dataKey="proposals"
-                        fill="#0a2770"
-                        radius={[0, 4, 4, 0]}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                {!dashboardData?.charts.topProjects ||
+                dashboardData.charts.topProjects.length === 0 ? (
+                  <div className="flex items-center text-gray-500 justify-center h-[250px] sm:h-[280px] lg:h-[300px]">
+                    <SearchX className="w-5 h-5 mr-2" />
+                    <p className="text-md">
+                      Nenhuma proposta registrada no último mês
+                    </p>
+                  </div>
+                ) : (
+                  <ChartContainer
+                    config={{
+                      proposals: {
+                        label: "Propostas",
+                        color: "#0a2770",
+                      },
+                    }}
+                    className="h-[250px] sm:h-[280px] lg:h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={dashboardData.charts.topProjects}
+                        layout="vertical"
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis
+                          type="number"
+                          className="text-xs"
+                          tick={{ fill: "#6b7280" }}
+                        />
+                        <YAxis
+                          dataKey="name"
+                          type="category"
+                          width={100}
+                          className="text-xs"
+                          tick={{ fill: "#6b7280" }}
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar
+                          dataKey="proposals"
+                          fill="#0a2770"
+                          radius={[0, 4, 4, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                )}
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
                 <CardTitle className="text-base sm:text-lg text-black">
-                  Visualizações de projetos
+                  Visualizações
                 </CardTitle>
                 <CardDescription className="text-sm text-gray-600">
                   Visualizações diárias em todos os projetos esta semana
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-4 sm:p-6">
-                <ChartContainer
-                  config={{
-                    views: {
-                      label: "Visualizações",
-                      color: "#8b5cf6",
-                    },
-                  }}
-                  className="h-[250px] sm:h-[280px] lg:h-[300px]"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={dashboardData?.charts.projectViews || []}>
-                      <defs>
-                        <linearGradient
-                          id="colorViews"
-                          x1="0"
-                          y1="0"
-                          x2="0"
-                          y2="1"
-                        >
-                          <stop
-                            offset="5%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0.3}
-                          />
-                          <stop
-                            offset="95%"
-                            stopColor="#8b5cf6"
-                            stopOpacity={0}
-                          />
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis
-                        dataKey="day"
-                        className="text-xs"
-                        tick={{ fill: "#6b7280" }}
-                      />
-                      <YAxis className="text-xs" tick={{ fill: "#6b7280" }} />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Area
-                        type="monotone"
-                        dataKey="views"
-                        stroke="#8b5cf6"
-                        strokeWidth={2}
-                        fillOpacity={1}
-                        fill="url(#colorViews)"
-                      />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+                {!dashboardData?.charts.projectViews ||
+                dashboardData?.charts.projectViews.length === 0 ? (
+                  <div className="flex items-center justify-center h-[250px] sm:h-[280px] lg:h-[300px]">
+                    <SearchX className="w-5 h-5 mr-2" />
+                    <p className="text-gray-500 text-sm">
+                      Sem visualizações registradas na última semana
+                    </p>
+                  </div>
+                ) : (
+                  <ChartContainer
+                    config={{
+                      views: {
+                        label: "Visualizações",
+                        color: "#8b5cf6",
+                      },
+                    }}
+                    className="h-[250px] sm:h-[280px] lg:h-[300px]"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={dashboardData.charts.projectViews}>
+                        <defs>
+                          <linearGradient
+                            id="colorViews"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#8b5cf6"
+                              stopOpacity={0.3}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#8b5cf6"
+                              stopOpacity={0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis
+                          dataKey="day"
+                          className="text-xs"
+                          tick={{ fill: "#6b7280" }}
+                        />
+                        <YAxis className="text-xs" tick={{ fill: "#6b7280" }} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Area
+                          type="monotone"
+                          dataKey="views"
+                          stroke="#8b5cf6"
+                          strokeWidth={2}
+                          fillOpacity={1}
+                          fill="url(#colorViews)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                )}
               </CardContent>
             </Card>
           </div>

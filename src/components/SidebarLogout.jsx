@@ -30,7 +30,7 @@ export const SidebarLogout = () => {
         toast({
           variant: "destructive",
           title: "Erro ao fazer logout",
-          description: error.response?.data?.message || error.message,
+          description: error.response?.data?.message || "",
         });
       }
     });

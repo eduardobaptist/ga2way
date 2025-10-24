@@ -156,7 +156,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar programas.";
+        error.response?.data?.message || "Erro ao carregar programas.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -178,7 +178,7 @@ export const ProjetosForm = forwardRef(({ onSubmit }, ref) => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar impulsos.";
+        error.response?.data?.message || "Erro ao carregar impulsos.";
       toast({
         title: errorMessage,
         variant: "destructive",

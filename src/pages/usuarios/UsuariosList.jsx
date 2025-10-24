@@ -47,7 +47,7 @@ export const UsuariosList = () => {
       setUsuarios(response.data);
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar usuários.";
+        error.response?.data?.message || "Erro ao carregar usuários.";
       setError(errorMessage);
       toast({
         title: errorMessage,

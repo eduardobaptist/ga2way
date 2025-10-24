@@ -162,7 +162,7 @@ export const UsuariosCreate = () => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar empresas.";
+        error.response?.data?.message || "Erro ao carregar empresas.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -184,7 +184,7 @@ export const UsuariosCreate = () => {
       );
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao carregar ICTs.";
+        error.response?.data?.message || "Erro ao carregar ICTs.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -214,7 +214,7 @@ export const UsuariosCreate = () => {
       navigate("/usuarios");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao criar usuário. Tente novamente.";
 
       toast({

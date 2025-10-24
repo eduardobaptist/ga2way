@@ -150,7 +150,7 @@ export const EmpresasCreate = () => {
       navigate("/empresas");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao criar empresa. Tente novamente.";
 
       toast({

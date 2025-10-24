@@ -75,7 +75,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       toast({
-        title: error.response?.data?.error || "Erro ao ofertar projeto",
+        title: error.response?.data?.message || "Erro ao ofertar projeto",
         variant: "destructive",
       });
     } finally {
@@ -97,7 +97,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     } catch (error) {
       toast({
         title:
-          error.response?.data?.error ||
+          error.response?.data?.message ||
           "Erro ao carregar oferta do projeto na demonstração de interesse",
         variant: "destructive",
       });
@@ -112,7 +112,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       toast({
-        title: error.response?.data?.error || "Erro ao excluir projeto",
+        title: error.response?.data?.message || "Erro ao excluir projeto",
         variant: "destructive",
       });
     } finally {
@@ -137,7 +137,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
       setProposta("");
     } catch (error) {
       toast({
-        title: error.response?.data?.error || "Erro ao enviar interesse",
+        title: error.response?.data?.message || "Erro ao enviar interesse",
         variant: "destructive",
       });
     }
@@ -198,7 +198,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                   <Eye className="h-4 w-4" />
                   <span>Ver detalhes</span>
                 </DropdownMenuItem>
-                {["admin", "empresa"].includes(userTipo) ? (
+                {projeto.status === "NÃO PÚBLICADO" && ["admin", "empresa"].includes(userTipo) ? (
                   <DropdownMenuItem
                     onClick={handleEdit}
                     className="flex items-center gap-2 cursor-pointer"

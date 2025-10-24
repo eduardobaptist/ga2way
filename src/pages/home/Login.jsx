@@ -84,7 +84,7 @@ export function Login() {
           toast({
             variant: "destructive",
             title: "Erro ao fazer login",
-            description: error.response?.data?.message || error.message,
+            description: error.response?.data?.message || "",
           });
         }
       })

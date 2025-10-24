@@ -49,7 +49,7 @@ export const ImpulsosActions = ({ impulso, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir impulso";
+        error.response?.data?.message || "Erro ao excluir impulso";
       toast({
         title: errorMessage,
         variant: "destructive",

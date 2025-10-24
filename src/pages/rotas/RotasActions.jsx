@@ -49,7 +49,7 @@ export const RotasActions = ({ rota, onRefresh }) => {
       onRefresh?.();
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao excluir rota";
+        error.response?.data?.message || "Erro ao excluir rota";
       toast({
         title: errorMessage,
         variant: "destructive",

@@ -26,8 +26,7 @@ export const ImpulsosView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
-        error.message ||
+        error.response?.data?.message ||
         "Erro ao carregar impulso.";
       toast({
         title: errorMessage,

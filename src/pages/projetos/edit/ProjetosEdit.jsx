@@ -1,6 +1,8 @@
-
-import { useState, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import api from "@/axios";
 import { MainWrapper } from "@/components/MainWrapper";
 import { ProjetosProjectCanvas } from "@/pages/projetos/edit/ProjetosProjectCanvas";
 import { ProjetosForm } from "@/pages/projetos/edit/ProjetosForm";
@@ -17,20 +19,68 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import api from "@/axios";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeftCircle,
+  CheckCircleIcon,
+  Library,
+  PanelsTopLeftIcon,
+} from "lucide-react";
 
-export const ProjetosCreate = () => {
+export const ProjetosEdit = () => {
+  const { id } = useParams();
   const [layout, setLayout] = useState("infosGerais");
+  const [canvasData, setCanvasData] = useState(null);
+  const [projectCanvasInitialData, setProjectCanvasInitialData] =
+    useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [projectData, setProjectData] = useState(null);
   const projectFormRef = useRef(null);
   const isMobile = useIsMobile();
-  const [canvasData, setCanvasData] = useState(null);
-
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await api.get(`/projetos/${id}`);
+        console.log("Dados do projeto:", response.data);
+        const data = {
+          nome: response.data.nome,
+          descricao: response.data.descricao,
+          data_inicio: response.data.data_inicio,
+          data_fim: response.data.data_fim,
+          programa_id: response.data?.Programa?.id || 0,
+          trl: response.data.trl?.toString() || "null",
+          acatech: response.data.acatech?.toString() || "null",
+          prioridade: response.data.prioridade?.toString() || "",
+          impulso: response.data.impulso_id || false,
+          impulso_id: response.data.impulso_id || null,
+          upload: null,
+        };
+
+        let parsedEstilo = null;
+        if (response.data.estilo) {
+          try {
+            parsedEstilo = JSON.parse(response.data.estilo);
+            setProjectCanvasInitialData(parsedEstilo);
+            setCanvasData(parsedEstilo);
+          } catch (e) {
+            console.error("Erro ao parsear estilo:", e);
+          }
+        }
+
+        setProjectData(data);
+      } catch (error) {
+        console.error("Erro ao carregar projeto:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProject();
+  }, [id]);
 
   const handleSave = useCallback(() => {
     if (projectFormRef.current) {
@@ -40,54 +90,78 @@ export const ProjetosCreate = () => {
 
   const onSubmit = useCallback(
     async (formData) => {
-      formData.append(
-        "justificativas",
-        canvasData["justificativas"]?.textarea_value
-      );
-      formData.append("objsmart", canvasData["objsmart"]?.textarea_value);
-      formData.append("beneficios", canvasData["beneficios"]?.textarea_value);
-      formData.append("produto", canvasData["produto"]?.textarea_value);
-      formData.append("requisitos", canvasData["requisitos"]?.textarea_value);
-      formData.append(
-        "stakeholders",
-        canvasData["stakeholders"]?.textarea_value
-      );
-      formData.append("equipe", canvasData["equipe"]?.textarea_value);
-      formData.append("premissas", canvasData["premissas"]?.textarea_value);
-      formData.append(
-        "grupo_de_entrega",
-        canvasData["grupo_de_entrega"]?.textarea_value
-      );
-      formData.append("restricoes", canvasData["restricoes"]?.textarea_value);
-      formData.append("riscos", canvasData["riscos"]?.textarea_value);
-      formData.append(
-        "linha_do_tempo",
-        canvasData["linha_do_tempo"]?.textarea_value
-      );
-      formData.append("custos", canvasData["custos"]?.textarea_value);
-      formData.append("estilo", JSON.stringify(canvasData));
+      try {
 
-      console.log(JSON.stringify(formData))
+        formData.append(
+          "justificativas",
+          canvasData["justificativas"]?.textarea_value
+        );
+        formData.append("objsmart", canvasData["objsmart"]?.textarea_value);
+        formData.append("beneficios", canvasData["beneficios"]?.textarea_value);
+        formData.append("produto", canvasData["produto"]?.textarea_value);
+        formData.append("requisitos", canvasData["requisitos"]?.textarea_value);
+        formData.append(
+          "stakeholders",
+          canvasData["stakeholders"]?.textarea_value
+        );
+        formData.append("equipe", canvasData["equipe"]?.textarea_value);
+        formData.append("premissas", canvasData["premissas"]?.textarea_value);
+        formData.append(
+          "grupo_de_entrega",
+          canvasData["grupo_de_entrega"]?.textarea_value
+        );
+        formData.append("restricoes", canvasData["restricoes"]?.textarea_value);
+        formData.append("riscos", canvasData["riscos"]?.textarea_value);
+        formData.append(
+          "linha_do_tempo",
+          canvasData["linha_do_tempo"]?.textarea_value
+        );
+        formData.append("custos", canvasData["custos"]?.textarea_value);
+        
+        const cleanCanvasData = Object.entries(canvasData).reduce(
+          (acc, [key, widget]) => {
+            acc[key] = {
+              x: widget.x,
+              y: widget.y,
+              w: widget.w,
+              h: widget.h,
+              textarea_value: widget.textarea_value || "",
+            };
+            return acc;
+          },
+          {}
+        );
 
-      const response = await api.post("/projetos", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+        formData.append("estilo", JSON.stringify(cleanCanvasData));
 
+        const response = await api.put(`/projetos/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
 
-      toast({
-        title: "Projeto criado com sucesso.",
-        variant: "success",
-      });
+        toast({
+          title: "Projeto atualizado com sucesso.",
+          variant: "success",
+        });
 
-      navigate("/projetos");
+        navigate("/projetos");
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message ||
+          "Erro ao atualizar projeto. Tente novamente.";
+
+        toast({
+          title: errorMessage,
+          variant: "destructive",
+        });
+      }
     },
-    [canvasData]
+    [canvasData, id, navigate, toast]
   );
 
   return (
-    <MainWrapper title="Novo projeto">
+    <MainWrapper title="Editar projeto">
       {isMobile ? (
         <div className="space-y-3">
           <div className="flex justify-between align-center">
@@ -188,7 +262,10 @@ export const ProjetosCreate = () => {
                   <Library size="20" className="mr-2" />
                   Informações gerais
                 </TabsTrigger>
-                <TabsTrigger value="projectCanvas"><PanelsTopLeftIcon size="20" className="mr-2" />Project canvas</TabsTrigger>
+                <TabsTrigger value="projectCanvas">
+                  <PanelsTopLeftIcon size="20" className="mr-2" />
+                  Project canvas
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -204,10 +281,17 @@ export const ProjetosCreate = () => {
       )}
       <div className="mt-5">
         <div style={{ display: layout === "infosGerais" ? "block" : "none" }}>
-          <ProjetosForm ref={projectFormRef} onSubmit={onSubmit} />
+          <ProjetosForm
+            ref={projectFormRef}
+            onSubmit={onSubmit}
+            formData={projectData}
+          />
         </div>
         <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
-          <ProjetosProjectCanvas setCanvasData={setCanvasData} />
+          <ProjetosProjectCanvas
+            setCanvasData={setCanvasData}
+            initialData={projectCanvasInitialData}
+          />
         </div>
       </div>
     </MainWrapper>

@@ -156,7 +156,7 @@ export const UsuariosEdit = () => {
       navigate("/usuarios");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error ||
+        error.response?.data?.message ||
         "Erro ao atualizar usuário. Tente novamente.";
 
       toast({

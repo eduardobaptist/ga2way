@@ -55,7 +55,7 @@ export const SidebarHeaderInfo = () => {
           toast({
             variant: "destructive",
             title: "Erro ao fazer logout",
-            description: error.response?.data?.message || error.message,
+            description: error.response?.data?.message || "",
           });
         }
       })
@@ -110,17 +110,17 @@ export const SidebarHeaderInfo = () => {
                   <DropdownMenuSubTrigger>Perfil</DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                      <DropdownMenuItem className="cursor-pointer">
+                      <DropdownMenuItem className="cursor-pointer" disabled>
                         Atualizar informações
                       </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer">
+                      <DropdownMenuItem className="cursor-pointer" disabled>
                         Redefinir senha
                       </DropdownMenuItem>
                     </DropdownMenuSubContent>
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
               </DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
+              <DropdownMenuItem className="cursor-pointer" disabled>
                 Configurações
               </DropdownMenuItem>
               <DropdownMenuItem

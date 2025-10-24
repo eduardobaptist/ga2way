@@ -69,7 +69,7 @@ export const RotasCreate = () => {
       navigate("/rotas");
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || "Erro ao criar rota. Tente novamente.";
+        error.response?.data?.message || "Erro ao criar rota. Tente novamente.";
 
       toast({
         title: "Erro ao criar a rota",
