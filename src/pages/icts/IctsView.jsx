@@ -15,6 +15,7 @@ export const IctsView = () => {
   const navigate = useNavigate();
 
   const formatPhone = (phone) => {
+    if (!phone) return "-";
     const digits = phone.replace(/\D/g, "");
 
     if (digits.length === 11) {
@@ -75,18 +76,32 @@ export const IctsView = () => {
       ) : (
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
           <Field label="Nome" value={`${icts.nome}`} />
-          <Field label="Razão social" value={icts.razao_social} />
           <Field label="Email" value={`${icts.email}`} />
-          <Field label="Endereço" value={`${icts.endereco}`} />
-          <Field
-            label="CNPJ"
-            value={`${icts.cnpj.replace(
-              /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-              "$1.$2.$3/$4-$5"
-            )}`}
-          />
           <Field label="Telefone" value={formatPhone(icts.telefone)} />
-          <Field label="Site" value={icts.site || "Não especificado"} />
+          <div className="space-y-1.5">
+            <div className="text-sm font-semibold text-gray-900">Site</div>
+            <div className="text-sm text-gray-600">
+              {icts.site ? (
+                <a
+                  href={icts.site}
+                  target="_blank"
+                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                >
+                  {icts.site}
+                </a>
+              ) : (
+                "-"
+              )}
+            </div>
+          </div>
+          <Field
+            label="Cidade"
+            value={icts.cidade || "-"}
+          />
+          <Field
+            label="UF"
+            value={icts.uf || "-"}
+          />
           <Field
             label="Data de criação"
             value={`${formatDatetime(icts.createdAt) || ""}`}

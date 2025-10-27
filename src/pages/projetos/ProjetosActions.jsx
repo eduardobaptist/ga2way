@@ -58,11 +58,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     navigate(`/projetos/editar/${projeto.id}`);
   };
 
-  const handleProposta = (e) => {
-    e.stopPropagation();
-    navigate(`/projetos/propostas/${projeto.id}`);
-  };
-
   const handlePublish = async (e) => {
     e.stopPropagation();
     try {
@@ -71,7 +66,7 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
         data_inicio: projeto.data_inicio,
         data_fim: projeto.data_fim,
       });
-      toast({ title: "Projeto ofertado com sucesso", variant: "success" });
+      toast({ title: "Projeto criado com sucesso", variant: "success" });
       onRefresh?.();
     } catch (error) {
       toast({
@@ -171,15 +166,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                   >
                     <Send className="h-4 w-4" />
                     <span>Publicar</span>
-                  </DropdownMenuItem>
-                ) : null}
-                {userTipo === "empresa" && projeto.status === "PUBLICADO" ? (
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 cursor-pointer"
-                    onClick={(e) => handleProposta(e)}
-                  >
-                    <Lightbulb className="h-4 w-4" />
-                    <span>Propostas</span>
                   </DropdownMenuItem>
                 ) : null}
                 {userTipo === "ict" ? (

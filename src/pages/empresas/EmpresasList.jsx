@@ -32,6 +32,7 @@ export const EmpresasList = () => {
   const [error, setError] = useState(null);
 
   const formatPhone = (phone) => {
+    if (!phone) return "-";
     const digits = phone.replace(/\D/g, "");
 
     if (digits.length === 11) {
@@ -48,7 +49,7 @@ export const EmpresasList = () => {
     { value: "cnpj", label: "CNPJ" },
     { value: "telefone", label: "Telefone" },
     { value: "area", label: "Área de atuação" },
-    { value: "dataCriacao", label: "Data de Criação" },
+    { value: "dataCriacao", label: "Data de criação" },
   ];
 
   const fetchEmpresas = async () => {
@@ -81,18 +82,13 @@ export const EmpresasList = () => {
     switch (filterType) {
       case "nome":
         return empresa.nome.toLowerCase().includes(searchLower);
-      case "cnpj":
-        return empresa.cnpj
-          .replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5")
-          .toLowerCase()
-          .includes(searchLower);
       case "telefone":
         return empresa.telefone
-          .replace(/(\d{2})(\d{2})(\d{4})(\d{4})/, "+$1 ($2) $3-$4")
+          ?.replace(/(\d{2})(\d{2})(\d{4})(\d{4})/, "+$1 ($2) $3-$4")
           .toLowerCase()
           .includes(searchLower);
       case "area":
-        return empresa.area.toLowerCase().includes(searchLower);
+        return empresa.area?.toLowerCase().includes(searchLower);
       case "dataCriacao":
         return new Date(empresa.createdAt)
           .toLocaleDateString()
@@ -162,10 +158,9 @@ export const EmpresasList = () => {
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
-                <TableHead>CNPJ</TableHead>
                 <TableHead>Telefone/celular</TableHead>
-                <TableHead>Área de Atuação</TableHead>
-                <TableHead>Data de Criação</TableHead>
+                <TableHead>Área de atuação</TableHead>
+                <TableHead>Data de criação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -205,17 +200,24 @@ export const EmpresasList = () => {
                         onRefresh={fetchEmpresas}
                       />
                     </TableCell>
-                    <TableCell>{empresa.nome}</TableCell>
-                    <TableCell>
-                      {empresa.cnpj.replace(
-                        /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-                        "$1.$2.$3/$4-$5"
-                      )}
+                    <TableCell className="flex items-center gap-2">
+                      <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
+                        {empresa?.foto_perfil ? (
+                          <img
+                            src={`${import.meta.env.VITE_API_URL}${
+                              empresa?.foto_perfil
+                            }`}
+                            alt="Foto Empresa"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <ImageOff className="w-4 h-4 text-muted-foreground" />
+                        )}
+                      </span>
+                      <span>{empresa.nome}</span>
                     </TableCell>
-                    <TableCell>
-                      {formatPhone(empresa.telefone)}
-                    </TableCell>
-                    <TableCell>{empresa.area}</TableCell>
+                    <TableCell>{formatPhone(empresa.telefone)}</TableCell>
+                    <TableCell>{empresa.area || "-"}</TableCell>
                     <TableCell>
                       {formatDatetime(empresa.createdAt) || "-"}
                     </TableCell>

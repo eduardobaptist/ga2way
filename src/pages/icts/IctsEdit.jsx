@@ -24,15 +24,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { toast } from "@/hooks/use-toast";
-import { validarCnpj } from "@/lib/utils";
 import InputMask from "react-input-mask";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import api from "@/axios";
 import { RequiredFieldSpan } from "@/components/RequiredFieldSpan";
+import { UFComboBox } from "@/components/UFComboBox";
+import { CidadeCombobox } from "@/components/CidadeComboBox";
 
 const getPhoneMask = (value) => {
   const digits = value.replace(/\D/g, "");
@@ -50,32 +50,23 @@ const ictFormSchema = z.object({
     .string()
     .min(1, "Nome é obrigatório")
     .max(100, "Nome não deve exceder 100 caracteres"),
-  razao_social: z
-    .string()
-    .min(1, "Razão social é obrigatória")
-    .max(100, "Razão social não deve exceder 100 caracteres"),
-  cnpj: z
-    .string()
-    .min(14, "CNPJ inválido")
-    .max(14, "CNPJ inválido")
-    .refine((cnpj) => {
-      if (/^(\d)\1+$/.test(cnpj)) return false;
-      return validarCnpj(cnpj);
-    }, "CNPJ inválido"),
+  razao_social: z.string().optional(),
+  cnpj: z.string().optional(),
   email: z
     .string()
     .min(1, "Email é obrigatório")
     .max(100, "Email não deve exceder 100 caracteres")
     .email("Email inválido"),
-  endereco: z
-    .string()
-    .min(1, "Endereço é obrigatório")
-    .max(100, "Endereço não deve exceder 100 caracteres"),
+  endereco: z.string().optional(),
+  uf: z.string().max(2).optional(),
+  cidade: z.string().max(100).optional(),
   telefone: z
     .string()
-    .min(1, "Telefone é obrigatório")
+    .optional()
     .refine((value) => {
+      if (!value) return true;
       const digits = value.replace(/\D/g, "");
+      if (digits.length === 0) return true;
       if (digits.length === 11) return true;
       if (digits.length === 10 && digits.charAt(2) !== "9") return true;
       return false;
@@ -85,7 +76,7 @@ const ictFormSchema = z.object({
     .instanceof(FileList)
     .nullable()
     .refine((files) => {
-      if (!files || files.length === 0) return true; // se está vazio nem verifica a extensão; É NÃO OBRIGATÓRIO!
+      if (!files || files.length === 0) return true;
       const allowedExtensions = ["jpg", "jpeg", "png"];
       return allowedExtensions.includes(
         files[0].name.split(".").pop().toLowerCase()
@@ -108,6 +99,8 @@ export const IctsEdit = () => {
       cnpj: "",
       email: "",
       endereco: "",
+      uf: "",
+      cidade: "",
       telefone: "",
       site: "",
       foto_perfil: null,
@@ -138,6 +131,8 @@ export const IctsEdit = () => {
           cnpj: ict.cnpj,
           email: ict.email,
           endereco: ict.endereco,
+          uf: ict.uf || "",
+          cidade: ict.cidade || "",
           area: ict.area,
           telefone: ict.telefone,
           site: ict.site,
@@ -167,6 +162,8 @@ export const IctsEdit = () => {
       formData.append("cnpj", data.cnpj);
       formData.append("email", data.email);
       formData.append("endereco", data.endereco);
+      formData.append("uf", data.uf);
+      formData.append("cidade", data.cidade);
       formData.append("telefone", data.telefone.replace(/\D/g, ""));
       formData.append("site", data.site);
 
@@ -181,7 +178,7 @@ export const IctsEdit = () => {
       });
 
       toast({
-        title: "ICT criada com sucesso.",
+        title: "ICT atualizada com sucesso.",
         variant: "success",
       });
 
@@ -296,54 +293,6 @@ export const IctsEdit = () => {
 
               <FormField
                 control={form.control}
-                name="razao_social"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      Razão social <RequiredFieldSpan />
-                    </FormLabel>
-                    <FormControl>
-                      <Input type="text" disabled={isSubmitting} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="cnpj"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      CNPJ <RequiredFieldSpan />
-                    </FormLabel>
-                    <FormControl>
-                      <InputMask
-                        mask="99.999.999/9999-99"
-                        value={field.value}
-                        onChange={(e) => {
-                          const rawValue = e.target.value.replace(/\D/g, "");
-                          field.onChange(rawValue);
-                        }}
-                        disabled={isSubmitting}
-                      >
-                        {(inputProps) => (
-                          <Input
-                            {...inputProps}
-                            type="text"
-                            placeholder="00.000.000/0000-00"
-                          />
-                        )}
-                      </InputMask>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
@@ -358,30 +307,15 @@ export const IctsEdit = () => {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="endereco"
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>
-                      Endereço <RequiredFieldSpan />
-                    </FormLabel>
-                    <FormControl>
-                      <Input type="text" disabled={isSubmitting} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <UFComboBox form={form} isSubmitting={isSubmitting} />
+              <CidadeCombobox form={form} isSubmitting={isSubmitting} />
 
               <FormField
                 control={form.control}
                 name="telefone"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      Telefone/celular <RequiredFieldSpan />
-                    </FormLabel>
+                    <FormLabel>Telefone/celular</FormLabel>
                     <FormControl>
                       <InputMask
                         mask={phoneMask}

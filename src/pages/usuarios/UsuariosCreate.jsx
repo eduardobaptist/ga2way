@@ -88,15 +88,14 @@ const usuarioFormSchema = z
       .min(1, "Insira a senha do usuário")
       .max(20, "Senha não deve exceder os 20 caracteres"),
     tipo: z.string().min(1, "Selecione o tipo de usuário"),
-    endereco: z
-      .string()
-      .min(1, "Endereço é obrigatório")
-      .max(100, "Endereço não deve exceder 100 caracteres"),
+    endereco: z.string().optional(),
     telefone: z
       .string()
-      .min(1, "Telefone é obrigatório")
+      .optional()
       .refine((value) => {
+        if (!value) return true;
         const digits = value.replace(/\D/g, "");
+        if (digits.length === 0) return true;
         if (digits.length === 11) return true;
         if (digits.length === 10 && digits.charAt(2) !== "9") return true;
         return false;
@@ -142,7 +141,7 @@ export const UsuariosCreate = () => {
   const tipos = [
     { value: "admin", label: "Administrador" },
     { value: "empresa", label: "Empresa" },
-    { value: "ict", label: "Instituções de Ciência e Tecnologia (ICT)" },
+    { value: "ict", label: "Institução de Ciência e Tecnologia (ICT)" },
   ];
 
   useEffect(() => {
@@ -203,7 +202,7 @@ export const UsuariosCreate = () => {
     try {
       const response = await api.post("/usuarios", {
         ...data,
-        telefone: data.telefone.replace(/\D/g, ""),
+        telefone: data.telefone?.replace(/\D/g, ""),
       });
 
       toast({
@@ -477,12 +476,34 @@ export const UsuariosCreate = () => {
 
             <FormField
               control={form.control}
+              name="nome"
+              render={({ field }) => {
+                return (
+                  <FormItem className="col-span-2 md:col-span-1">
+                    <FormLabel>
+                      Nome <RequiredFieldSpan />
+                    </FormLabel>
+                    <FormControl>
+                      <Input type="text" {...field} disabled={isSubmitting} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
               name="email"
               render={({ field }) => {
                 return (
                   <FormItem className="col-span-2 md:col-span-1">
                     <FormLabel>
-                      E-mail <RequiredFieldSpan />
+                      E-mail{" "}
+                      <span className="font-normal text-xs">
+                        (será usado para entrar na plataforma)
+                      </span>{" "}
+                      <RequiredFieldSpan />
                     </FormLabel>
                     <FormControl>
                       <Input type="text" {...field} disabled={isSubmitting} />
@@ -526,30 +547,10 @@ export const UsuariosCreate = () => {
 
             <FormField
               control={form.control}
-              name="nome"
-              render={({ field }) => {
-                return (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      Nome <RequiredFieldSpan />
-                    </FormLabel>
-                    <FormControl>
-                      <Input type="text" {...field} disabled={isSubmitting} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-
-            <FormField
-              control={form.control}
               name="telefone"
               render={({ field }) => (
                 <FormItem className="col-span-2 md:col-span-1">
-                  <FormLabel>
-                    Telefone/celular <RequiredFieldSpan />
-                  </FormLabel>
+                  <FormLabel>Telefone/celular</FormLabel>
                   <FormControl>
                     <InputMask
                       mask={phoneMask}
@@ -574,27 +575,6 @@ export const UsuariosCreate = () => {
                         />
                       )}
                     </InputMask>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="endereco"
-              render={({ field }) => (
-                <FormItem
-                  className={cn(
-                    "col-span-2",
-                    tipo === "admin" ? "" : "md:col-span-1"
-                  )}
-                >
-                  <FormLabel>
-                    Endereço <RequiredFieldSpan />
-                  </FormLabel>
-                  <FormControl>
-                    <Input type="text" disabled={isSubmitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

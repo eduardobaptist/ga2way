@@ -45,7 +45,6 @@ export const PropostasList = () => {
     setIsLoading(true);
     try {
       const response = await api.get("/interesses");
-      console.log(response.data);
       setPropostas(response.data || []);
     } catch (error) {
       const errorMessage =

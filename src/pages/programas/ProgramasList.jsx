@@ -36,7 +36,7 @@ export const ProgramasList = () => {
     { value: "empresa", label: "Empresa" },
     { value: "rota", label: "Rota" },
     { value: "descricao", label: "Descrição" },
-    { value: "dataCricao", label: "Data de Criação" },
+    { value: "dataCricao", label: "Data de criação" },
   ];
 
   const fetchProgramas = async () => {
@@ -147,7 +147,7 @@ export const ProgramasList = () => {
                 <TableHead>Descrição</TableHead>
                 <TableHead>Rota</TableHead>
                 <TableHead>Empresa</TableHead>
-                <TableHead>Data de Criação</TableHead>
+                <TableHead>Data de criação</TableHead>
                 <TableHead>Data de Alteração</TableHead>
               </TableRow>
             </TableHeader>
@@ -197,7 +197,7 @@ export const ProgramasList = () => {
                       </div>
                     </TableCell>
                     <TableCell>{programa.Rota?.nome || "-"}</TableCell>
-                    <TableCell>{programa.Empresa?.nome || "-"}</TableCell>
+                    <TableCell>{programa.Rota?.Empresa?.nome || "-"}</TableCell>
                     <TableCell>
                       {formatDatetime(programa.createdAt) || "-"}
                     </TableCell>

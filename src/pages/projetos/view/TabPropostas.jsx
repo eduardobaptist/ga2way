@@ -1,7 +1,17 @@
 import { useState, useMemo } from "react";
-import { CheckCircle, XCircle, Clock, ImageOff } from "lucide-react";
+import { CheckCircle, XCircle, ImageOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Field } from "@/components/Field";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Accordion,
   AccordionContent,
@@ -9,12 +19,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { Field } from "@/components/Field";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import api from "@/axios";
 
 export const TabPropostas = ({ projeto, onRefresh }) => {
-  // Extract all interests from all offers in the project
+  const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [selectedInteresse, setSelectedInteresse] = useState(null);
+
   const allInteresses = useMemo(() => {
     if (!projeto?.Oferta?.length) return [];
 
@@ -26,7 +40,6 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
     }, []);
   }, [projeto]);
 
-  // Categorize interests by their status
   const categorizedInteresses = useMemo(() => {
     const pendentes = allInteresses.filter(
       (interesse) => interesse.status === "pendente"
@@ -42,56 +55,51 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
     return { pendentes, aprovadas, naoAprovadas };
   }, [allInteresses]);
 
-  // Component to render individual interest item
+  const handleApprove = async (id) => {
+    try {
+      await api.post("/parcerias", {
+        interesse_id: id,
+      });
+
+      toast({
+        title: `Proposta aprovada com sucesso`,
+        variant: "success",
+      });
+
+      onRefresh();
+    } catch (error) {
+      toast({
+        title: "Erro ao aprovar proposta",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      await api.patch(`/interesses/rejeitar/${id}`);
+
+      toast({
+        title: `Proposta rejeitada com sucesso`,
+        variant: "success",
+      });
+
+      onRefresh();
+    } catch (error) {
+      toast({
+        title: "Erro ao rejeitar proposta",
+        variant: "destructive",
+      });
+    }
+  };
+
   const InteresseItem = ({ interesse, showActions = false }) => {
     const usuario = interesse.Usuario;
-    const empresa = usuario?.Responsavels?.[0]?.Empresa;
     const ict = usuario?.Responsavels?.[0]?.Ict;
-
-    // Handle approval of interest
-    const handleApprove = async (id) => {
-      try {
-        await api.post("/parcerias", {
-          interesse_id: id,
-        });
-
-        toast({
-          title: `Proposta aprovada com sucesso`,
-          variant: "success",
-        });
-
-        onRefresh();
-      } catch (error) {
-        toast({
-          title: "Erro ao aprovar proposta",
-          variant: "destructive",
-        });
-      }
-    };
-
-    // Handle rejection of interest
-    const handleReject = async (id) => {
-      try {
-        await api.patch(`/interesses/rejeitar/${id}`);
-
-        toast({
-          title: `Proposta rejeitada com sucesso`,
-          variant: "success",
-        });
-
-        onRefresh();
-      } catch (error) {
-        toast({
-          title: "Erro ao rejeitar proposta",
-          variant: "destructive",
-        });
-      }
-    };
 
     return (
       <div className="border border-gray-100 rounded-lg p-6 bg-white shadow-sm hover:shadow-lg hover:border-gray-200">
         <div className="flex flex-col space-y-6">
-          {/* ICT Profile Header */}
           <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
             <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
               {ict?.foto_perfil ? (
@@ -111,14 +119,12 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
             </div>
           </div>
 
-          {/* Proposal Text */}
           {interesse.proposta && (
             <div>
               <Field label="Proposta" value={interesse.proposta} />
             </div>
           )}
 
-          {/* User Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field
               label="Enviado por"
@@ -130,11 +136,14 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
             />
           </div>
 
-          {/* Action Buttons (only for pending proposals) */}
           {showActions && (
             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100">
               <Button
-                onClick={() => handleApprove(interesse.id)}
+                onClick={() => {
+                  setSelectedInteresse(interesse.id);
+                  setIsApproveDialogOpen(true);
+                  setIsRejectDialogOpen(false);
+                }}
                 className="text-black hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700 flex-1"
                 variant="outline"
               >
@@ -142,7 +151,11 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
                 Aprovar Proposta
               </Button>
               <Button
-                onClick={() => handleReject(interesse.id)}
+                onClick={() => {
+                  setSelectedInteresse(interesse.id);
+                  setIsApproveDialogOpen(false);
+                  setIsRejectDialogOpen(true);
+                }}
                 className="text-black hover:bg-rose-50 hover:border-rose-300 hover:text-rose-700 flex-1"
                 variant="outline"
               >
@@ -159,13 +172,16 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
   return (
     <section>
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-foreground">Propostas por status</h2>
-        <p className="text-sm text-muted-foreground mt-0">Propostas pendentes possuem ação de aprovar e rejeitar</p>
+        <h2 className="text-2xl font-semibold text-foreground">
+          Propostas por status
+        </h2>
+        <p className="text-sm text-muted-foreground mt-0">
+          Propostas pendentes possuem ação de aprovar e rejeitar
+        </p>
       </div>
       <div className="animate-in fade-in-50 duration-500">
         <div className="space-y-6">
           <Accordion type="multiple" className="w-full space-y-4">
-            {/* Pending Proposals Section */}
             <AccordionItem
               value="propostas-pendentes"
               className="border border-amber-200/60 rounded-lg shadow-sm overflow-hidden hover:shadow-md hover:border-amber-300/70"
@@ -205,7 +221,6 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Approved Proposals Section */}
             <AccordionItem
               value="propostas-aprovadas"
               className="border border-emerald-200/60 rounded-lg shadow-sm overflow-hidden hover:shadow-md hover:border-emerald-300/70"
@@ -245,7 +260,6 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
               </AccordionContent>
             </AccordionItem>
 
-            {/* Rejected Proposals Section */}
             <AccordionItem
               value="propostas-rejeitadas"
               className="border border-rose-200/60 rounded-lg shadow-sm overflow-hidden hover:shadow-md hover:border-rose-300/70"
@@ -287,6 +301,54 @@ export const TabPropostas = ({ projeto, onRefresh }) => {
           </Accordion>
         </div>
       </div>
+
+      <AlertDialog
+        open={isApproveDialogOpen}
+        onOpenChange={setIsApproveDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Tem certeza que deseja aprovar essa proposta?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              As demais propostas para este projeto serão 
+              automaticamente rejeitadas.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => handleApprove(selectedInteresse)}
+              className="bg-green-600 hover:bg-green-700 focus:ring-green-600"
+            >
+              Aprovar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog
+        open={isRejectDialogOpen}
+        onOpenChange={setIsRejectDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Tem certeza que deseja rejeitar essa proposta?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => handleReject(selectedInteresse)}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Rejeitar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 };

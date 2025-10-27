@@ -103,7 +103,7 @@ export const SidebarHeaderInfo = () => {
               className="w-56"
               onCloseAutoFocus={(e) => e.preventDefault()}
             >
-              <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+              <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuSub>

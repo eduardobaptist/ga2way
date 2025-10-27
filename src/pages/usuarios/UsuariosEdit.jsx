@@ -53,14 +53,18 @@ const usuarioFormSchema = z.object({
     .string()
     .min(1, "Insira a senha do usuário")
     .max(20, "Senha não deve exceder os 20 caracteres"),
-  endereco: z
-    .string()
-    .min(1, "Endereço é obrigatório")
-    .max(100, "Endereço não deve exceder 100 caracteres"),
+  endereco: z.string().optional(),
   telefone: z
     .string()
-    .min(10, "Telefone inválido")
-    .max(15, "Telefone inválido"),
+    .optional()
+    .refine((value) => {
+      if (!value) return true;
+      const digits = value.replace(/\D/g, "");
+      if (digits.length === 0) return true;
+      if (digits.length === 11) return true;
+      if (digits.length === 10 && digits.charAt(2) !== "9") return true;
+      return false;
+    }, "Telefone inválido. Use 10 dígitos para fixo (sem 9) ou 11 para celular"),
 });
 
 export const UsuariosEdit = () => {
@@ -112,15 +116,14 @@ export const UsuariosEdit = () => {
         }
 
         setUsuarioState(usuario);
-        
-        setPhoneMask(getPhoneMask(usuario.telefone))
+
+        setPhoneMask(getPhoneMask(usuario.telefone));
 
         form.reset({
           nome: usuario.nome,
           email: usuario.email,
-          endereco: usuario.endereco,
           telefone: usuario.telefone,
-          senha: ""
+          senha: "",
         });
       } catch (error) {
         toast({
@@ -142,7 +145,7 @@ export const UsuariosEdit = () => {
     try {
       const response = await api.put(`/usuarios/${id}`, {
         ...data,
-        telefone: data.telefone.replace(/\D/g, ""),
+        telefone: data.telefone?.replace(/\D/g, ""),
         ict_id: usuarioState.ict_id,
         empresa_id: usuarioState.empresa_id,
         tipo: usuarioState.tipo,
@@ -312,9 +315,7 @@ export const UsuariosEdit = () => {
                 name="telefone"
                 render={({ field }) => (
                   <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      Telefone/celular <RequiredFieldSpan />
-                    </FormLabel>
+                    <FormLabel>Telefone/celular</FormLabel>
                     <FormControl>
                       <InputMask
                         mask={phoneMask}
@@ -339,22 +340,6 @@ export const UsuariosEdit = () => {
                           />
                         )}
                       </InputMask>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="endereco"
-                render={({ field }) => (
-                  <FormItem className="col-span-2 md:col-span-1">
-                    <FormLabel>
-                      Endereço <RequiredFieldSpan />
-                    </FormLabel>
-                    <FormControl>
-                      <Input type="text" disabled={isSubmitting} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

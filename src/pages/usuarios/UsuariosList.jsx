@@ -17,7 +17,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, PlusCircle, Filter, Loader2, ImageOff } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Search,
+  PlusCircle,
+  Filter,
+  Loader2,
+  ImageOff,
+  Building,
+  UserCog,
+  GraduationCap,
+} from "lucide-react";
 import { UsuariosActions } from "./UsuariosActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
@@ -36,7 +46,7 @@ export const UsuariosList = () => {
     { value: "organizacao", label: "Organização" }, // novo filtro
     { value: "email", label: "Email" },
     { value: "tipo", label: "Tipo" },
-    { value: "dataCriacao", label: "Data de Criação" },
+    { value: "dataCriacao", label: "Data de criação" },
   ];
 
   const fetchUsuarios = async () => {
@@ -89,6 +99,19 @@ export const UsuariosList = () => {
         return true;
     }
   });
+
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case "admin":
+        return <UserCog className="h-4 w-4 mr-2 text-gray-500" />;
+      case "empresa":
+        return <Building className="h-4 w-4 mr-2 text-gray-500" />;
+      case "ict":
+        return <GraduationCap className="h-4 w-4 mr-2 text-gray-500" />;
+      default:
+        return <></>;
+    }
+  };
 
   return (
     <MainWrapper title="Usuários">
@@ -149,10 +172,10 @@ export const UsuariosList = () => {
               <TableRow>
                 <TableHead></TableHead>
                 <TableHead>Nome</TableHead>
+                <TableHead>Tipo</TableHead>
                 <TableHead>Organização</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Tipo</TableHead>
-                <TableHead>Data de Criação</TableHead>
+                <TableHead>Data de criação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -192,6 +215,16 @@ export const UsuariosList = () => {
                         onRefresh={fetchUsuarios}
                       />
                     </TableCell>
+                    <TableCell>{usuario.nome}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">
+                        {getTypeIcon(usuario.tipo)}
+                        {usuario.tipo === "ict"
+                          ? usuario.tipo.toUpperCase()
+                          : usuario.tipo[0]?.toUpperCase() +
+                            usuario.tipo.slice(1)}
+                      </Badge>
+                    </TableCell>
                     <TableCell className="flex items-center gap-2">
                       <span className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border p-1 flex items-center justify-center">
                         {usuario.tipo === "ict" ? (
@@ -218,22 +251,13 @@ export const UsuariosList = () => {
                           <ImageOff className="w-4 h-4 text-muted-foreground" />
                         )}
                       </span>
-                      <span>{usuario.nome}</span>
-                    </TableCell>
-                    <TableCell>
-                      {usuario.tipo === "ict"
-                        ? usuario?.Responsavels?.[0]?.Ict?.nome || "-"
-                        : usuario?.Responsavels?.[0]?.Empresa?.nome || "-"}
+                      <span>
+                        {usuario.tipo === "ict"
+                          ? usuario?.Responsavels?.[0]?.Ict?.nome || "-"
+                          : usuario?.Responsavels?.[0]?.Empresa?.nome || "-"}
+                      </span>
                     </TableCell>
                     <TableCell>{usuario.email}</TableCell>
-                    <TableCell>
-                      {
-                        usuario.tipo === "ict"
-                          ? usuario.tipo.toUpperCase() // ict -> ICT
-                          : usuario.tipo[0]?.toUpperCase() +
-                            usuario.tipo.slice(1) // admin -> Admin | empresa -> Empresa
-                      }
-                    </TableCell>
                     <TableCell>
                       {formatDatetime(usuario.createdAt) || "-"}
                     </TableCell>

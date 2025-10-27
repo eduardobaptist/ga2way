@@ -24,7 +24,7 @@ export const ImpulsosList = () => {
   const filters = [
     { value: "descricao", label: "Descrição" },
     { value: "valor", label: "Valor" },
-    { value: "dataCriacao", label: "Data de Criação" },
+    { value: "dataCriacao", label: "Data de criação" },
   ]
 
   const fetchImpulsos = async () => {
@@ -117,10 +117,10 @@ export const ImpulsosList = () => {
           <Table className="min-w-full">
             <TableHeader>
               <TableRow className="hover:bg-transparent">
-                <TableHead className="w-[50px]">Ações</TableHead>
+                <TableHead className="w-[50px]"></TableHead>
                 <TableHead className="min-w-[300px]">Descrição</TableHead>
                 <TableHead className="min-w-[200px] text-right">Valor</TableHead>
-                <TableHead className="whitespace-nowrap">Criação</TableHead>
+                <TableHead className="whitespace-nowrap">Data de criação</TableHead>
                 <TableHead className="whitespace-nowrap">Alteração</TableHead>
               </TableRow>
             </TableHeader>

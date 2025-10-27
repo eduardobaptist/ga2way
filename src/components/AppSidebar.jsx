@@ -125,7 +125,7 @@ export const AppSidebar = () => {
       </SidebarContent>
 
       <SidebarFooter className="p-4">
-        <SidebarLogout />
+        {/* <SidebarLogout /> */}
       </SidebarFooter>
     </Sidebar>
   );

@@ -49,7 +49,6 @@ export const ProjetosView = () => {
 
       if (response?.data) {
         setProjeto(response?.data);
-        console.log(response?.data);
       } else {
         throw new Error("Projeto não encontrado");
       }

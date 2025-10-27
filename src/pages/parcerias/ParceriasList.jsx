@@ -16,12 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Search,
-  Filter,
-  Loader2,
-  ImageOff,
-} from "lucide-react";
+import { Search, Filter, Loader2, ImageOff } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
 import api from "@/axios";
@@ -36,7 +31,7 @@ export const ParceriasList = () => {
   const filters = [
     { value: "proposta", label: "Proposta" },
     { value: "ict", label: "ICT" },
-    { value: "dataCricao", label: "Data de Criação" },
+    { value: "dataCricao", label: "Data de criação" },
   ];
 
   const fetchParcerias = async () => {
@@ -133,7 +128,7 @@ export const ParceriasList = () => {
                 <TableHead>ICT</TableHead>
                 <TableHead>Responsável da ICT</TableHead>
                 <TableHead>E-mail do responsável da ICT</TableHead>
-                <TableHead>Data de Criação</TableHead>
+                <TableHead>Data de criação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -189,7 +184,7 @@ export const ParceriasList = () => {
                             <img
                               src={`${import.meta.env.VITE_API_URL}${
                                 parceria.Interesse?.Oferta?.Projeto?.Programa
-                                  ?.Rota.Empresa?.foto_perfil
+                                  ?.Rota?.Empresa?.foto_perfil
                               }`}
                               className="w-full h-full object-contain"
                             />
@@ -200,7 +195,7 @@ export const ParceriasList = () => {
                         <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
                           {
                             parceria.Interesse?.Oferta?.Projeto?.Programa?.Rota
-                              .Empresa?.nome
+                              ?.Empresa?.nome
                           }
                         </div>
                       </div>

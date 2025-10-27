@@ -15,6 +15,7 @@ export const EmpresasView = () => {
   const navigate = useNavigate();
 
   const formatPhone = (phone) => {
+    if (!phone) return "-";
     const digits = phone.replace(/\D/g, "");
 
     if (digits.length === 11) {
@@ -39,8 +40,7 @@ export const EmpresasView = () => {
       }
     } catch (error) {
       const errorMessage =
-        error.response?.data?.message ||
-        "Erro ao carregar empresa.";
+        error.response?.data?.message || "Erro ao carregar empresa.";
       toast({
         title: errorMessage,
         variant: "destructive",
@@ -76,29 +76,37 @@ export const EmpresasView = () => {
       ) : (
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
           <Field label="Nome" value={`${empresa.nome}`} />
-          <Field label="Razão social" value={empresa.razao_social} />
           <Field label="Email" value={`${empresa.email}`} />
-          <Field label="Endereço" value={`${empresa.endereco}`} />
-          <Field
-            label="CNPJ"
-            value={`${empresa.cnpj.replace(
-              /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-              "$1.$2.$3/$4-$5"
-            )}`}
-          />
           <Field
             label="Telefone/ceular"
             value={formatPhone(empresa.telefone)}
           />
-          <Field label="Área de atuação" value={`${empresa.area}`} />
-          <Field label="Site" value={empresa.site || "Não especificado"} />
+          <Field label="Área de atuação" value={`${empresa.area || "-"}`} />
+          <Field
+            label="Cidade"
+            value={empresa.cidade || "-"}
+          />
+          <Field
+            label="UF"
+            value={empresa.uf || "-"}
+          />
+          <div className="space-y-1.5">
+            <div className="text-sm font-semibold text-gray-900">Site</div>
+            <div className="text-sm text-gray-600">
+              {empresa.site ? (
+                <a href={empresa.site} target="_blank" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{empresa.site}</a>
+              ) : (
+                "-"
+              )}
+            </div>
+          </div>
           <Field
             label="Data de criação"
-            value={`${formatDatetime(empresa.createdAt) || ""}`}
+            value={`${formatDatetime(empresa.createdAt) || "-"}`}
           />
           <Field
             label="Data de alteração"
-            value={`${formatDatetime(empresa.updatedAt) || ""}`}
+            value={`${formatDatetime(empresa.updatedAt) || "-"}`}
           />
         </div>
       )}

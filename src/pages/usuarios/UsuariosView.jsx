@@ -77,8 +77,7 @@ export const UsuariosView = () => {
         <div className="grid grid-cols-1 mt-5 lg:grid-cols-2 gap-6 w-full">
           <Field label="E-mail" value={`${usuario.email}`} />
           <Field label="Nome" value={usuario.nome} />
-          <Field label="Telefone" value={formatPhone(usuario.telefone)} />
-          <Field label="Endereço" value={`${usuario.endereco}`} />
+          <Field label="Telefone" value={formatPhone(usuario.telefone) || "-"} />
           <Field
             label="Data de criação"
             value={`${formatDatetime(usuario.createdAt) || ""}`}

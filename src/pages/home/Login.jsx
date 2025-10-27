@@ -74,7 +74,6 @@ export function Login() {
     login(data)
       .then(({ success, user, error }) => {
         if (success) {
-          console.log(user?.tipo);
           if (user?.tipo === "admin") {
             navigate("/dashboard");
           } else {
@@ -125,7 +124,7 @@ export function Login() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}
-                className="space-y-4"
+                className="space-y-4 mb-3"
               >
                 <FormField
                   control={form.control}
@@ -202,15 +201,6 @@ export function Login() {
               </form>
             </Form>
           </CardContent>
-
-          <CardFooter>
-            <Alert>
-              <AlertDescription className="flex items-center gap-3 md:gap-2">
-                <UserRoundPlus className="w-5 h-5"/>
-                Contas poderão ser autocadastradas em breve
-              </AlertDescription>
-            </Alert>
-          </CardFooter>
         </Card>
       </main>
     </div>
