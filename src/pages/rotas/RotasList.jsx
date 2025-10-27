@@ -85,7 +85,7 @@ export const RotasList = () => {
 
   return (
     <MainWrapper title="Rotas">
-      <InfoSection
+      {/* <InfoSection
         title="Sistema de rotas"
         description="Clique para ver detalhes importantes"
         sections={[
@@ -94,7 +94,7 @@ export const RotasList = () => {
             content: "As rotas são a definição do escopo dos seus programas (e consequentemente dos projetos desses programas). \nElas podem representar no Gate2Way as diferentes áreas do conhecimento, setores da empresa ou temas específicos de interesse dos projetos que se originem nesta."
           },
         ]}
-      />
+      /> */}
       <div className="grid grid-cols-2 gap-3">
         <div className="flex col-span-2 md:col-span-1">
           <Select
