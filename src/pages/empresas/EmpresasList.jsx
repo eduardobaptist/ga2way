@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, PlusCircle, Filter, Loader2 } from "lucide-react";
+import { Search, PlusCircle, Filter, Loader2, ImageOff } from "lucide-react";
 import { EmpresasActions } from "./EmpresasActions";
 import { Link } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";

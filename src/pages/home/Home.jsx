@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 export function Home() {
   const incentives = [
@@ -209,14 +208,10 @@ export function Home() {
                     <div className="flex items-center">
                       <h3 className="text-xl font-bold">
                         Gerenciamento de projetos{" "}
-                        <span className="inline-flex items-center rounded-full bg-orange-500 hover:bg-orange-500 text-white px-2.5 py-0.5 text-xs font-medium">
-                          em breve
-                        </span>
                       </h3>
                     </div>
                     <p className="text-muted-foreground">
-                      Monitore o progresso dos projetos em tempo real, com
-                      dashboards personalizados e relatórios detalhados.
+                      Monitore o progresso dos projetos em andamento.
                     </p>
                   </div>
                 </div>
@@ -340,22 +335,6 @@ export function Home() {
                     Acesse talentos em formação e reduza custos de P&D com
                     projetos inovadores guiados por especialistas acadêmicos.
                   </p>
-                  <div className="relative">
-                    <Button
-                      size="lg"
-                      variant="secondary"
-                      className="w-full"
-                      disabled
-                    >
-                      Cadastre-se como empresa
-                    </Button>
-                    <Badge
-                      variant="secondary"
-                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
-                    >
-                      em breve
-                    </Badge>
-                  </div>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20">
                   <h3 className="text-xl font-semibold mb-2 text-center">
@@ -365,22 +344,6 @@ export function Home() {
                     Ofereça experiências práticas aos seus talentos e fortaleça
                     parcerias com o setor produtivo através de projetos reais.
                   </p>
-                  <div className="relative">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full bg-transparent border-white text-white hover:bg-white/10 hover:text-white"
-                      disabled
-                    >
-                      Sou de uma ICT e quero participar
-                    </Button>
-                    <Badge
-                      variant="secondary"
-                      className="absolute -top-2 -right-2 bg-orange-500 hover:bg-orange-500 text-white border-0 text-xs font-medium px-2 py-1"
-                    >
-                      em breve
-                    </Badge>
-                  </div>
                 </div>
               </div>
             </div>
