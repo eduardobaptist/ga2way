@@ -35,10 +35,10 @@ export const ProjetosView = () => {
     ...(["admin", "empresa"].includes(user?.tipo)
       ? [
           { value: "propostas", label: "Propostas" },
-          { value: "historico", label: "Histórico" },
+          // { value: "historico", label: "Histórico" },
         ]
       : []),
-    { value: "canvas", label: "Project canvas" },
+    // { value: "canvas", label: "Project canvas" },
   ];
 
   const fetchProjeto = async () => {
@@ -125,13 +125,13 @@ export const ProjetosView = () => {
               <TabPropostas projeto={projeto} onRefresh={fetchProjeto} />
             </TabsContent>
 
-            <TabsContent value="historico">
+            {/* <TabsContent value="historico">
               <TabHistorico projeto={projeto} />
             </TabsContent>
 
             <TabsContent value="canvas">
               <TabCanvas projeto={projeto} />
-            </TabsContent>
+            </TabsContent> */}
           </>
         )}
       </Tabs>

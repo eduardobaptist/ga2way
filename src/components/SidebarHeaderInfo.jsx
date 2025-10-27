@@ -107,7 +107,7 @@ export const SidebarHeaderInfo = () => {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Perfil</DropdownMenuSubTrigger>
+                  {/* <DropdownMenuSubTrigger>Perfil</DropdownMenuSubTrigger>
                   <DropdownMenuPortal>
                     <DropdownMenuSubContent>
                       <DropdownMenuItem className="cursor-pointer" disabled>
@@ -117,12 +117,12 @@ export const SidebarHeaderInfo = () => {
                         Redefinir senha
                       </DropdownMenuItem>
                     </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
+                  </DropdownMenuPortal> */}
                 </DropdownMenuSub>
               </DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer" disabled>
+              {/* <DropdownMenuItem className="cursor-pointer" disabled>
                 Configurações
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem
                 className="text-red-600 focus:text-red-500 cursor-pointer"
                 onClick={handleLogoutClick}
