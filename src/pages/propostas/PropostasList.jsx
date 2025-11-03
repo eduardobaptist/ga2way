@@ -142,11 +142,11 @@ export const PropostasList = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Proposta</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead>Projeto</TableHead>
                 <TableHead>Empresa</TableHead>
                 <TableHead>Data de Envio</TableHead>
+                <TableHead>Observação</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -171,13 +171,6 @@ export const PropostasList = () => {
               ) : (
                 filteredPropostas.map((proposta) => (
                   <TableRow key={proposta.id}>
-                    <TableCell>
-                      <div className="max-w-md relative group">
-                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {proposta.proposta}
-                        </div>
-                      </div>
-                    </TableCell>
                     <TableCell>
                       {(() => {
                         const config = getStatusConfig(proposta.status);
@@ -227,6 +220,13 @@ export const PropostasList = () => {
                     </TableCell>
                     <TableCell>
                       {formatDatetime(proposta.createdAt) || "-"}
+                    </TableCell>
+                    <TableCell>
+                      <div className="max-w-md relative group">
+                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
+                          {proposta.proposta}
+                        </div>
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))

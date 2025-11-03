@@ -45,6 +45,9 @@ export const ProjetosProjectCanvas = ({ setCanvasData, initialData }) => {
         disableOneColumnMode: true,
         row: 10,
         maxRow: 10,
+        staticGrid: true, // Torna o grid estático
+        disableDrag: true, // Desabilita arrastar
+        disableResize: true, // Desabilita redimensionar
       },
       gridRef.current
     );

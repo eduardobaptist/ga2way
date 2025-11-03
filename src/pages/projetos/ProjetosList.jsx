@@ -196,12 +196,10 @@ export const ProjetosList = () => {
                             <ImageOff />
                           )}
                         </span>
-                        <div className="flex flex-col gap-1 ml-2 overflow-hidden min-w-0">
-                          <CardTitle className="truncate">
-
+                        <div className="flex flex-col ml-2 overflow-hidden min-w-0">
+                          <span className="truncate tracking-tighter text-2xl font-semibold text-foreground">
                             {projeto.nome}
-
-                          </CardTitle>
+                          </span>
                           <p className="text-sm font-semibold">
                             {projeto?.Programa?.Rota?.Empresa?.nome}
                           </p>

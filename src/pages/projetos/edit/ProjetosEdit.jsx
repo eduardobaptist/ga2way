@@ -18,20 +18,21 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeftCircle,
   CheckCircleIcon,
   Library,
   PanelsTopLeftIcon,
+  Monitor,
 } from "lucide-react";
 
 export const ProjetosEdit = () => {
   const { id } = useParams();
   const [layout, setLayout] = useState("infosGerais");
   const [canvasData, setCanvasData] = useState(null);
-  const [projectCanvasInitialData, setProjectCanvasInitialData] =
-    useState(null);
+  const [projectCanvasInitialData, setProjectCanvasInitialData] = useState(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [projectData, setProjectData] = useState(null);
   const projectFormRef = useRef(null);
@@ -45,7 +46,6 @@ export const ProjetosEdit = () => {
 
       try {
         const response = await api.get(`/projetos/${id}`);
-        console.log("Dados do projeto:", response.data);
         const data = {
           nome: response.data.nome,
           descricao: response.data.descricao,
@@ -60,17 +60,18 @@ export const ProjetosEdit = () => {
           upload: null,
         };
 
-        let parsedEstilo = null;
+        let parsedEstilo = {};
         if (response.data.estilo) {
           try {
             parsedEstilo = JSON.parse(response.data.estilo);
-            setProjectCanvasInitialData(parsedEstilo);
-            setCanvasData(parsedEstilo);
           } catch (e) {
             console.error("Erro ao parsear estilo:", e);
+            parsedEstilo = {};
           }
         }
 
+        setProjectCanvasInitialData(parsedEstilo);
+        setCanvasData(parsedEstilo);
         setProjectData(data);
       } catch (error) {
         console.error("Erro ao carregar projeto:", error);
@@ -80,7 +81,7 @@ export const ProjetosEdit = () => {
     };
 
     fetchProject();
-  }, [id]);
+  }, []);
 
   const handleSave = useCallback(() => {
     if (projectFormRef.current) {
@@ -288,10 +289,23 @@ export const ProjetosEdit = () => {
           />
         </div>
         <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
-          <ProjetosProjectCanvas
-            setCanvasData={setCanvasData}
-            initialData={projectCanvasInitialData}
-          />
+          {isMobile ? (
+            <Alert>
+              <Monitor className="h-4 w-4" />
+              <AlertTitle>Edição não disponível</AlertTitle>
+              <AlertDescription>
+                O Project Canvas não pode ser editado em dispositivos móveis. 
+                Por favor, acesse através de um computador ou tablet para editar o canvas do projeto.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            projectCanvasInitialData !== undefined && (
+              <ProjetosProjectCanvas
+                setCanvasData={setCanvasData}
+                initialData={projectCanvasInitialData}
+              />
+            )
+          )}
         </div>
       </div>
     </MainWrapper>

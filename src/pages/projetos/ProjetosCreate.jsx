@@ -15,8 +15,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon, Presentation } from "lucide-react";
+import { ArrowLeftCircle, CheckCircleIcon, Library, PanelsTopLeftIcon, Monitor } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import api from "@/axios";
 import { useToast } from "@/hooks/use-toast";
@@ -205,7 +206,18 @@ export const ProjetosCreate = () => {
           <ProjetosForm ref={projectFormRef} onSubmit={onSubmit} />
         </div>
         <div style={{ display: layout === "projectCanvas" ? "block" : "none" }}>
-          <ProjetosProjectCanvas setCanvasData={setCanvasData} />
+          {isMobile ? (
+            <Alert>
+              <Monitor className="h-4 w-4" />
+              <AlertTitle>Visualização não disponível</AlertTitle>
+              <AlertDescription>
+                O Project Canvas não pode ser utilizado em dispositivos móveis. 
+                Por favor, acesse através de um computador ou tablet para criar e editar o canvas do projeto.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <ProjetosProjectCanvas setCanvasData={setCanvasData} />
+          )}
         </div>
       </div>
     </MainWrapper>

@@ -16,9 +16,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Filter, Loader2, ImageOff } from "lucide-react";
+import { Search, Filter, Loader2, ImageOff, ExternalLink } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { formatDatetime } from "@/lib/utils";
+import { Link } from "react-router-dom";
 import api from "@/axios";
 
 export const ParceriasList = () => {
@@ -122,7 +123,6 @@ export const ParceriasList = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Proposta</TableHead>
                 <TableHead>Projeto</TableHead>
                 <TableHead>Empresa</TableHead>
                 <TableHead>ICT</TableHead>
@@ -164,15 +164,14 @@ export const ParceriasList = () => {
                   <TableRow key={parceria.id}>
                     <TableCell>
                       <div className="max-w-md relative group">
-                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {parceria.Interesse?.proposta}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-md relative group">
-                        <div className="truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
-                          {parceria.Interesse?.Oferta?.Projeto?.nome}
+                        <div className="flex items-center truncate group-hover:whitespace-normal transition-all duration-300 ease-in-out hover:scale-100 opacity-90 hover:opacity-100">
+                          <Link
+                            to={`/projetos/${parceria.Interesse?.Oferta?.Projeto?.id}`}
+                            className="text-blue-700 hover:underline"
+                          >
+                            {parceria.Interesse?.Oferta?.Projeto?.nome}
+                            <ExternalLink className="inline-block ml-2 h-4 w-4" />
+                          </Link>
                         </div>
                       </div>
                     </TableCell>

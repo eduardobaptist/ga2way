@@ -26,24 +26,17 @@ import {
   Trash2,
   Edit2,
   Eye,
-  Handshake,
   Send,
-  Lightbulb,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "@/hooks/use-toast";
 import api from "@/axios";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export const ProjetosActions = ({ projeto, onRefresh }) => {
   const navigate = useNavigate();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isInteresseDialogOpen, setIsInteresseDialogOpen] = useState(false);
-  const [proposta, setProposta] = useState("");
-  const [ofertaId, setOfertaId] = useState(null);
 
   const { user } = useAuth();
   const userTipo = user?.tipo;
@@ -78,27 +71,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     }
   };
 
-  const handleInterest = async (e) => {
-    e.stopPropagation();
-    try {
-      const response = await api.get("/ofertas");
-      const oferta = response?.data?.find(
-        (oferta) => oferta.projeto_id === projeto.id
-      );
-      if (oferta) {
-        setOfertaId(oferta.id);
-        setIsInteresseDialogOpen(true);
-      }
-    } catch (error) {
-      toast({
-        title:
-          error.response?.data?.message ||
-          "Erro ao carregar oferta do projeto na demonstração de interesse",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleDelete = async (e) => {
     e.stopPropagation();
     try {
@@ -113,28 +85,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
     } finally {
       setIsDeleteDialogOpen(false);
       setIsDropdownOpen(false);
-    }
-  };
-
-  const handleSubmitInterest = async (e) => {
-    e.stopPropagation();
-    try {
-      toast({
-        title: "Enviando interesse à empresa, aguarde...",
-        variant: "warning",
-      });
-      await api.post("/interesses", {
-        proposta,
-        oferta_id: ofertaId,
-      });
-      toast({ title: "Interesse enviado com sucesso", variant: "success" });
-      setIsInteresseDialogOpen(false);
-      setProposta("");
-    } catch (error) {
-      toast({
-        title: error.response?.data?.message || "Erro ao enviar interesse",
-        variant: "destructive",
-      });
     }
   };
 
@@ -166,15 +116,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
                   >
                     <Send className="h-4 w-4" />
                     <span>Publicar</span>
-                  </DropdownMenuItem>
-                ) : null}
-                {userTipo === "ict" ? (
-                  <DropdownMenuItem
-                    onClick={(e) => handleInterest(e)}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <Handshake className="h-4 w-4" />
-                    <span>Demonstrar interesse</span>
                   </DropdownMenuItem>
                 ) : null}
                 <DropdownMenuItem
@@ -236,37 +177,6 @@ export const ProjetosActions = ({ projeto, onRefresh }) => {
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
               Excluir
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
-      <AlertDialog
-        open={isInteresseDialogOpen}
-        onOpenChange={setIsInteresseDialogOpen}
-      >
-        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
-          <AlertDialogHeader></AlertDialogHeader>
-          <div className="space-y-2">
-            <Label htmlFor="proposta">
-              Escreva sua proposta para este projeto.
-            </Label>
-            <Input
-              onChange={(e) => setProposta(e.target.value)}
-              id="proposta"
-              onClick={(e) => e.stopPropagation()}
-              placeholder="Digite sua proposta..."
-            />
-          </div>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={(e) => handleSubmitInterest(e)}
-              className="bg-green-600 hover:bg-green-700 focus:ring-green-600"
-            >
-              Enviar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
