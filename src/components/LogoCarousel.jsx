@@ -29,26 +29,25 @@ export const LogoCarousel = () => {
             transform: translateX(0);
           }
           to {
-            transform: translateX(-100%);
+            transform: translateX(-50%);
           }
         }
         .slide-track {
           display: inline-flex;
-          animation: 50s slide infinite linear;
+          animation: 60s slide infinite linear;
           gap: clamp(2rem, 6vw, 10rem);
         }
       `}</style>
       <div className="slide-track my-3">
-        <div className="blur-sm h-full w-10 fixed"></div>
-        {images.concat(images).map((img, index) => (
+        {images.concat(images).concat(images).concat(images).map((img, index) => (
           <img
             key={index}
             src={img}
             alt=""
-            className="w-[10vw] min-w-[150px] h-auto object-contain relative"
+            className="w-[10vw] min-w-[150px] h-auto object-contain"
           />
         ))}
-      </div> 
+      </div>
     </div>
   );
 };
