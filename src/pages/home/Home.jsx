@@ -1,16 +1,12 @@
 import { Link } from "react-router-dom";
 import megafone from "/img/megafone.svg";
 import gate2way from "/img/gate2way-logo.png";
-import agregar from "/img/agregar-logo.svg";
-import iffar from "/img/iffar-logo.svg";
-import bruning from "/img/bruning-logo.svg";
 import animation from "/animations/lottie-impulsos.json?url";
 import frame from "/img/frame.png";
 import {
   ArrowRight,
   Mail,
   LayoutPanelTop,
-  Bell,
   Building2,
   BookOpenCheck,
   Rocket,
@@ -19,6 +15,7 @@ import {
 } from "lucide-react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Button } from "@/components/ui/button";
+import { LogoCarousel } from "@/components/LogoCarousel";
 
 export function Home() {
   const incentives = [
@@ -79,79 +76,64 @@ export function Home() {
       </header>
 
       <main className="flex-1">
-        {/* Seção Hero */}
-        <section className="w-full py-6 md:py-12 lg:py-16 bg-gradient-to-br from-blue-900/10 via-purple-600/5 to-background relative overflow-hidden flex justify-center">
-          {/* Elementos decorativos */}
+        {/* Seção Hero + Carousel */}
+        <section className="w-full bg-gradient-to-br from-blue-900/10 via-purple-600/5 to-background relative overflow-hidden">
           <div className="absolute inset-0 z-0">
             <div className="absolute top-20 left-10 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-20 right-10 w-80 h-80 bg-blue-900/10 rounded-full blur-3xl"></div>
           </div>
 
-          <div className="container px-4 md:px-6 relative z-10 space-y-12">
-            <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    <span className="text-blue-900">Conectando talentos a</span>{" "}
-                    <span className="text-purple-600">oportunidades reais</span>
-                  </h1>
-                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    A ponte entre o conhecimento acadêmico e os desafios do
-                    mercado.
-                  </p>
+          {/* Hero Content */}
+          <div className="py-6 md:py-12 lg:py-16 flex justify-center">
+            <div className="container px-4 md:px-6 relative z-10 space-y-12">
+              <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="space-y-2">
+                    <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                      <span className="text-blue-900">Conectando talentos a</span>{" "}
+                      <span className="text-purple-600">oportunidades reais</span>
+                    </h1>
+                    <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                      A ponte entre o conhecimento acadêmico e os desafios do
+                      mercado.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                    <Button
+                      size="lg"
+                      className="bg-blue-900 text-lg hover:bg-blue-900/90"
+                      asChild
+                    >
+                      <Link to="/login">
+                        Entrar <ArrowUpRight className="ml-1 h-5 w-5" />
+                      </Link>
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-purple-600 text-lg text-purple-600 hover:bg-purple-600/10"
+                      asChild
+                    >
+                      <a href="#more">Saiba mais</a>
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button
-                    size="lg"
-                    className="bg-blue-900 text-lg hover:bg-blue-900/90"
-                    asChild
-                  >
-                    <Link to="/login">
-                      Entrar <ArrowUpRight className="ml-1 h-5 w-5" />
-                    </Link>
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-purple-600 text-lg text-purple-600 hover:bg-purple-600/10"
-                    asChild
-                  >
-                    <a href="#more">Saiba mais</a>
-                  </Button>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="relative w-full max-w-[500px] aspect-square">
-                  <img
-                    src={megafone}
-                    alt="Conexão entre academia e empresas"
-                    className="w-full h-full object-contain"
-                  />
+                <div className="flex items-center justify-center">
+                  <div className="relative w-full max-w-[500px] aspect-square">
+                    <img
+                      src={megafone}
+                      alt="Conexão entre academia e empresas"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
-              <div className="flex justify-start">
-                <img
-                  src={agregar}
-                  alt="Instituto Agregar"
-                  className="h-15 object-contain"
-                />
-              </div>
-              <img
-                src={iffar}
-                alt="IFFar - Campus Panambi"
-                className="mx-auto h-15 object-contain"
-              />
-              <div className="flex justify-end">
-                <img
-                  src={bruning}
-                  alt="Bruning Tecnometal"
-                  className="h-15 object-contain"
-                />
-              </div>
-            </div>
+          {/* Carousel - edge to edge */}
+          <div className="relative z-10 pb-6 md:pb-12">
+            <LogoCarousel />
           </div>
         </section>
 
@@ -202,16 +184,16 @@ export function Home() {
                 </div>
                 <div className="flex items-start gap-4">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-900 text-white">
-                    <Bell className="h-5 w-5" />
+                    <Rocket className="h-5 w-5" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <h3 className="text-xl font-bold">
-                        Gerenciamento de projetos{" "}
+                        Acompanhamento de progresso
                       </h3>
                     </div>
                     <p className="text-muted-foreground">
-                      Monitore o progresso dos projetos em andamento.
+                      Monitore o status dos projetos em andamento.
                     </p>
                   </div>
                 </div>
@@ -295,8 +277,6 @@ export function Home() {
             </div>
 
             <div className="mt-12 justify-center hidden">
-              {" "}
-              //botão escondido
               <Button
                 size="lg"
                 variant="outline"
